@@ -1,22 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Chaos.Engine;
-using Chaos.Model;
 using System.Windows.Forms;
+using Chaos.Engine;
 
 namespace Chaos
 {
     public partial class Form1 : Form
     {
-        private GameEngine engine;
-        private Gameboard gameboard;
-        private SpellBoard spellboard;
+        private readonly GameEngine engine;
+        private readonly Gameboard gameboard;
+        private readonly SpellBoard spellboard;
 
         public Form1()
         {
@@ -28,12 +20,11 @@ namespace Chaos
 
             // test dodawania z poziomu game engine
             engine.AddMonster(1, 1);
-
         }
 
         private void endTurnButton_Click(object sender, EventArgs e)
         {
-             engine.TurnChange();
+            engine.TurnChange();
         }
     }
 }

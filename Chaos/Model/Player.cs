@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chaos.Model
+﻿namespace Chaos.Model
 {
     public class Player
     {
+        private int id;
+
         // TODO: Każdy gracz powinien posiadać listę czarów, które może rzucić.
 
         public Player(string playerName, int id)
         {
-            this.name = playerName;
+            Name = playerName;
             this.id = id;
         }
-        private string name;
-        private int id;
 
-        public string Name { get { return name; } set { name = value; } }
+        public string Name { get; set; }
     }
 }

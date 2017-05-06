@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Chaos.Properties;
 
 namespace Chaos.Engine
 {
-    class Nothing : GameObject
+    internal class Nothing : GameObject
     {
         public Nothing()
         {
-            base.Caption = "Nothing";
-            base.Sprite = Properties.Resources.Nothing;
+            Caption = "Nothing";
+            Sprite = Resources.Nothing;
         }
-    } 
+    }
 }

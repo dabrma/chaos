@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace Chaos.Engine
@@ -14,56 +9,57 @@ namespace Chaos.Engine
 
         public Tile()
         {
-           
         }
 
         public Tile(Point position)
         {
-            this.fieldLocalization = position;
-            ocuppant = new Nothing();
+            FieldLocalization = position;
+            Occupant = new Nothing();
             FieldSetup();
         }
 
         #region Fields
-        private GameObject ocuppant;
-        private PictureBox field;
-        private Point fieldLocalization;
+
         #endregion
 
         #region Properties
-        public GameObject Occupant { get { return ocuppant; } set { ocuppant = value; } }
-        public PictureBox Field { get { return field; } set { field = value; } }
-        public Point FieldLocalization { get { return fieldLocalization; } set { fieldLocalization = value; } }
+
+        public GameObject Occupant { get; set; }
+
+        public PictureBox Field { get; set; }
+
+        public Point FieldLocalization { get; set; }
+
         #endregion
 
         #region Private Methods
+
         private void FieldSetup()
         {
-            field = new PictureBox();
-            field.BorderStyle = BorderStyle.FixedSingle;
-            field.Location = new Point((fieldLocalization.X * FIELD_SIZE), (fieldLocalization.Y * FIELD_SIZE));
-            field.Size = new Size(new Point(FIELD_SIZE, FIELD_SIZE));
-            field.Image = ocuppant.Sprite;          
+            Field = new PictureBox();
+            Field.BorderStyle = BorderStyle.FixedSingle;
+            Field.Location = new Point(FieldLocalization.X * FIELD_SIZE, FieldLocalization.Y * FIELD_SIZE);
+            Field.Size = new Size(new Point(FIELD_SIZE, FIELD_SIZE));
+            Field.Image = Occupant.Sprite;
         }
 
         public void OcupantEnter(GameObject newOcuppant)
         {
-            this.ocuppant = newOcuppant;
+            Occupant = newOcuppant;
             UpdateField();
         }
 
         public void OcuppantLeave()
         {
-            this.ocuppant = new Nothing();
+            Occupant = new Nothing();
             UpdateField();
-            
         }
 
         protected void UpdateField()
         {
-            field.Image = ocuppant.Sprite;
+            Field.Image = Occupant.Sprite;
         }
-        #endregion
 
+        #endregion
     }
 }
