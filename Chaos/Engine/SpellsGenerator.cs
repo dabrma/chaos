@@ -26,7 +26,7 @@ namespace Chaos.Engine
         public Spell GenerateSpellFromText(Player owner)
         {
             // Generate random spell
-            var radnIndex = random.Next(0, 3);
+            var radnIndex = random.Next(0, gameObjectStrings.Length);
             var spell = new Spell();
             spell.Caption = gameObjectStrings[radnIndex];
             spell.Owner = owner;

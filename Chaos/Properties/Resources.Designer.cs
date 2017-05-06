@@ -63,6 +63,16 @@ namespace Chaos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Cobra {
+            get {
+                object obj = ResourceManager.GetObject("Cobra", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap combat {
             get {
                 object obj = ResourceManager.GetObject("combat", resourceCulture);
@@ -91,6 +101,16 @@ namespace Chaos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Griffon {
+            get {
+                object obj = ResourceManager.GetObject("Griffon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Lion {
             get {
                 object obj = ResourceManager.GetObject("Lion", resourceCulture);
@@ -102,7 +122,8 @@ namespace Chaos.Properties {
         ///   Looks up a localized string similar to Wizard1 1 0 0 2 2 2 2
         ///Wizard2 1 0 0 2 2 2 2
         ///Lion 6 0 0 4 4 8 3
-        ///Skeleton 1 0 0 2 2 2 2.
+        ///Skeleton 1 0 0 2 2 2 2
+        ///Wraith 0 0 0 0 0 0 0.
         /// </summary>
         internal static string Monsters {
             get {
@@ -125,6 +146,16 @@ namespace Chaos.Properties {
         internal static System.Drawing.Bitmap Nothing {
             get {
                 object obj = ResourceManager.GetObject("Nothing", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pegasus {
+            get {
+                object obj = ResourceManager.GetObject("Pegasus", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -171,12 +202,22 @@ namespace Chaos.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Lion
         ///Skeleton
-        ///Wizard1
-        ///Wizard2.
+        ///Wraith
+        ///Griffon.
         /// </summary>
         internal static string Spells {
             get {
                 return ResourceManager.GetString("Spells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Unicorn {
+            get {
+                object obj = ResourceManager.GetObject("Unicorn", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -206,6 +247,16 @@ namespace Chaos.Properties {
         internal static System.Drawing.Bitmap Wizard2 {
             get {
                 object obj = ResourceManager.GetObject("Wizard2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Wraith {
+            get {
+                object obj = ResourceManager.GetObject("Wraith", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

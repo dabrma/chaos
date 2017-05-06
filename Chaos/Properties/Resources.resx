@@ -136,9 +136,6 @@
   <data name="selectionBeep" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\selectionBeep.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Skeleton" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Skeleton.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="wrongTarget" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\wrongTarget.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -165,5 +162,23 @@
   </data>
   <data name="wand" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\noun_183244-512.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cobra" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Cobra.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Griffon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Griffon.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pegasus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pegasus.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Skeleton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Skeleton.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Unicorn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Unicorn.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Wraith" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Wraith.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

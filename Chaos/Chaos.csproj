@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,7 +25,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -154,9 +154,6 @@
     <None Include="Resources\Monsters.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Skeleton.gif" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\move.wav" />
   </ItemGroup>
   <ItemGroup>
@@ -194,6 +191,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\noun_183244-512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Wraith.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Griffon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Skeleton.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pegasus.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Unicorn.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Cobra.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

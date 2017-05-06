@@ -30,6 +30,7 @@ namespace Chaos.Engine
         private readonly SpellTile[,] spellTiles = new SpellTile[SPELLBOARD_WIDTH, SPELLBOARD_HEIGHT];
         private Tile targetField;
 
+
         public SpellBoard(Panel spellboardPanel, List<Player> players)
         {
             this.spellboardPanel = spellboardPanel;
@@ -110,6 +111,11 @@ namespace Chaos.Engine
                 targetField = source;
                 EventLogger.WriteLog(source.FieldLocalization.ToString());
             }
+        }
+
+        public void HideSpellBoard()
+        {
+            spellboardPanel.Visible = false;
         }
     }
 }

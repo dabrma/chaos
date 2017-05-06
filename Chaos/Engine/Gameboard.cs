@@ -43,8 +43,6 @@ namespace Chaos.Engine
             MovesLeftLabel.Text = "";
             FieldName.Text = "";
 
-
-            //currentPlayer = players[0];
             InitializeTiles();
             InitializeGameboard();
         }
@@ -79,12 +77,6 @@ namespace Chaos.Engine
 
         #region Field Related Methods and Fields
 
-        /// <summary>
-        ///     Main logic for mouseclicks on Tiles.
-        /// </summary>
-        /// <param name="sender">Sender of an event</param>
-        /// <param name="e"></param>
-        /// <param name="clickSource">Since our EventArgs comes from a PictureBox, this is needed to define source the Tile</param>
         private void OnMouseLeave(object sender, EventArgs e)
         {
             var tile = sender as PictureBox;
@@ -98,10 +90,6 @@ namespace Chaos.Engine
             FieldName.Text = source.Occupant.Caption;
             tile.BorderStyle = BorderStyle.None;
         }
-
-        /// <summary>
-        /// Helper method, raise this when turn ends to reset movement points of current players monsters
-        /// </summary>
 
         #endregion
     }

@@ -17,8 +17,8 @@ namespace Chaos
             engine = new GameEngine(2, gameboard);
             spellboard = new SpellBoard(spellPanel, engine.GetPlayers);
             engine.spellboard = spellboard;
+            engine.InitializeEngineElements();
 
-            // test dodawania z poziomu game engine
             engine.AddMonster(1, 1);
         }
 

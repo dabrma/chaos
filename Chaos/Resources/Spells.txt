@@ -1,4 +1,7 @@
 Lion
 Skeleton
-Wizard1
-Wizard2
+Wraith
+Griffon
+Unicorn
+Cobra
+Pegasus

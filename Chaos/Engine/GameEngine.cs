@@ -31,7 +31,12 @@ namespace Chaos.Engine
             GenerateWizards(NumberOfPlayers);
             gameboard.players = GetPlayers;
             GetCurrentPlayer = GetPlayers[0];
+        }
+
+        public void InitializeEngineElements()
+        {
             gamePhase = GamePhase.Casting;
+            UpdateSpellboard();
         }
 
         public Gameboard gameboard { get; set; }
@@ -61,12 +66,16 @@ namespace Chaos.Engine
 
         public void TurnChange()
         {
-            gameboard.currentPlayer = gameboard.currentPlayer == GetPlayers[0] ? GetPlayers[1] : GetPlayers[0];
-            GetCurrentPlayer = gameboard.currentPlayer;
-            resetEventData();
-            ResetMonsterMovement();
-            SoundEngine.say(GetCurrentPlayer.Name);
-            UpdateSpellboard();
+            if (gamePhase == GamePhase.Moving)
+            {
+                gameboard.currentPlayer = gameboard.currentPlayer == GetPlayers[0] ? GetPlayers[1] : GetPlayers[0];
+                gamePhase = GamePhase.Casting;
+                GetCurrentPlayer = gameboard.currentPlayer;
+                resetEventData();
+                ResetMonsterMovement();
+                SoundEngine.say(GetCurrentPlayer.Name);
+                UpdateSpellboard();
+            }
         }
 
         private void ResetMonsterMovement()
@@ -114,7 +123,7 @@ namespace Chaos.Engine
             // we set the clicked Tile to be a context for our further operations (eg. decision making
             // on what happens on second mouse click)
             if (firstClick && clickSource.Occupant.GetType() != typeof(Nothing) &&
-                clickSource.Occupant.Owner == GetCurrentPlayer)
+                clickSource.Occupant.Owner == GetCurrentPlayer && gamePhase != GamePhase.Casting)
             {
                 sourceField = clickSource;
                 selectedMonster = sourceField.Occupant as Monster;
