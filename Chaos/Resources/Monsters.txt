@@ -1,0 +1,4 @@
+Wizard1 1 0 0 2 2 2 2
+Wizard2 1 0 0 2 2 2 2
+Lion 6 0 0 4 4 8 3
+Skeleton 1 0 0 2 2 2 2

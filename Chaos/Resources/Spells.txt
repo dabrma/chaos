@@ -1,0 +1,4 @@
+Lion
+Skeleton
+Wizard1
+Wizard2
