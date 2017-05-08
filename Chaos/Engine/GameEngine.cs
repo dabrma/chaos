@@ -10,12 +10,15 @@ namespace Chaos.Engine
 {
     internal enum GamePhase
     {
+        Picking,
         Casting,
         Moving,
 
     }
-    internal class GameEngine
+    public class GameEngine
     {
+        private MonsterActions actions;
+
         private bool firstClick = true;
         private readonly MonsterGenerator monsterGenerator;
         private Monster selectedMonster;
@@ -23,9 +26,14 @@ namespace Chaos.Engine
         private Tile targetField;
         private GamePhase gamePhase;
 
+        public Tile GetSourceField { get { return sourceField; } }
+        public Monster GetSelectedMonster { get { return selectedMonster; } }
+        public Tile GetTargetField { get { return targetField; } }
+
         public GameEngine(int NumberOfPlayers, Gameboard gameboard)
         {
             this.gameboard = gameboard;
+            actions = new MonsterActions(gameboard, this);
             SetTileEvents();
             monsterGenerator = new MonsterGenerator();
             GenerateWizards(NumberOfPlayers);
@@ -35,7 +43,7 @@ namespace Chaos.Engine
 
         public void InitializeEngineElements()
         {
-            gamePhase = GamePhase.Casting;
+            gamePhase = GamePhase.Picking;
             UpdateSpellboard();
         }
 
@@ -48,7 +56,7 @@ namespace Chaos.Engine
 
         public void AddMonster(int posX, int posY)
         {
-            var monster = monsterGenerator.Monsters[2];
+            var monster = monsterGenerator.GetMonsterByName("Wraith");
             monster.Owner = GetPlayers[0];
             gameboard.tiles[posX, posY].OcupantEnter(monster);
         }
@@ -95,10 +103,10 @@ namespace Chaos.Engine
                 GetPlayers.Add(player);
             }
 
-            var wizard1 = monsterGenerator.Monsters[3];
+            var wizard1 = monsterGenerator.GetMonsterByName("Wizard1");
             wizard1.Name = "Wizard";
             wizard1.Caption = wizard1.Name;
-            var wizard2 = monsterGenerator.Monsters[1];
+            var wizard2 = monsterGenerator.GetMonsterByName("Wizard2");
             wizard2.Name = "Wizard";
             wizard2.Caption = wizard1.Name;
 
@@ -143,7 +151,7 @@ namespace Chaos.Engine
                 targetField = clickSource;
                 if (targetField.Occupant.GetType() != typeof(Monster))
                 {
-                    if (Move(sourceField, targetField))
+                    if (actions.Move(sourceField, targetField))
                     {
                         sourceField = targetField;
                         gameboard.MovesLeftLabel.Text = string.Format("Moves: {0}/{1}", selectedMonster.MovesRemaining,
@@ -153,9 +161,11 @@ namespace Chaos.Engine
 
                 else if (targetField.Occupant.GetType() == typeof(Monster) &&
                          targetField.Occupant.Owner != sourceField.Occupant.Owner &&
-                         isMoveLegal(sourceField.FieldLocalization, targetField.FieldLocalization))
+                         actions.isMoveLegal(sourceField.FieldLocalization, targetField.FieldLocalization) &&
+                         selectedMonster.canAttack)
                 {
-                    Attack((Monster) sourceField.Occupant, (Monster) targetField.Occupant);
+                    actions.Attack((Monster) sourceField.Occupant, (Monster) targetField.Occupant);
+                    // resetEventData();
                 }
 
                 else
@@ -178,99 +188,7 @@ namespace Chaos.Engine
 
         #region Movement and Combat
 
-        private bool Move(Tile source, Tile target)
-        {
-            var ocuppant = (Monster) source.Occupant;
-            var sourceCoords = findCoordinatesInMatrix(source);
-            var targetCoords = findCoordinatesInMatrix(target);
-            if (isMoveLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0)
-            {
-                source.OcuppantLeave();
-                target.OcupantEnter(ocuppant);
-                selectedMonster.MovesRemaining--;
-                SoundEngine.playStepSound();
-                return true;
-            }
-
-            return false;
-        }
-
-        private async Task<bool> Attack(Monster attacker, Monster defender)
-        {
-            var prevSprite = targetField.Occupant.Sprite;
-            var damage = attacker.Attack - defender.Defense;
-            defender.Health = defender.Health - damage > 0 ? damage : 0;
-
-            if (defender.Health >= 0)
-            {
-                Die(attacker, defender, prevSprite);
-            }
-
-            else
-            {
-                SoundEngine.playAttackSound();
-                await playCombatAnimation(prevSprite);
-                resetEventData();
-            }
-
-            attacker.MovesRemaining = 0;
-
-            return true;
-        }
-
-        private async void Die(Monster attacker, Monster defender, Bitmap prevBitmap)
-        {
-            SoundEngine.playAttackMoveSound();
-            await playCombatAnimation(prevBitmap);
-
-            targetField.OcuppantLeave();
-            sourceField.OcuppantLeave();
-            targetField.OcupantEnter(attacker);
-
-            if (defender.Name == "Wizard")
-                MessageBox.Show("Game Over!");
-        }
-
-        #endregion
-
-        #region Private Helper Methods
-
-        private Point findCoordinatesInMatrix(Tile searchTarget)
-        {
-            var itemPosition = new Point();
-            var h = gameboard.tiles.GetLength(0);
-            var w = gameboard.tiles.GetLength(1);
-
-            for (var row = 0; row < h; row++)
-            for (var col = 0; col < w; col++)
-                if (gameboard.tiles[row, col].Equals(searchTarget))
-                    return new Point(row, col);
-            return itemPosition;
-        }
-
-        private bool isMoveLegal(Point sourcePoint, Point targetPoint)
-        {
-            if (
-                sourcePoint.X - 1 == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
-                sourcePoint.X == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
-                sourcePoint.X + 1 == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
-                sourcePoint.X - 1 == targetPoint.X && sourcePoint.Y == targetPoint.Y ||
-                sourcePoint.X + 1 == targetPoint.X && sourcePoint.Y == targetPoint.Y ||
-                sourcePoint.X - 1 == targetPoint.X && sourcePoint.Y + 1 == targetPoint.Y ||
-                sourcePoint.X == targetPoint.X && sourcePoint.Y + 1 == targetPoint.Y ||
-                sourcePoint.X + 1 == targetPoint.X && sourcePoint.Y + 1 == targetPoint.Y
-            )
-                return true;
-
-            return false;
-        }
-
-        private async Task playCombatAnimation(Bitmap previousBitmap)
-        {
-            targetField.Field.Image = Resources.combat;
-            await Task.Delay(550);
-            targetField.Field.Image = previousBitmap;
-        }
+        
 
         public void resetEventData()
         {

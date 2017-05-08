@@ -8,7 +8,7 @@ using Chaos.Utility;
 
 namespace Chaos.Engine
 {
-    internal class SpellBoard
+    public class SpellBoard
     {
         private const int SPELLBOARD_WIDTH = 2;
         private const int SPELLBOARD_HEIGHT = 10;

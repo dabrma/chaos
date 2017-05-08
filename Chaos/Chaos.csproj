@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Engine\Gameboard.cs" />
     <Compile Include="Engine\GameEngine.cs" />
+    <Compile Include="Engine\MonsterActions.cs" />
     <Compile Include="Engine\SpellBoard.cs" />
     <Compile Include="Engine\SpellsGenerator.cs" />
     <Compile Include="Engine\SpellTile.cs" />

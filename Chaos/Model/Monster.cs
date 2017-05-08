@@ -24,6 +24,9 @@ namespace Chaos.Model
 
         public int Defense { get; set; }
 
+        public bool canAttack { get; set; }
+        public bool isUndead { get; set; }
+
         #region Fields
 
         #endregion
