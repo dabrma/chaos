@@ -66,8 +66,7 @@ namespace Chaos.Engine
 
         public void TurnChange()
         {
-            if (gamePhase == GamePhase.Moving)
-            {
+            
                 gameboard.currentPlayer = gameboard.currentPlayer == GetPlayers[0] ? GetPlayers[1] : GetPlayers[0];
                 gamePhase = GamePhase.Casting;
                 GetCurrentPlayer = gameboard.currentPlayer;
@@ -75,7 +74,7 @@ namespace Chaos.Engine
                 ResetMonsterMovement();
                 SoundEngine.say(GetCurrentPlayer.Name);
                 UpdateSpellboard();
-            }
+            
         }
 
         private void ResetMonsterMovement()
@@ -123,7 +122,7 @@ namespace Chaos.Engine
             // we set the clicked Tile to be a context for our further operations (eg. decision making
             // on what happens on second mouse click)
             if (firstClick && clickSource.Occupant.GetType() != typeof(Nothing) &&
-                clickSource.Occupant.Owner == GetCurrentPlayer && gamePhase != GamePhase.Casting)
+                clickSource.Occupant.Owner == GetCurrentPlayer)
             {
                 sourceField = clickSource;
                 selectedMonster = sourceField.Occupant as Monster;
