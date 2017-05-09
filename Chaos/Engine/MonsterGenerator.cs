@@ -9,7 +9,7 @@ namespace Chaos.Engine
 {
     public class MonsterGenerator
     {
-        public List<Monster> Monsters = new List<Monster>();
+        public List<MonsterTemplate> MonsterTemplates = new List<MonsterTemplate>();
 
         public MonsterGenerator()
         {
@@ -20,37 +20,37 @@ namespace Chaos.Engine
                 GenerateMonsterFromText(deserializedGameObject);
             }
 
-            Monsters = Monsters.OrderBy(x => x.Name).ToList();
+            MonsterTemplates = MonsterTemplates.OrderBy(x => x.Name).ToList();
         }
 
 
-
-        public Monster GetMonsterByName(string name)
+        public Monster GetMonsterByName(string name, Player owner)
         {
-            foreach (Monster monster in Monsters)
+            foreach (MonsterTemplate monsterTemplate in MonsterTemplates)
             {
-                if (monster.Name == name)
-                    return monster;
+                if (monsterTemplate.Name == name)
+                {
+                    return new Monster().MonsterFromTemplate(monsterTemplate, owner);
+                }
+
             }
             throw new NullReferenceException();
         }
 
         private void GenerateMonsterFromText(string[] deserializedGameObjectStrings)
         {
-            var monster = new Monster(new Player("", 0));
-            monster.Name = deserializedGameObjectStrings[0];
-            monster.Caption = monster.Owner.Name + monster.Name;
+            var monsterTemplate = new MonsterTemplate();
+            monsterTemplate.Name = deserializedGameObjectStrings[0];
 
-            monster.Health = int.Parse(deserializedGameObjectStrings[1]);
-            monster.MagicResistance = int.Parse(deserializedGameObjectStrings[2]);
-            monster.Attack = int.Parse(deserializedGameObjectStrings[3]);
-            monster.Moves = int.Parse(deserializedGameObjectStrings[4]);
-            monster.isUndead = int.Parse(deserializedGameObjectStrings[5]) == 0 ? false : true;
-            monster.canAttack = true;
-            monster.MovesRemaining = monster.Moves;
-            monster.Sprite = (Bitmap) Resources.ResourceManager.GetObject(deserializedGameObjectStrings[0]);
+            monsterTemplate.Health = int.Parse(deserializedGameObjectStrings[1]);
+            monsterTemplate.MagicResistance = int.Parse(deserializedGameObjectStrings[2]);
+            monsterTemplate.Attack = int.Parse(deserializedGameObjectStrings[3]);
+            monsterTemplate.Moves = int.Parse(deserializedGameObjectStrings[4]);
+            monsterTemplate.isUndead = int.Parse(deserializedGameObjectStrings[5]) == 0 ? false : true;
+            monsterTemplate.canAttack = true;
+            monsterTemplate.sprite = (Bitmap) Resources.ResourceManager.GetObject(deserializedGameObjectStrings[0]);
 
-            Monsters.Add(monster);
+            MonsterTemplates.Add(monsterTemplate);
         }
     }
 }

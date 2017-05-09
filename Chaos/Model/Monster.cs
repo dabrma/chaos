@@ -4,10 +4,33 @@ namespace Chaos.Model
 {
     public class Monster : GameObject
     {
+
+        public Monster()
+        {
+        }
+
         public Monster(Player owner)
         {
             Owner = owner;
             Caption = Owner.Name + "'s " + Name;
+        }
+
+        public Monster MonsterFromTemplate(MonsterTemplate template, Player owner)
+        {
+            Monster monsterFromTemplate = new Monster();
+            monsterFromTemplate.Sprite = template.sprite;
+            monsterFromTemplate.Caption = owner.Name + " " + template.Name;
+            monsterFromTemplate.canAttack = template.canAttack;
+            monsterFromTemplate.isUndead = template.isUndead;
+            monsterFromTemplate.Name = template.Name;
+            monsterFromTemplate.Attack = template.Attack;
+            monsterFromTemplate.Defense = template.Defense;
+            monsterFromTemplate.Health = template.Health;
+            monsterFromTemplate.MagicResistance = template.MagicResistance;
+            monsterFromTemplate.Moves = template.Moves;
+            monsterFromTemplate.MovesRemaining = monsterFromTemplate.Moves;
+
+            return monsterFromTemplate;
         }
 
         public string Name { get; set; }

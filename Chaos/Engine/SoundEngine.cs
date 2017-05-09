@@ -56,6 +56,13 @@ namespace Chaos.Engine
             soundPlayer.Play();
         }
 
+        public static void playClickSound()
+        {
+            soundPlayer.Stream = Resources.Click;
+            soundPlayer.LoadAsync();
+            soundPlayer.Play();
+        }
+
         public static void playAttackMoveSound()
         {
             soundPlayer.Stream = Resources.combatMove;

@@ -65,9 +65,10 @@
     <Compile Include="Engine\Gameboard.cs" />
     <Compile Include="Engine\GameEngine.cs" />
     <Compile Include="Engine\MonsterActions.cs" />
+    <Compile Include="Model\MonsterTemplate.cs" />
     <Compile Include="Engine\SpellBoard.cs" />
     <Compile Include="Engine\SpellsGenerator.cs" />
-    <Compile Include="Engine\SpellTile.cs" />
+    <Compile Include="Model\SpellTile.cs" />
     <Compile Include="FormStart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -219,6 +220,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Cobra.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Click.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

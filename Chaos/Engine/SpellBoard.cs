@@ -92,24 +92,25 @@ namespace Chaos.Engine
         public void OnSpellClick(object sender, EventArgs e, Tile source)
         {
             var currentPlayerIndex = players.IndexOf(currentPlayer);
+            bool finishedPicking = currentPlayerIndex +1 == players.Count;
 
-            if (players[currentPlayerIndex].SelectedSpell == null)
-            {
-                var spell = source.Occupant as Spell;
-                currentPlayer.SelectedSpell = spell;
-                engine.SwitchPlayer();
-                currentPlayer = engine.GetCurrentPlayer;
-                UpdateSpellboard(engine.GetCurrentPlayer);
-            }
-            else
+            var spell = source.Occupant as Spell;
+            SoundEngine.playClickSound();
+            currentPlayer.SelectedSpell = spell;
+
+            currentPlayer = engine.SwitchPlayer();
+            UpdateSpellboard(engine.CurrentPlayer);
+
+
+            if(finishedPicking)
             {
                 engine.ChangePhase(GamePhase.Casting);
             }
         }
 
-        public void HideSpellBoard()
+        public void IsSpellboardVisible(bool visible)
         {
-            spellboardPanel.Visible = false;
+            spellboardPanel.Visible = visible;
         }
     }
 }

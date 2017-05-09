@@ -61,6 +61,15 @@ namespace Chaos.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream Click {
+            get {
+                return ResourceManager.GetStream("Click", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Cobra {
@@ -119,11 +128,14 @@ namespace Chaos.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wizard1 1 0 0 2 2 2 2
-        ///Wizard2 1 0 0 2 2 2 2
-        ///Lion 6 0 0 4 4 8 3
-        ///Skeleton 1 0 0 2 2 2 2
-        ///Wraith 0 0 0 0 0 0 0.
+        ///   Looks up a localized string similar to Wizard1 20 4 1 1 0
+        ///Wizard2 20 4 1 1 0
+        ///Lion 30 3 8 4 0
+        ///Skeleton 5 5 2 1 1
+        ///Wraith 22 7 3 2 1
+        ///Gryphon 15 6 3 5 0
+        ///Unicorn 14 4 4 4 0
+        ///Cobra 2 1 2 1 0.
         /// </summary>
         internal static string Monsters {
             get {
@@ -203,7 +215,10 @@ namespace Chaos.Properties {
         ///   Looks up a localized string similar to Lion
         ///Skeleton
         ///Wraith
-        ///Griffon.
+        ///Gryphon
+        ///Unicorn
+        ///Cobra
+        ///Pegasus.
         /// </summary>
         internal static string Spells {
             get {
