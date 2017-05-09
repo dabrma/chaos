@@ -15,10 +15,9 @@ namespace Chaos
             InitializeComponent();
             gameboard = new Gameboard(gamePanel, fieldName, movesLeftLabel);
             engine = new GameEngine(2, gameboard);
-            spellboard = new SpellBoard(spellPanel, engine.GetPlayers);
+            spellboard = new SpellBoard(spellPanel, engine.GetPlayers, engine);
             engine.spellboard = spellboard;
             engine.InitializeEngineElements();
-
             engine.AddMonster(1, 1);
         }
 

@@ -8,7 +8,7 @@ using Chaos.Properties;
 
 namespace Chaos.Engine
 {
-    internal enum GamePhase
+    public enum GamePhase
     {
         Picking,
         Casting,
@@ -44,7 +44,18 @@ namespace Chaos.Engine
         public void InitializeEngineElements()
         {
             gamePhase = GamePhase.Picking;
+            spellboard.currentPlayer = GetCurrentPlayer;
+            gameboard.currentPlayer = GetCurrentPlayer;
             UpdateSpellboard();
+        }
+        public void ChangePhase(GamePhase phase)
+        {
+            gamePhase = phase;
+        }
+
+        public void OnPhaseChange()
+        {
+
         }
 
         public Gameboard gameboard { get; set; }
@@ -52,6 +63,11 @@ namespace Chaos.Engine
         public Player GetCurrentPlayer { get; private set; }
 
         public List<Player> GetPlayers { get; } = new List<Player>();
+
+        public Spell CastSpell()
+        {
+            return GetCurrentPlayer.SelectedSpell;
+        }
 
 
         public void AddMonster(int posX, int posY)
@@ -72,17 +88,29 @@ namespace Chaos.Engine
             gameboard.tiles[posX, posY].OcupantEnter(monster);
         }
 
+        public void SwitchPlayer()
+        {
+            var currentPlayerIndex = GetPlayers.IndexOf(gameboard.currentPlayer);
+            if(currentPlayerIndex + 1 < GetPlayers.Count)
+            {
+                gameboard.currentPlayer = GetPlayers[currentPlayerIndex + 1];
+            }
+            else
+            {
+                gameboard.currentPlayer = GetPlayers[0];
+            }
+
+            GetCurrentPlayer = gameboard.currentPlayer;
+        }
+
         public void TurnChange()
         {
-            
-                gameboard.currentPlayer = gameboard.currentPlayer == GetPlayers[0] ? GetPlayers[1] : GetPlayers[0];
+                SwitchPlayer();
                 gamePhase = GamePhase.Casting;
                 GetCurrentPlayer = gameboard.currentPlayer;
                 resetEventData();
                 ResetMonsterMovement();
-                SoundEngine.say(GetCurrentPlayer.Name);
-                UpdateSpellboard();
-            
+                SoundEngine.say(GetCurrentPlayer.Name);         
         }
 
         private void ResetMonsterMovement()

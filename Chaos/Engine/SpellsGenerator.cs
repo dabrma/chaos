@@ -23,13 +23,13 @@ namespace Chaos.Engine
         }
 
 
-        public Spell GenerateSpellFromText(Player owner)
+        public Spell GenerateSpellFromText()
         {
             // Generate random spell
             var radnIndex = random.Next(0, gameObjectStrings.Length);
             var spell = new Spell();
             spell.Caption = gameObjectStrings[radnIndex];
-            spell.Owner = owner;
+        //    spell.Owner = owner;
             spell.Sprite = (Bitmap) Resources.ResourceManager.GetObject(gameObjectStrings[radnIndex].TrimEnd('\r'));
 
             return spell;
