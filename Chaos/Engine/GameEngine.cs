@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Chaos.Model;
 using Chaos.Properties;
+using Chaos.UI;
 using Chaos.Utility;
 
 namespace Chaos.Engine
@@ -16,22 +18,36 @@ namespace Chaos.Engine
         Moving,
 
     }
+
     public class GameEngine
     {
         private MonsterActions actions;
 
         private bool firstClick = true;
         private readonly MonsterGenerator monsterGenerator;
+        SoundEngine eng = new SoundEngine();
+        private DescriptionPanel monsterDescriptionPanel;
         private Monster selectedMonster;
         private Tile sourceField;
         private Tile targetField;
         private GamePhase gamePhase;
 
-        public Tile GetSourceField { get { return sourceField; } }
-        public Monster GetSelectedMonster { get { return selectedMonster; } }
-        public Tile GetTargetField { get { return targetField; } }
+        public Tile GetSourceField
+        {
+            get { return sourceField; }
+        }
 
-        public GameEngine(int NumberOfPlayers, Gameboard gameboard)
+        public Monster GetSelectedMonster
+        {
+            get { return selectedMonster; }
+        }
+
+        public Tile GetTargetField
+        {
+            get { return targetField; }
+        }
+
+        public GameEngine(int NumberOfPlayers, Gameboard gameboard, Form1 gameForm)
         {
             this.gameboard = gameboard;
             actions = new MonsterActions(gameboard, this);
@@ -40,6 +56,9 @@ namespace Chaos.Engine
             GenerateWizards(NumberOfPlayers);
             gameboard.players = GetPlayers;
             CurrentPlayer = GetPlayers[0];
+         //   gameForm.GetDescriptionPanel.Controls.AddRange(new DescriptionPanel(monsterGenerator.GetMonsterByName("Wraith", GetPlayers[0])).GetControls());
+         //   gameForm.GetDescriptionPanel.Visible = true;
+
         }
 
         public void InitializeEngineElements()
@@ -49,6 +68,7 @@ namespace Chaos.Engine
             gameboard.currentPlayer = CurrentPlayer;
             UpdateSpellboard();
         }
+
         public void ChangePhase(GamePhase phase)
         {
             gamePhase = phase;
@@ -69,9 +89,9 @@ namespace Chaos.Engine
                     CurrentPlayer = GetPlayers[0];
                     spellboard.IsSpellboardVisible(false);
                     break;
-               case GamePhase.Moving:
-                   resetEventData();
-                   break;
+                case GamePhase.Moving:
+                    resetEventData();
+                    break;
             }
         }
 
@@ -95,10 +115,11 @@ namespace Chaos.Engine
             var monsterFromSpell = monsterGenerator.GetMonsterByName(spell.Caption, CurrentPlayer);
             monsterFromSpell.Owner = CurrentPlayer;
             target.OcupantEnter(monsterFromSpell);
+            SoundEngine.play("SingleCast");
             CurrentPlayer = SwitchPlayer();
-            
-            if(finishedCasting)
-            return true;
+
+            if (finishedCasting)
+                return true;
 
             else
             {
@@ -109,9 +130,9 @@ namespace Chaos.Engine
 
         public void AddMonster(int posX, int posY)
         {
-       //     var monster = monsterGenerator.GetMonsterByName("Wraith");
-       //     monster.Owner = GetPlayers[0];
-       //     gameboard.tiles[posX, posY].OcupantEnter(monster);
+            //     var monster = monsterGenerator.GetMonsterByName("Wraith");
+            //     monster.Owner = GetPlayers[0];
+            //     gameboard.tiles[posX, posY].OcupantEnter(monster);
         }
 
         private void UpdateSpellboard()
@@ -128,7 +149,7 @@ namespace Chaos.Engine
         public Player SwitchPlayer()
         {
             var currentPlayerIndex = GetPlayers.IndexOf(CurrentPlayer);
-            if(currentPlayerIndex + 1 < GetPlayers.Count)
+            if (currentPlayerIndex + 1 < GetPlayers.Count)
             {
                 CurrentPlayer = GetPlayers[currentPlayerIndex + 1];
             }
@@ -148,7 +169,7 @@ namespace Chaos.Engine
                 OnPhaseChange();
             }
 
-            else if(gamePhase == GamePhase.Moving && GetPlayers.IndexOf(CurrentPlayer) < GetPlayers.Count - 1)
+            else if (gamePhase == GamePhase.Moving && GetPlayers.IndexOf(CurrentPlayer) < GetPlayers.Count - 1)
             {
                 OnPhaseChange();
                 CurrentPlayer = SwitchPlayer();
@@ -167,14 +188,14 @@ namespace Chaos.Engine
         private void ResetMonsterMovement()
         {
             foreach (var tile in gameboard.tiles)
+            {
+                var monster = tile.Occupant as Monster;
+                if (monster != null)
                 {
-                    var monster = tile.Occupant as Monster;
-                    if (monster != null)
-                    {
-                        monster.MovesRemaining = monster.Moves;
-                        monster.canAttack = true;
-                    }
+                    monster.MovesRemaining = monster.Moves;
+                    monster.canAttack = true;
                 }
+            }
         }
 
         private void GenerateWizards(int numberOfPlayers)
@@ -206,7 +227,7 @@ namespace Chaos.Engine
         }
 
 
-        public void TileClicked(object sender, EventArgs e, Tile clickSource)
+        public async void TileClicked(object sender, EventArgs e, Tile clickSource)
         {
             if (gamePhase == GamePhase.Casting)
             {
@@ -259,8 +280,8 @@ namespace Chaos.Engine
                              actions.isMoveLegal(sourceField.FieldLocalization, targetField.FieldLocalization) &&
                              selectedMonster.canAttack)
                     {
-                        actions.Attack((Monster) sourceField.Occupant, (Monster) targetField.Occupant);
-                        // resetEventData();
+                        await actions.Attack((Monster) sourceField.Occupant, (Monster) targetField.Occupant);
+                        resetEventData();
                     }
 
                     else
@@ -284,7 +305,7 @@ namespace Chaos.Engine
 
         #region Movement and Combat
 
-        
+
 
         public void resetEventData()
         {

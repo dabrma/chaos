@@ -61,6 +61,16 @@ namespace Chaos.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Bat {
+            get {
+                object obj = ResourceManager.GetObject("Bat", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream Click {
@@ -110,9 +120,19 @@ namespace Chaos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Griffon {
+        internal static System.Drawing.Bitmap Goblin {
             get {
-                object obj = ResourceManager.GetObject("Griffon", resourceCulture);
+                object obj = ResourceManager.GetObject("Goblin", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Gryphon {
+            get {
+                object obj = ResourceManager.GetObject("Gryphon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -135,7 +155,10 @@ namespace Chaos.Properties {
         ///Wraith 22 7 3 2 1
         ///Gryphon 15 6 3 5 0
         ///Unicorn 14 4 4 4 0
-        ///Cobra 2 1 2 1 0.
+        ///Cobra 2 1 2 1 0
+        ///Bat 8 1 2 5 0
+        ///Rat 8 2 2 3 0
+        ///Pegasus 1 1 1 1 0.
         /// </summary>
         internal static string Monsters {
             get {
@@ -185,6 +208,16 @@ namespace Chaos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Rat {
+            get {
+                object obj = ResourceManager.GetObject("Rat", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap red_letter_d_512 {
             get {
                 object obj = ResourceManager.GetObject("red_letter_d_512", resourceCulture);
@@ -198,6 +231,15 @@ namespace Chaos.Properties {
         internal static System.IO.UnmanagedMemoryStream selectionBeep {
             get {
                 return ResourceManager.GetStream("selectionBeep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream SingleCast {
+            get {
+                return ResourceManager.GetStream("SingleCast", resourceCulture);
             }
         }
         
@@ -218,7 +260,9 @@ namespace Chaos.Properties {
         ///Gryphon
         ///Unicorn
         ///Cobra
-        ///Pegasus.
+        ///Pegasus
+        ///Bat
+        ///Rat.
         /// </summary>
         internal static string Spells {
             get {
@@ -233,6 +277,15 @@ namespace Chaos.Properties {
             get {
                 object obj = ResourceManager.GetObject("Unicorn", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream Update {
+            get {
+                return ResourceManager.GetStream("Update", resourceCulture);
             }
         }
         

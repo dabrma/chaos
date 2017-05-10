@@ -29,7 +29,7 @@ namespace Chaos.Engine
         /// <param name="gamePanel">Panel control that will contain Tiles</param>
         /// <param name="fieldName">Label that displays name of field that our mouse hovers over</param>
         /// <param name="movesLeftLabel">Label that displays remaining moves of our monster</param>
-        public Gameboard(Panel gamePanel, Label fieldName, Label movesLeftLabel, int gameboardSize = 12)
+        public Gameboard(Panel gamePanel, Label fieldName, Label movesLeftLabel, int gameboardSize = 14)
         {
             this.gameboardSize = gameboardSize;
             tiles = new Tile[gameboardSize, gameboardSize];
@@ -78,14 +78,14 @@ namespace Chaos.Engine
         {
             var tile = sender as PictureBox;
             FieldName.Text = "";
-            tile.BorderStyle = BorderStyle.FixedSingle;
+         //   tile.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void OnMouseOver(object sender, EventArgs e, Tile source)
         {
             var tile = sender as PictureBox;
             FieldName.Text = source.Occupant.Caption;
-            tile.BorderStyle = BorderStyle.None;
+         //   tile.BorderStyle = BorderStyle.None;
         }
 
         #endregion

@@ -10,11 +10,14 @@ namespace Chaos
         private readonly Gameboard gameboard;
         private readonly SpellBoard spellboard;
 
+        public Panel GetDescriptionPanel { get { return descPanel; } set { descPanel = value; } }
+
         public Form1()
         {
             InitializeComponent();
+            descPanel.Visible = false;
             gameboard = new Gameboard(gamePanel, fieldName, movesLeftLabel);
-            engine = new GameEngine(2, gameboard);
+            engine = new GameEngine(2, gameboard, this);
             spellboard = new SpellBoard(spellPanel, engine.GetPlayers, engine);
             engine.spellboard = spellboard;
             engine.InitializeEngineElements();

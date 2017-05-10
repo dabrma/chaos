@@ -5,3 +5,6 @@ Gryphon
 Unicorn
 Cobra
 Pegasus
+Bat
+Rat
+Goblin

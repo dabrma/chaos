@@ -53,7 +53,7 @@ namespace Chaos.Engine
 
             if (defender.Health <= 0)
             {
-                Die(attacker, defender, prevSprite);
+                 await Die(attacker, defender, prevSprite);
             }
 
             else
@@ -71,7 +71,7 @@ namespace Chaos.Engine
             attacker.canAttack = false;
         }
 
-        private async void Die(Monster attacker, Monster defender, Bitmap prevBitmap)
+        private async Task Die(Monster attacker, Monster defender, Bitmap prevBitmap)
         {
             SoundEngine.playAttackMoveSound();
             await playCombatAnimation(prevBitmap);

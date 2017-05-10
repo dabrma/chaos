@@ -18,6 +18,8 @@ namespace Chaos.Model
         public Monster MonsterFromTemplate(MonsterTemplate template, Player owner)
         {
             Monster monsterFromTemplate = new Monster();
+            monsterFromTemplate.Owner = owner;
+            monsterFromTemplate.MaxHealth = template.MaxHealth;
             monsterFromTemplate.Sprite = template.sprite;
             monsterFromTemplate.Caption = owner.Name + " " + template.Name;
             monsterFromTemplate.canAttack = template.canAttack;
@@ -34,7 +36,7 @@ namespace Chaos.Model
         }
 
         public string Name { get; set; }
-
+        public int MaxHealth { get; set; }
         public int Health { get; set; }
 
         public int Moves { get; set; }

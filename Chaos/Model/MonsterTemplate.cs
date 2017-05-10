@@ -9,6 +9,7 @@ namespace Chaos.Engine
 {
     public class MonsterTemplate
     {
+        public int MaxHealth { get; set; }
         public string Name { get; set; }
         public int Health { get; set; }
         public int Moves { get; set; }

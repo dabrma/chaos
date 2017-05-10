@@ -166,7 +166,7 @@
   <data name="Cobra" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Cobra.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Griffon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="Gryphon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Griffon.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Pegasus" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -183,5 +183,20 @@
   </data>
   <data name="Click" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Click.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Bat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Bat.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Goblin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Goblin.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Rat" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Rat.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SingleCast" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SingleCast.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Update" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Update.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

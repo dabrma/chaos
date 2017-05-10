@@ -6,3 +6,7 @@ Wraith 22 7 3 2 1
 Gryphon 15 6 3 5 0
 Unicorn 14 4 4 4 0
 Cobra 2 1 2 1 0
+Bat 8 1 2 5 0
+Rat 8 2 2 3 0
+Pegasus 1 1 1 1 0
+Goblin 7 2 6 1 0

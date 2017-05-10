@@ -43,6 +43,7 @@ namespace Chaos.Engine
             monsterTemplate.Name = deserializedGameObjectStrings[0];
 
             monsterTemplate.Health = int.Parse(deserializedGameObjectStrings[1]);
+            monsterTemplate.MaxHealth = monsterTemplate.Health;
             monsterTemplate.MagicResistance = int.Parse(deserializedGameObjectStrings[2]);
             monsterTemplate.Attack = int.Parse(deserializedGameObjectStrings[3]);
             monsterTemplate.Moves = int.Parse(deserializedGameObjectStrings[4]);
