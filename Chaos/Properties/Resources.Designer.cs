@@ -71,6 +71,45 @@ namespace Chaos.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Bear {
+            get {
+                object obj = ResourceManager.GetObject("Bear", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Birdy {
+            get {
+                object obj = ResourceManager.GetObject("Birdy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Boost {
+            get {
+                object obj = ResourceManager.GetObject("Boost", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream Boosting {
+            get {
+                return ResourceManager.GetStream("Boosting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream Click {
@@ -100,11 +139,41 @@ namespace Chaos.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Combat1 {
+            get {
+                object obj = ResourceManager.GetObject("Combat1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream combatMove {
             get {
                 return ResourceManager.GetStream("combatMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Crocodile {
+            get {
+                object obj = ResourceManager.GetObject("Crocodile", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Eagle {
+            get {
+                object obj = ResourceManager.GetObject("Eagle", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -130,9 +199,29 @@ namespace Chaos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap GoldenDragon {
+            get {
+                object obj = ResourceManager.GetObject("GoldenDragon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Gryphon {
             get {
                 object obj = ResourceManager.GetObject("Gryphon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Horse {
+            get {
+                object obj = ResourceManager.GetObject("Horse", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -158,7 +247,15 @@ namespace Chaos.Properties {
         ///Cobra 2 1 2 1 0
         ///Bat 8 1 2 5 0
         ///Rat 8 2 2 3 0
-        ///Pegasus 1 1 1 1 0.
+        ///Pegasus 1 1 1 1 0
+        ///Goblin 7 2 6 1 0
+        ///Orc 4 4 2 1 0
+        ///Bear 25 2 8 2 0
+        ///Horse 8 1 1 4 0
+        ///Crocodile 37 2 7 1 0
+        ///Eagle 15 4 4 6 0
+        ///Birdy 25 5 5 6 0
+        ///GoldenDragon 53 3 10 4 0.
         /// </summary>
         internal static string Monsters {
             get {
@@ -181,6 +278,16 @@ namespace Chaos.Properties {
         internal static System.Drawing.Bitmap Nothing {
             get {
                 object obj = ResourceManager.GetObject("Nothing", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Orc {
+            get {
+                object obj = ResourceManager.GetObject("Orc", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -254,15 +361,24 @@ namespace Chaos.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lion
-        ///Skeleton
-        ///Wraith
-        ///Gryphon
-        ///Unicorn
-        ///Cobra
-        ///Pegasus
-        ///Bat
-        ///Rat.
+        ///   Looks up a localized string similar to Lion 1 0
+        ///Skeleton 1 0
+        ///Wraith 1 0
+        ///Gryphon 1 0
+        ///Unicorn 1 0
+        ///Cobra 1 0
+        ///Pegasus 1 0
+        ///Bat 1 0
+        ///Rat 1 0
+        ///Goblin 1 0
+        ///Orc 1 0
+        ///Bear 1 0
+        ///Horse 1 0
+        ///Crocodile 1 0
+        ///Eagle 1 0
+        ///Birdy 1 0
+        ///GoldenDragon 1 0
+        ///Combat1 0 1.
         /// </summary>
         internal static string Spells {
             get {

@@ -65,6 +65,7 @@
     <Compile Include="Engine\Gameboard.cs" />
     <Compile Include="Engine\GameEngine.cs" />
     <Compile Include="Engine\MonsterActions.cs" />
+    <Compile Include="Engine\Spellcasting.cs" />
     <Compile Include="Model\MonsterTemplate.cs" />
     <Compile Include="Engine\SpellBoard.cs" />
     <Compile Include="Engine\SpellsGenerator.cs" />
@@ -249,10 +250,40 @@
     <None Include="Resources\Rat.gif" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Goblin.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Orc.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BrownBear.gif" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Resources\Bat.gif" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Goblin.gif" />
+    <None Include="Resources\Horse.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Crocodile.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Birdy.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Eagle.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GoldenDraon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Combat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Boost.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Boosting.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

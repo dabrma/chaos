@@ -23,14 +23,17 @@ namespace Chaos.UI
         private SimpleProgressBar LifeBar;
         List<Control> ListOfControls = new List<Control>();
 
+
         public DescriptionPanel(Monster monster)
         {
             InitializeComponent();
-            LifeBar.Maximum = 25;
+            LifeBar.Maximum = monster.MaxHealth;
             LifeBar.Step = 1;
             LifeBar.Value = monster.Health;
+            CombatBar.Maximum = monster.Attack;
+            CombatBar.Value = monster.Attack;
             lblName.Text = monster.Name + string.Format("({0})", monster.Owner.Name);
-            lblCanAttackUndead.ForeColor = monster.canAttack ? Color.Green : Color.Red;
+            lblCanAttackUndead.ForeColor = monster.isUndead ? Color.Green : Color.Red;
             lblIsUndead.ForeColor = monster.isUndead ? Color.Green : Color.Red;
         }
 

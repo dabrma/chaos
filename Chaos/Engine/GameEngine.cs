@@ -26,11 +26,13 @@ namespace Chaos.Engine
         private bool firstClick = true;
         private readonly MonsterGenerator monsterGenerator;
         SoundEngine eng = new SoundEngine();
+        private Spellcasting spellcasting;
         private DescriptionPanel monsterDescriptionPanel;
         private Monster selectedMonster;
         private Tile sourceField;
         private Tile targetField;
         private GamePhase gamePhase;
+        public bool DescriptionMode = false;
 
         public Tile GetSourceField
         {
@@ -47,6 +49,8 @@ namespace Chaos.Engine
             get { return targetField; }
         }
 
+        private readonly Form1 gameForm;
+
         public GameEngine(int NumberOfPlayers, Gameboard gameboard, Form1 gameForm)
         {
             this.gameboard = gameboard;
@@ -56,9 +60,15 @@ namespace Chaos.Engine
             GenerateWizards(NumberOfPlayers);
             gameboard.players = GetPlayers;
             CurrentPlayer = GetPlayers[0];
-         //   gameForm.GetDescriptionPanel.Controls.AddRange(new DescriptionPanel(monsterGenerator.GetMonsterByName("Wraith", GetPlayers[0])).GetControls());
-         //   gameForm.GetDescriptionPanel.Visible = true;
+            spellcasting = new Spellcasting(gameboard, this);
+            this.gameForm = gameForm;
+            gameForm.GetDescriptionPanel.Click += HideDescriptionPanel;
+        }
 
+        private void HideDescriptionPanel(object sender, EventArgs e)
+        {
+            var panel = sender as Panel;
+            panel.Dispose();
         }
 
         public void InitializeEngineElements()
@@ -106,17 +116,32 @@ namespace Chaos.Engine
             return CurrentPlayer.SelectedSpell;
         }
 
-        public bool CastSpell(Tile target)
+        public async Task<bool> CastSpell(Tile target)
         {
             var currentPlayerIndex = GetPlayers.IndexOf(CurrentPlayer);
             var finishedCasting = currentPlayerIndex + 1 == GetPlayers.Count;
-
             var spell = GetCurrentSpell();
-            var monsterFromSpell = monsterGenerator.GetMonsterByName(spell.Caption, CurrentPlayer);
-            monsterFromSpell.Owner = CurrentPlayer;
-            target.OcupantEnter(monsterFromSpell);
-            SoundEngine.play("SingleCast");
-            CurrentPlayer = SwitchPlayer();
+            if (spell.CanCastOnNothing && target.Occupant.GetType() == typeof(Nothing))
+            {
+                var monsterFromSpell = monsterGenerator.GetMonsterByName(spell.Caption, CurrentPlayer);
+                monsterFromSpell.Owner = CurrentPlayer;
+                target.OcupantEnter(monsterFromSpell);
+                SoundEngine.play("SingleCast");
+                CurrentPlayer = SwitchPlayer();
+
+            }
+
+            if (spell.CanCastOnMonster && target.Occupant.GetType() == typeof(Monster))
+            {
+                Monster spellTarget = target.Occupant as Monster;
+                targetField = target;
+                EventLogger.WriteLog(spellTarget.Attack.ToString());
+                spellcasting.ApplySpellEffect(spell, spellTarget);
+                EventLogger.WriteLog(spellTarget.Attack.ToString());
+                SoundEngine.play("Boosting");
+                await spellcasting.PlayBoostAnimation(spellTarget.Sprite);
+                CurrentPlayer = SwitchPlayer();
+            }
 
             if (finishedCasting)
                 return true;
@@ -125,6 +150,7 @@ namespace Chaos.Engine
             {
                 return false;
             }
+
         }
 
 
@@ -229,9 +255,20 @@ namespace Chaos.Engine
 
         public async void TileClicked(object sender, EventArgs e, Tile clickSource)
         {
+            if (DescriptionMode)
+            {
+                if (clickSource.Occupant.GetType() == typeof(Monster))
+                {
+                    gameForm.GetDescriptionPanel.Controls.AddRange(new DescriptionPanel((Monster) clickSource.Occupant).GetControls());
+                    gameForm.GetDescriptionPanel.Visible = true;
+                    gameForm.GetDescriptionPanel.BringToFront();
+                }
+                return;
+            }
+
             if (gamePhase == GamePhase.Casting)
             {
-                if (CastSpell(clickSource))
+                if (await CastSpell(clickSource))
                 {
                     ResetMonsterMovement();
                     ChangePhase(GamePhase.Moving);
@@ -303,10 +340,6 @@ namespace Chaos.Engine
             MessageBox.Show(string.Format("Congratulations {0}, you've won!", CurrentPlayer));
         }
 
-        #region Movement and Combat
-
-
-
         public void resetEventData()
         {
             firstClick = true;
@@ -315,7 +348,5 @@ namespace Chaos.Engine
             sourceField = null;
             gameboard.MovesLeftLabel.Text = "";
         }
-
-        #endregion
     }
 }

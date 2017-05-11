@@ -85,6 +85,7 @@
             this.helpButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.helpButton.TabIndex = 4;
             this.helpButton.TabStop = false;
+            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
             // 
             // discardButton
             // 
@@ -122,7 +123,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(35)))));
             this.ClientSize = new System.Drawing.Size(802, 752);
-            this.Controls.Add(this.descPanel);
             this.Controls.Add(this.endTurnButton);
             this.Controls.Add(this.discardButton);
             this.Controls.Add(this.helpButton);
@@ -130,6 +130,7 @@
             this.Controls.Add(this.movesLeftLabel);
             this.Controls.Add(this.fieldName);
             this.Controls.Add(this.gamePanel);
+            this.Controls.Add(this.descPanel);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).EndInit();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Chaos.Engine;
+using Chaos.Utility;
 
 namespace Chaos
 {
@@ -27,6 +28,17 @@ namespace Chaos
         private void endTurnButton_Click(object sender, EventArgs e)
         {
             engine.TurnChange();
+        }
+
+        private void helpButton_Click(object sender, EventArgs e)
+        {
+            engine.DescriptionMode = engine.DescriptionMode == false ? engine.DescriptionMode = true : engine.DescriptionMode = false;
+            if (engine.DescriptionMode)
+            {
+                helpButton.BorderStyle = BorderStyle.Fixed3D;
+            }
+
+            else { helpButton.BorderStyle = BorderStyle.None;}
         }
     }
 }
