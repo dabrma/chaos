@@ -6,6 +6,7 @@ using System.Media;
 using System.Reflection;
 using System.Resources;
 using System.Speech.Synthesis;
+using System.Threading.Tasks;
 using Chaos.Model;
 using Chaos.Properties;
 using Chaos.Utility;
@@ -43,6 +44,13 @@ namespace Chaos.Engine
             var synth = new SpeechSynthesizer();
             synth.Rate = -4;
             synth.SpeakAsync(source);
+        }
+
+        public static void SaySpellAndPlayerName(Player source)
+        {
+            var synth = new SpeechSynthesizer();
+            synth.Rate = -4;
+            synth.SpeakAsync(source.Name + "   " + source.SelectedSpell.Caption);
         }
 
         /*

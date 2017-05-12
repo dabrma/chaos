@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using Chaos.Model;
-using Chaos.Properties;
 using Chaos.UI;
 using Chaos.Utility;
 
@@ -15,41 +12,21 @@ namespace Chaos.Engine
     {
         Picking,
         Casting,
-        Moving,
-
+        Moving
     }
 
     public class GameEngine
     {
-        private MonsterActions actions;
+        private readonly Form1 gameForm;
+        public readonly MonsterGenerator monsterGenerator;
+        private readonly MonsterActions actions;
+        public bool DescriptionMode = false;
+        private SoundEngine eng = new SoundEngine();
 
         private bool firstClick = true;
-        private readonly MonsterGenerator monsterGenerator;
-        SoundEngine eng = new SoundEngine();
-        private Spellcasting spellcasting;
-        private DescriptionPanel monsterDescriptionPanel;
-        private Monster selectedMonster;
-        private Tile sourceField;
-        private Tile targetField;
         private GamePhase gamePhase;
-        public bool DescriptionMode = false;
-
-        public Tile GetSourceField
-        {
-            get { return sourceField; }
-        }
-
-        public Monster GetSelectedMonster
-        {
-            get { return selectedMonster; }
-        }
-
-        public Tile GetTargetField
-        {
-            get { return targetField; }
-        }
-
-        private readonly Form1 gameForm;
+        private DescriptionPanel monsterDescriptionPanel;
+        private readonly Spellcasting spellcasting;
 
         public GameEngine(int NumberOfPlayers, Gameboard gameboard, Form1 gameForm)
         {
@@ -64,6 +41,18 @@ namespace Chaos.Engine
             this.gameForm = gameForm;
             gameForm.GetDescriptionPanel.Click += HideDescriptionPanel;
         }
+
+        public Tile GetSourceField { get; private set; }
+
+        public Monster GetSelectedMonster { get; private set; }
+
+        public Tile GetTargetField { get; private set; }
+
+        public Gameboard gameboard { get; set; }
+        public SpellBoard spellboard { get; set; }
+        public Player CurrentPlayer { get; set; }
+
+        public List<Player> GetPlayers { get; } = new List<Player>();
 
         private void HideDescriptionPanel(object sender, EventArgs e)
         {
@@ -94,8 +83,6 @@ namespace Chaos.Engine
                     spellboard.IsSpellboardVisible(true);
                     break;
                 case GamePhase.Casting:
-                    SoundEngine.say(CurrentPlayer.Name);
-                    SoundEngine.say(CurrentPlayer.SelectedSpell.Caption);
                     CurrentPlayer = GetPlayers[0];
                     spellboard.IsSpellboardVisible(false);
                     break;
@@ -105,54 +92,10 @@ namespace Chaos.Engine
             }
         }
 
-        public Gameboard gameboard { get; set; }
-        public SpellBoard spellboard { get; set; }
-        public Player CurrentPlayer { get; private set; }
-
-        public List<Player> GetPlayers { get; } = new List<Player>();
-
         public Spell GetCurrentSpell()
         {
             return CurrentPlayer.SelectedSpell;
         }
-
-        public async Task<bool> CastSpell(Tile target)
-        {
-            var currentPlayerIndex = GetPlayers.IndexOf(CurrentPlayer);
-            var finishedCasting = currentPlayerIndex + 1 == GetPlayers.Count;
-            var spell = GetCurrentSpell();
-            if (spell.CanCastOnNothing && target.Occupant.GetType() == typeof(Nothing))
-            {
-                var monsterFromSpell = monsterGenerator.GetMonsterByName(spell.Caption, CurrentPlayer);
-                monsterFromSpell.Owner = CurrentPlayer;
-                target.OcupantEnter(monsterFromSpell);
-                SoundEngine.play("SingleCast");
-                CurrentPlayer = SwitchPlayer();
-
-            }
-
-            if (spell.CanCastOnMonster && target.Occupant.GetType() == typeof(Monster))
-            {
-                Monster spellTarget = target.Occupant as Monster;
-                targetField = target;
-                EventLogger.WriteLog(spellTarget.Attack.ToString());
-                spellcasting.ApplySpellEffect(spell, spellTarget);
-                EventLogger.WriteLog(spellTarget.Attack.ToString());
-                SoundEngine.play("Boosting");
-                await spellcasting.PlayBoostAnimation(spellTarget.Sprite);
-                CurrentPlayer = SwitchPlayer();
-            }
-
-            if (finishedCasting)
-                return true;
-
-            else
-            {
-                return false;
-            }
-
-        }
-
 
         public void AddMonster(int posX, int posY)
         {
@@ -176,13 +119,9 @@ namespace Chaos.Engine
         {
             var currentPlayerIndex = GetPlayers.IndexOf(CurrentPlayer);
             if (currentPlayerIndex + 1 < GetPlayers.Count)
-            {
                 CurrentPlayer = GetPlayers[currentPlayerIndex + 1];
-            }
             else
-            {
                 CurrentPlayer = GetPlayers[0];
-            }
 
             return CurrentPlayer;
         }
@@ -202,13 +141,9 @@ namespace Chaos.Engine
                 SoundEngine.say(CurrentPlayer.Name);
             }
 
-            foreach (Tile tile in gameboard.tiles)
-            {
+            foreach (var tile in gameboard.tiles)
                 if (tile.Occupant.GetType() == typeof(Monster))
-                {
                     EventLogger.WriteLog(tile.Occupant.Owner.Name + " " + tile.Occupant.Caption);
-                }
-            }
         }
 
         private void ResetMonsterMovement()
@@ -248,51 +183,48 @@ namespace Chaos.Engine
             foreach (var field in gameboard.tiles)
             {
                 var pictureBox = field.Field;
-                pictureBox.Click += (sender, args) => TileClicked(sender, args, field);
+                pictureBox.Click += (sender, args) => TileClicked(field);
             }
         }
 
 
-        public async void TileClicked(object sender, EventArgs e, Tile clickSource)
+        private async Task TileClicked(Tile clickSource)
         {
+            var target = clickSource as Tile;
             if (DescriptionMode)
             {
-                if (clickSource.Occupant.GetType() == typeof(Monster))
-                {
-                    gameForm.GetDescriptionPanel.Controls.AddRange(new DescriptionPanel((Monster) clickSource.Occupant).GetControls());
-                    gameForm.GetDescriptionPanel.Visible = true;
-                    gameForm.GetDescriptionPanel.BringToFront();
-                }
+                if (clickSource.Occupant.GetType() != typeof(Monster)) return;
+                gameForm.GetDescriptionPanel.Controls.AddRange(new DescriptionPanel((Monster) clickSource.Occupant)
+                    .GetControls());
+                gameForm.GetDescriptionPanel.Visible = true;
+                gameForm.GetDescriptionPanel.BringToFront();
                 return;
             }
 
-            if (gamePhase == GamePhase.Casting)
+            if (gamePhase == GamePhase.Casting && await spellcasting.CastSpell(target))
             {
-                if (await CastSpell(clickSource))
-                {
-                    ResetMonsterMovement();
-                    ChangePhase(GamePhase.Moving);
-                }
+                ResetMonsterMovement();
+                ChangePhase(GamePhase.Moving);
+                return;
             }
 
 
             // Checks whether Tile we are clicking is occupied by entity with type other than "Nothing",
             // we set the clicked Tile to be a context for our further operations (eg. decision making
             // on what happens on second mouse click)
-            if (gamePhase == GamePhase.Moving)
-            {
-                if (firstClick && clickSource.Occupant.GetType() != typeof(Nothing) &&
+          //  if (gamePhase == GamePhase.Moving)
+                if (gamePhase == GamePhase.Moving && firstClick && clickSource.Occupant.GetType() != typeof(Nothing) &&
                     clickSource.Occupant.Owner == CurrentPlayer)
                 {
-                    sourceField = clickSource;
-                    selectedMonster = sourceField.Occupant as Monster;
-                    gameboard.MovesLeftLabel.Text = string.Format("Moves: {0}/{1}", selectedMonster.MovesRemaining,
-                        selectedMonster.Moves);
+                    GetSourceField = clickSource;
+                    GetSelectedMonster = GetSourceField.Occupant as Monster;
+                    gameboard.MovesLeftLabel.Text = string.Format("Moves: {0}/{1}", GetSelectedMonster.MovesRemaining,
+                        GetSelectedMonster.Moves);
                     firstClick = false;
                     SoundEngine.say((Monster) clickSource.Occupant);
                 }
                 // If we click the same tile twice, raise resetEventDataMethod to clean information
-                else if (sourceField == clickSource)
+                else if (GetSourceField == clickSource)
                 {
                     resetEventData();
                 }
@@ -300,24 +232,23 @@ namespace Chaos.Engine
                 // Gets the source of second mouse click, then decides what to do based on types of clicked objects
                 else if (!firstClick)
                 {
-                    targetField = clickSource;
-                    if (targetField.Occupant.GetType() != typeof(Monster))
+                    GetTargetField = clickSource;
+                    if (GetTargetField.Occupant.GetType() != typeof(Monster))
                     {
-                        if (actions.Move(sourceField, targetField))
+                        if (actions.Move(GetSourceField, GetTargetField))
                         {
-                            sourceField = targetField;
-                            gameboard.MovesLeftLabel.Text = string.Format("Moves: {0}/{1}",
-                                selectedMonster.MovesRemaining,
-                                selectedMonster.Moves);
+                            GetSourceField = GetTargetField;
+                            gameboard.MovesLeftLabel.Text =
+                                $@"Moves: {GetSelectedMonster.MovesRemaining}/{GetSelectedMonster.Moves}";
                         }
                     }
 
-                    else if (targetField.Occupant.GetType() == typeof(Monster) &&
-                             targetField.Occupant.Owner != sourceField.Occupant.Owner &&
-                             actions.isMoveLegal(sourceField.FieldLocalization, targetField.FieldLocalization) &&
-                             selectedMonster.canAttack)
+                    else if (GetTargetField.Occupant.GetType() == typeof(Monster) &&
+                             GetTargetField.Occupant.Owner != GetSourceField.Occupant.Owner &&
+                             actions.isMoveLegal(GetSourceField.FieldLocalization, GetTargetField.FieldLocalization) &&
+                             GetSelectedMonster.canAttack)
                     {
-                        await actions.Attack((Monster) sourceField.Occupant, (Monster) targetField.Occupant);
+                        await actions.Attack((Monster) GetSourceField.Occupant, (Monster) GetTargetField.Occupant);
                         resetEventData();
                     }
 
@@ -326,12 +257,6 @@ namespace Chaos.Engine
                         resetEventData();
                     }
                 }
-
-                else
-                {
-                    resetEventData();
-                }
-            }
         }
 
 
@@ -343,9 +268,9 @@ namespace Chaos.Engine
         public void resetEventData()
         {
             firstClick = true;
-            targetField = null;
-            selectedMonster = null;
-            sourceField = null;
+            GetTargetField = null;
+            GetSelectedMonster = null;
+            GetSourceField = null;
             gameboard.MovesLeftLabel.Text = "";
         }
     }

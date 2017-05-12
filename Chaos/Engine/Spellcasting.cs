@@ -4,8 +4,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Chaos.Model;
 using Chaos.Properties;
+using Chaos.Utility;
 
 namespace Chaos.Engine
 {
@@ -14,6 +16,7 @@ namespace Chaos.Engine
 
       //  private readonly Gameboard gameboard;
         private readonly GameEngine gameEngine;
+        private Tile targetField;
 
         public Spellcasting(Gameboard gameboard, GameEngine gameEngine)
         {
@@ -21,11 +24,11 @@ namespace Chaos.Engine
             this.gameEngine = gameEngine;
         }
 
-        public async Task PlayBoostAnimation(Bitmap previousBitmap)
+        public async Task PlayBoostAnimation(Tile targeTile, Bitmap previousBitmap)
         {
-            gameEngine.GetTargetField.Field.Image = Resources.Boost;
+            targeTile.Field.Image = Resources.Boost;
             await Task.Delay(550);
-            gameEngine.GetTargetField.Field.Image = previousBitmap;
+            targeTile.Field.Image = previousBitmap;
         }
 
         public void ApplySpellEffect(Spell spell, Monster target)
@@ -39,6 +42,39 @@ namespace Chaos.Engine
                     target.Health += spell.EffectPower;
                     break;
             }
+        }
+
+        public async Task<bool> CastSpell(Tile target)
+        {
+            var currentPlayerIndex = gameEngine.GetPlayers.IndexOf(gameEngine.CurrentPlayer);
+            var finishedCasting = currentPlayerIndex + 1 == gameEngine.GetPlayers.Count;
+            var spell = gameEngine.GetCurrentSpell();
+            if (spell.CanCastOnNothing && target.Occupant.GetType() == typeof(Nothing))
+            {
+                var monsterFromSpell = gameEngine.monsterGenerator.GetMonsterByName(spell.Caption, gameEngine.CurrentPlayer);
+                monsterFromSpell.Owner = gameEngine.CurrentPlayer;
+                target.OcupantEnter(monsterFromSpell);
+                SoundEngine.play("SingleCast");
+                gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
+
+            }
+
+            if (spell.CanCastOnMonster && target.Occupant.GetType() == typeof(Monster))
+            {
+                Monster spellTarget = target.Occupant as Monster;
+                targetField = target;
+                ApplySpellEffect(spell, spellTarget);
+                SoundEngine.play("Boosting");
+                await PlayBoostAnimation(target, spellTarget.Sprite);
+                gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
+            }
+
+            else
+            {
+                return false;}
+
+            return finishedCasting;
+
         }
     }
 }

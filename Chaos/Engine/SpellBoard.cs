@@ -61,9 +61,7 @@ namespace Chaos.Engine
             for (var row = 0; row < SPELLBOARD_HEIGHT; row++)
             {
                 var spellTile = new SpellTile(new Point(col, row));
-                spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile);
-                    // tile.Field.MouseEnter += (obj, ev) => OnMouseOver(obj, ev, tile);
-                    // tile.Field.MouseLeave += OnMouseLeave;      
+                spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile); 
                 var currentPlayerIndex = players.IndexOf(currentPlayer);             
                 spellTile.Occupant = players[currentPlayerIndex].AvailableSpells.ElementAt(col + 1 * row);
 
@@ -97,6 +95,7 @@ namespace Chaos.Engine
             var spell = source.Occupant as Spell;
             SoundEngine.playClickSound();
             currentPlayer.SelectedSpell = spell;
+            currentPlayer.AvailableSpells.Remove(spell);
 
             currentPlayer = engine.SwitchPlayer();
             UpdateSpellboard(engine.CurrentPlayer);
