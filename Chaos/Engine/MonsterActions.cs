@@ -131,17 +131,17 @@ namespace Chaos.Engine
             isDefenderInRange(attackerTile.FieldLocalization, defenderTile.FieldLocalization, attacker.Attack);
         }
 
-        public int isDefenderInRange(Point attackerCoordinates, Point defenderCoordinates, int attackRange)
+        public bool isDefenderInRange(Point attackerCoordinates, Point defenderCoordinates, int attackRange)
         {
             //double distance = Math.Sqrt(Math.Pow((defenderCoordinates.Y - attackerCoordinates.Y), 2) +
             //    Math.Pow((defenderCoordinates.X - attackerCoordinates.X), 2));
             int distance = Math.Max(Math.Abs(attackerCoordinates.X - defenderCoordinates.X), Math.Abs(attackerCoordinates.Y - defenderCoordinates.Y));
             if (distance <= attackRange)
             {
-           //     return true;
+                return true;
             }
 
-            return Math.Abs(distance);
+            return false;
         }
 
     }

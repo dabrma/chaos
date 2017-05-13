@@ -66,10 +66,16 @@
     <Compile Include="Engine\GameEngine.cs" />
     <Compile Include="Engine\MonsterActions.cs" />
     <Compile Include="Engine\Spellcasting.cs" />
+    <Compile Include="Misc\CreateCursorFromStream.cs" />
     <Compile Include="Model\MonsterTemplate.cs" />
     <Compile Include="Engine\SpellBoard.cs" />
     <Compile Include="Engine\SpellsGenerator.cs" />
     <Compile Include="Model\SpellTile.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UI\DescriptionPanel.cs" />
     <Compile Include="UI\Form2.cs">
       <SubType>Form</SubType>
@@ -120,14 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="UI\SimpleProgressBar.resx">
       <DependentUpon>SimpleProgressBar.cs</DependentUpon>
     </EmbeddedResource>
@@ -287,6 +288,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Wizard21.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\wand.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Crosshair.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Misc\Crosshair.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Normal.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wand_mc_style-a_nightmare.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

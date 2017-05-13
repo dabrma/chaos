@@ -60,9 +60,7 @@ namespace Chaos.Engine
 
             }
 
-            else { return false; }
-
-            if (spell.CanCastOnMonster && target.Occupant.GetType() == typeof(Monster) && !this.finishedCasting)
+            else if (spell.CanCastOnMonster && target.Occupant.GetType() == typeof(Monster) && !this.finishedCasting)
             {
                 Monster spellTarget = target.Occupant as Monster;
                 targetField = target;
@@ -71,6 +69,8 @@ namespace Chaos.Engine
                 await PlayBoostAnimation(target, spellTarget.Sprite);
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
+
+            else { return false; }
 
             if (finishedCasting)
             {

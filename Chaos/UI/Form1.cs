@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using Chaos.Engine;
 using Chaos.Utility;
+using Chaos.Misc;
+using Chaos.Properties;
 
 namespace Chaos
 {
@@ -16,6 +18,8 @@ namespace Chaos
         public Form1()
         {
             InitializeComponent();
+            this.UseWaitCursor = false;
+            this.Cursor = CreateCursorFromStream.CreateCursor(Resources.wand_mc_style_a_nightmare);
             descPanel.Visible = false;
             gameboard = new Gameboard(gamePanel, fieldName, movesLeftLabel);
             engine = new GameEngine(2, gameboard, this);

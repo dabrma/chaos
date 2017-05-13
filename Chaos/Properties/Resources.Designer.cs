@@ -239,6 +239,7 @@ namespace Chaos.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Wizard1 20 4 1 1 0
         ///Wizard2 20 4 1 1 0
+        ///Wizard3 20 4 1 1 0
         ///Lion 30 3 8 4 0
         ///Skeleton 5 5 2 1 1
         ///Wraith 22 7 3 2 1
@@ -269,6 +270,16 @@ namespace Chaos.Properties {
         internal static System.IO.UnmanagedMemoryStream MovementSound {
             get {
                 return ResourceManager.GetStream("MovementSound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Normal {
+            get {
+                object obj = ResourceManager.GetObject("Normal", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -412,6 +423,16 @@ namespace Chaos.Properties {
             get {
                 object obj = ResourceManager.GetObject("wand", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] wand_mc_style_a_nightmare {
+            get {
+                object obj = ResourceManager.GetObject("wand_mc_style_a_nightmare", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         

@@ -6,6 +6,8 @@ using Chaos.Model;
 using Chaos.UI;
 using Chaos.Utility;
 using System.Drawing;
+using Chaos.Properties;
+using Chaos.Misc;
 
 namespace Chaos.Engine
 {
