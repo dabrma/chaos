@@ -12,7 +12,7 @@ namespace Chaos.Engine
     {
         private const int SPELLBOARD_WIDTH = 2;
         private const int SPELLBOARD_HEIGHT = 10;
-        private const int SPELLS_AMOUNT = 98;
+        public int SPELLS_AMOUNT { get; set; }
 
 
         private bool firstClick = true;
@@ -30,9 +30,10 @@ namespace Chaos.Engine
         private Tile targetField;
 
 
-        public SpellBoard(Panel spellboardPanel, List<Player> players, GameEngine engine)
+        public SpellBoard(Panel spellboardPanel, List<Player> players, GameEngine engine, int spellsAmount)
         {
             this.engine = engine;
+            this.SPELLS_AMOUNT = spellsAmount;
             this.spellboardPanel = spellboardPanel;
             this.players = players;
             populateSpellsArray();
@@ -62,8 +63,13 @@ namespace Chaos.Engine
             {
                 var spellTile = new SpellTile(new Point(col, row));
                 spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile); 
-                var currentPlayerIndex = players.IndexOf(currentPlayer);             
-                spellTile.Occupant = players[currentPlayerIndex].AvailableSpells.ElementAt(col + 1 * row);
+                var currentPlayerIndex = players.IndexOf(currentPlayer);
+                    if (players[currentPlayerIndex].AvailableSpells.Count > (col + 1 * row))
+                    {
+                        spellTile.Occupant = players[currentPlayerIndex].AvailableSpells.ElementAt(col + 1 * row);
+                    }
+                    else
+                    { spellTile.Occupant = new Nothing(); }
 
                 spellTile.OcupantEnter(spellTile.Occupant);
                 spellTiles[col, row] = spellTile;

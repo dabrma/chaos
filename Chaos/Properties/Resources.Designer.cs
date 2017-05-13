@@ -378,7 +378,7 @@ namespace Chaos.Properties {
         ///Eagle 1 0
         ///Birdy 1 0
         ///GoldenDragon 1 0
-        ///Combat1 0 1.
+        ///Combat1 0 1 -2 C.
         /// </summary>
         internal static string Spells {
             get {
@@ -431,6 +431,16 @@ namespace Chaos.Properties {
         internal static System.Drawing.Bitmap Wizard2 {
             get {
                 object obj = ResourceManager.GetObject("Wizard2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Wizard3 {
+            get {
+                object obj = ResourceManager.GetObject("Wizard3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -43,13 +43,13 @@ namespace Chaos.Engine
                     break;
             }
         }
-
+        public bool finishedCasting = false;
         public async Task<bool> CastSpell(Tile target)
         {
             var currentPlayerIndex = gameEngine.GetPlayers.IndexOf(gameEngine.CurrentPlayer);
             var finishedCasting = currentPlayerIndex + 1 == gameEngine.GetPlayers.Count;
             var spell = gameEngine.GetCurrentSpell();
-            if (spell.CanCastOnNothing && target.Occupant.GetType() == typeof(Nothing))
+            if (spell.CanCastOnNothing && target.Occupant.GetType() == typeof(Nothing) && !this.finishedCasting)
             {
                 var monsterFromSpell = gameEngine.monsterGenerator.GetMonsterByName(spell.Caption, gameEngine.CurrentPlayer);
                 monsterFromSpell.Owner = gameEngine.CurrentPlayer;
@@ -59,7 +59,7 @@ namespace Chaos.Engine
 
             }
 
-            if (spell.CanCastOnMonster && target.Occupant.GetType() == typeof(Monster))
+            if (spell.CanCastOnMonster && target.Occupant.GetType() == typeof(Monster) && !this.finishedCasting)
             {
                 Monster spellTarget = target.Occupant as Monster;
                 targetField = target;
@@ -69,11 +69,16 @@ namespace Chaos.Engine
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 
+            if (finishedCasting)
+            {
+                this.finishedCasting = true;
+                return finishedCasting;
+            }
             else
             {
-                return false;}
+                return false;
+            }
 
-            return finishedCasting;
 
         }
     }

@@ -1,5 +1,6 @@
 Wizard1 20 4 1 1 0
 Wizard2 20 4 1 1 0
+Wizard3 20 4 1 1 0
 Lion 30 3 8 4 0
 Skeleton 5 5 2 1 1
 Wraith 22 7 3 2 1

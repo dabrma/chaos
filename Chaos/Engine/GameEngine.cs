@@ -79,7 +79,10 @@ namespace Chaos.Engine
             switch (gamePhase)
             {
                 case GamePhase.Picking:
+                    spellcasting.finishedCasting = false;
                     CurrentPlayer = GetPlayers[0];
+                    spellboard.currentPlayer = CurrentPlayer;
+                    spellboard.UpdateSpellboard(CurrentPlayer);
                     spellboard.IsSpellboardVisible(true);
                     break;
                 case GamePhase.Casting:
@@ -118,8 +121,16 @@ namespace Chaos.Engine
         public Player SwitchPlayer()
         {
             var currentPlayerIndex = GetPlayers.IndexOf(CurrentPlayer);
+
             if (currentPlayerIndex + 1 < GetPlayers.Count)
+            {
                 CurrentPlayer = GetPlayers[currentPlayerIndex + 1];
+            }
+            else if (currentPlayerIndex +  1 == GetPlayers.Count)
+            {
+                CurrentPlayer = GetPlayers[currentPlayerIndex];
+            }
+
             else
                 CurrentPlayer = GetPlayers[0];
 
@@ -141,9 +152,10 @@ namespace Chaos.Engine
                 SoundEngine.say(CurrentPlayer.Name);
             }
 
-            foreach (var tile in gameboard.tiles)
-                if (tile.Occupant.GetType() == typeof(Monster))
-                    EventLogger.WriteLog(tile.Occupant.Owner.Name + " " + tile.Occupant.Caption);
+            // Uncomment for logging purposes
+            //foreach (var tile in gameboard.tiles)
+            //    if (tile.Occupant.GetType() == typeof(Monster))
+            //        EventLogger.WriteLog(tile.Occupant.Owner.Name + " " + tile.Occupant.Caption);
         }
 
         private void ResetMonsterMovement()
@@ -165,17 +177,20 @@ namespace Chaos.Engine
             {
                 var player = new Player("Player" + (i + 1), i + 1);
                 GetPlayers.Add(player);
+                var wizard = monsterGenerator.GetMonsterByName("Wizard" + (i + 1), player);
+                wizard.Name = "Wizard";
+                wizard.Caption = wizard.Name;
+                if(i == 0)
+                {
+                    AddMonster(wizard, player, 0, 0);
+                }
+                else if(i == 1) {
+                    AddMonster(wizard, player, 13, 13); }
+                else
+                {
+                    AddMonster(wizard, player, 0, 13);
+                }
             }
-
-            var wizard1 = monsterGenerator.GetMonsterByName("Wizard1", GetPlayers[0]);
-            wizard1.Name = "Wizard";
-            wizard1.Caption = wizard1.Name;
-            var wizard2 = monsterGenerator.GetMonsterByName("Wizard2", GetPlayers[1]);
-            wizard2.Name = "Wizard";
-            wizard2.Caption = wizard1.Name;
-
-            AddMonster(wizard1, GetPlayers[0], 0, 0);
-            AddMonster(wizard2, GetPlayers[1], 11, 11);
         }
 
         private void SetTileEvents()
@@ -203,6 +218,7 @@ namespace Chaos.Engine
 
             if (gamePhase == GamePhase.Casting && await spellcasting.CastSpell(target))
             {
+                CurrentPlayer = GetPlayers[0];
                 ResetMonsterMovement();
                 ChangePhase(GamePhase.Moving);
                 return;
@@ -228,7 +244,6 @@ namespace Chaos.Engine
                 {
                     resetEventData();
                 }
-
                 // Gets the source of second mouse click, then decides what to do based on types of clicked objects
                 else if (!firstClick)
                 {
