@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chaos.Model;
 using Chaos.Properties;
+using Chaos.Utility;
 
 namespace Chaos.Engine
 {
@@ -26,7 +27,7 @@ namespace Chaos.Engine
             var ocuppant = (Monster)source.Occupant;
             var sourceCoords = findCoordinatesInMatrix(source);
             var targetCoords = findCoordinatesInMatrix(target);
-            if (isMoveLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0)
+            if (isActionLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0)
             {
                 source.OcuppantLeave();
                 target.OcupantEnter(ocuppant);
@@ -53,7 +54,7 @@ namespace Chaos.Engine
 
             if (defender.Health <= 0)
             {
-                 await Die(attacker, defender, prevSprite);
+                await Die(attacker, defender, prevSprite);
             }
 
             else
@@ -92,13 +93,13 @@ namespace Chaos.Engine
             var w = gameboard.tiles.GetLength(1);
 
             for (var row = 0; row < h; row++)
-            for (var col = 0; col < w; col++)
-                if (gameboard.tiles[row, col].Equals(searchTarget))
-                    return new Point(row, col);
+                for (var col = 0; col < w; col++)
+                    if (gameboard.tiles[row, col].Equals(searchTarget))
+                        return new Point(row, col);
             return itemPosition;
         }
 
-        public bool isMoveLegal(Point sourcePoint, Point targetPoint)
+        public static bool isActionLegal(Point sourcePoint, Point targetPoint)
         {
             if (
                 sourcePoint.X - 1 == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
@@ -120,6 +121,27 @@ namespace Chaos.Engine
             gameEngine.GetTargetField.Field.Image = Resources.combat;
             await Task.Delay(550);
             gameEngine.GetTargetField.Field.Image = previousBitmap;
+        }
+
+        private async Task rangedAttack(Tile attackerTile, Tile defenderTile)
+        {
+            var attacker = attackerTile.Occupant as Monster;
+            var defender = defenderTile.Occupant as Monster;
+
+            isDefenderInRange(attackerTile.FieldLocalization, defenderTile.FieldLocalization, attacker.Attack);
+        }
+
+        public int isDefenderInRange(Point attackerCoordinates, Point defenderCoordinates, int attackRange)
+        {
+            //double distance = Math.Sqrt(Math.Pow((defenderCoordinates.Y - attackerCoordinates.Y), 2) +
+            //    Math.Pow((defenderCoordinates.X - attackerCoordinates.X), 2));
+            int distance = Math.Max(Math.Abs(attackerCoordinates.X - defenderCoordinates.X), Math.Abs(attackerCoordinates.Y - defenderCoordinates.Y));
+            if (distance <= attackRange)
+            {
+           //     return true;
+            }
+
+            return Math.Abs(distance);
         }
 
     }

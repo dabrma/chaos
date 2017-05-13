@@ -18,8 +18,8 @@ namespace Chaos
             InitializeComponent();
             descPanel.Visible = false;
             gameboard = new Gameboard(gamePanel, fieldName, movesLeftLabel);
-            engine = new GameEngine(4, gameboard, this);
-            spellboard = new SpellBoard(spellPanel, engine.GetPlayers, engine, 5);
+            engine = new GameEngine(2, gameboard, this);
+            spellboard = new SpellBoard(spellPanel, engine.GetPlayers, engine, 98);
             engine.spellboard = spellboard;
             engine.InitializeEngineElements();
         }

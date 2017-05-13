@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <Choose>
@@ -56,6 +57,7 @@
     <Compile Include="Integration Tests\Gameboard Tests\MonsterGeneratingTests.cs" />
     <Compile Include="Unit Tests\Gameboard Tests\GameboardGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit Tests\MonsterActionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chaos\Chaos.csproj">

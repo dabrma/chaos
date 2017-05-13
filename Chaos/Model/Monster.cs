@@ -46,10 +46,12 @@ namespace Chaos.Model
         public int MagicResistance { get; set; }
 
         public int Attack { get; set; }
-
+        public int RangedAttack { get; set; }
+        public int Range { get; set; }
         public int Defense { get; set; }
 
         public bool canAttack { get; set; }
+        public bool canRangedAttack { get; set; }
         public bool isUndead { get; set; }
 
         #region Fields

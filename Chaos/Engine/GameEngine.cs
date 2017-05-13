@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using Chaos.Model;
 using Chaos.UI;
 using Chaos.Utility;
+using System.Drawing;
 
 namespace Chaos.Engine
 {
@@ -260,7 +261,7 @@ namespace Chaos.Engine
 
                     else if (GetTargetField.Occupant.GetType() == typeof(Monster) &&
                              GetTargetField.Occupant.Owner != GetSourceField.Occupant.Owner &&
-                             actions.isMoveLegal(GetSourceField.FieldLocalization, GetTargetField.FieldLocalization) &&
+                             MonsterActions.isActionLegal(GetSourceField.FieldLocalization, GetTargetField.FieldLocalization) &&
                              GetSelectedMonster.canAttack)
                     {
                         await actions.Attack((Monster) GetSourceField.Occupant, (Monster) GetTargetField.Occupant);
@@ -287,6 +288,19 @@ namespace Chaos.Engine
             GetSelectedMonster = null;
             GetSourceField = null;
             gameboard.MovesLeftLabel.Text = "";
+        }
+
+        public Point GetWizardCoordinates()
+        {
+            foreach(Tile tile in gameboard.tiles)
+            {
+                if(tile.Occupant.Caption.Contains("Wizard") && tile.Occupant.Owner == CurrentPlayer)
+                {
+                    return tile.FieldLocalization;
+                }
+            }
+
+            throw new NullReferenceException();
         }
     }
 }

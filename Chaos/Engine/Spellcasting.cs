@@ -49,7 +49,8 @@ namespace Chaos.Engine
             var currentPlayerIndex = gameEngine.GetPlayers.IndexOf(gameEngine.CurrentPlayer);
             var finishedCasting = currentPlayerIndex + 1 == gameEngine.GetPlayers.Count;
             var spell = gameEngine.GetCurrentSpell();
-            if (spell.CanCastOnNothing && target.Occupant.GetType() == typeof(Nothing) && !this.finishedCasting)
+
+            if (spell.CanCastOnNothing && target.Occupant.GetType() == typeof(Nothing) && !this.finishedCasting && MonsterActions.isActionLegal(gameEngine.GetWizardCoordinates(), target.FieldLocalization))
             {
                 var monsterFromSpell = gameEngine.monsterGenerator.GetMonsterByName(spell.Caption, gameEngine.CurrentPlayer);
                 monsterFromSpell.Owner = gameEngine.CurrentPlayer;
@@ -58,6 +59,8 @@ namespace Chaos.Engine
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
 
             }
+
+            else { return false; }
 
             if (spell.CanCastOnMonster && target.Occupant.GetType() == typeof(Monster) && !this.finishedCasting)
             {
