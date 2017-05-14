@@ -8,31 +8,32 @@ using Chaos.Utility;
 
 namespace Chaos.Engine
 {
-    internal class SpellBoard
+    public class SpellBoard
     {
         private const int SPELLBOARD_WIDTH = 2;
         private const int SPELLBOARD_HEIGHT = 10;
-        private const int SPELLS_AMOUNT = 98;
+        public int SPELLS_AMOUNT { get; set; }
 
 
         private bool firstClick = true;
         private readonly List<Player> players;
+        public Player currentPlayer { get; set; }
         private Tile sourceField;
 
         /// <summary>
         ///     Panel that contains spell Tiles
         /// </summary>
         private readonly Panel spellboardPanel;
-
+        private readonly GameEngine engine;
         private readonly SpellsGenerator spellsGenerator = new SpellsGenerator();
-
-        private readonly Dictionary<Player, List<Spell>> spellsPool = new Dictionary<Player, List<Spell>>();
         private readonly SpellTile[,] spellTiles = new SpellTile[SPELLBOARD_WIDTH, SPELLBOARD_HEIGHT];
         private Tile targetField;
 
 
-        public SpellBoard(Panel spellboardPanel, List<Player> players)
+        public SpellBoard(Panel spellboardPanel, List<Player> players, GameEngine engine, int spellsAmount)
         {
+            this.engine = engine;
+            this.SPELLS_AMOUNT = spellsAmount;
             this.spellboardPanel = spellboardPanel;
             this.players = players;
             populateSpellsArray();
@@ -40,14 +41,12 @@ namespace Chaos.Engine
 
         private void populateSpellsArray()
         {
-            var spells = new List<Spell>[players.Count];
             for (var ii = 0; ii < players.Count; ii++)
             {
-                spells[ii] = new List<Spell>();
-                for (var jj = 0; jj < SPELLS_AMOUNT; jj++)
-                    spells[ii].Add(spellsGenerator.GenerateSpellFromText(players[ii]));
-
-                spellsPool.Add(players[ii], spells[ii]);
+               while(players[ii].AvailableSpells.Count < SPELLS_AMOUNT)
+                {
+                    players[ii].AvailableSpells.Add(spellsGenerator.GenerateSpellFromText());
+                }
             }
         }
 
@@ -55,7 +54,6 @@ namespace Chaos.Engine
         {
             InitializeSpellTiles(currentPlayer);
         }
-
         private void InitializeSpellTiles(Player currentPlayer)
         {
             ClearSpellBoard();
@@ -64,10 +62,14 @@ namespace Chaos.Engine
             for (var row = 0; row < SPELLBOARD_HEIGHT; row++)
             {
                 var spellTile = new SpellTile(new Point(col, row));
-                spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile);
-                // tile.Field.MouseEnter += (obj, ev) => OnMouseOver(obj, ev, tile);
-                // tile.Field.MouseLeave += OnMouseLeave;                   
-                spellTile.Occupant = spellsPool[currentPlayer].ElementAt(col + 1 * row);
+                spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile); 
+                var currentPlayerIndex = players.IndexOf(currentPlayer);
+                    if (players[currentPlayerIndex].AvailableSpells.Count > (col + 1 * row))
+                    {
+                        spellTile.Occupant = players[currentPlayerIndex].AvailableSpells.ElementAt(col + 1 * row);
+                    }
+                    else
+                    { spellTile.Occupant = new Nothing(); }
 
                 spellTile.OcupantEnter(spellTile.Occupant);
                 spellTiles[col, row] = spellTile;
@@ -93,29 +95,27 @@ namespace Chaos.Engine
 
         public void OnSpellClick(object sender, EventArgs e, Tile source)
         {
-            if (firstClick)
-            {
-                sourceField = source;
-                SoundEngine.say(source.Occupant.Caption);
-                firstClick = false;
-            }
+            var currentPlayerIndex = players.IndexOf(currentPlayer);
+            bool finishedPicking = currentPlayerIndex +1 == players.Count;
 
-            else
-            {
-                if (source == sourceField)
-                {
-                    firstClick = true;
-                    return;
-                } // do nothing
+            var spell = source.Occupant as Spell;
+            SoundEngine.playClickSound();
+            currentPlayer.SelectedSpell = spell;
+            currentPlayer.AvailableSpells.Remove(spell);
 
-                targetField = source;
-                EventLogger.WriteLog(source.FieldLocalization.ToString());
+            currentPlayer = engine.SwitchPlayer();
+            UpdateSpellboard(engine.CurrentPlayer);
+
+
+            if(finishedPicking)
+            {
+                engine.ChangePhase(GamePhase.Casting);
             }
         }
 
-        public void HideSpellBoard()
+        public void IsSpellboardVisible(bool visible)
         {
-            spellboardPanel.Visible = false;
+            spellboardPanel.Visible = visible;
         }
     }
 }

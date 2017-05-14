@@ -1,11 +1,19 @@
-﻿using System.Media;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Media;
+using System.Reflection;
+using System.Resources;
 using System.Speech.Synthesis;
+using System.Threading.Tasks;
 using Chaos.Model;
 using Chaos.Properties;
+using Chaos.Utility;
 
 namespace Chaos.Engine
 {
-    internal class SoundEngine
+    public class SoundEngine
     {
         private static readonly SoundPlayer soundPlayer = new SoundPlayer();
 
@@ -38,10 +46,25 @@ namespace Chaos.Engine
             synth.SpeakAsync(source);
         }
 
+        public static void SaySpellAndPlayerName(Player source)
+        {
+            var synth = new SpeechSynthesizer();
+            synth.Rate = -4;
+            synth.SpeakAsync(source.Name + "   " + source.SelectedSpell.Caption);
+        }
+
         /*
          * TODO: Look if there is a pattern, that supports a scenarion, where we create only one method
          * and it takes care of playing sounds based on place it's used from / caller method.
          */
+
+        public static void play(string sound)
+        {
+            soundPlayer.Stream = Resources.ResourceManager.GetStream(sound);
+            soundPlayer.LoadAsync();
+            soundPlayer.Play();
+        }
+
         public static void playStepSound()
         {
             soundPlayer.Stream = Resources.MovementSound;
@@ -52,6 +75,13 @@ namespace Chaos.Engine
         public static void playAttackSound()
         {
             soundPlayer.Stream = Resources.fighting;
+            soundPlayer.LoadAsync();
+            soundPlayer.Play();
+        }
+
+        public static void playClickSound()
+        {
+            soundPlayer.Stream = Resources.Click;
             soundPlayer.LoadAsync();
             soundPlayer.Play();
         }

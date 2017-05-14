@@ -1,5 +1,20 @@
-Wizard1 1 0 0 2 2 2 2
-Wizard2 1 0 0 2 2 2 2
-Lion 6 0 0 4 4 8 3
-Skeleton 1 0 0 2 2 2 2
-Wraith 0 0 0 0 0 0 0
+Wizard1 20 4 1 1 0
+Wizard2 20 4 1 1 0
+Wizard3 20 4 1 1 0
+Lion 30 3 8 4 0
+Skeleton 5 5 2 1 1
+Wraith 22 7 3 2 1
+Gryphon 15 6 3 5 0
+Unicorn 14 4 4 4 0
+Cobra 2 1 2 1 0
+Bat 8 1 2 5 0
+Rat 8 2 2 3 0
+Pegasus 1 1 1 1 0
+Goblin 7 2 6 1 0
+Orc 4 4 2 1 0
+Bear 25 2 8 2 0
+Horse 8 1 1 4 0
+Crocodile 37 2 7 1 0
+Eagle 15 4 4 6 0
+Birdy 25 5 5 6 0
+GoldenDragon 53 3 10 4 0

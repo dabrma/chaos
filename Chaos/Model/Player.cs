@@ -1,4 +1,6 @@
-﻿namespace Chaos.Model
+﻿using System.Collections.Generic;
+
+namespace Chaos.Model
 {
     public class Player
     {
@@ -9,9 +11,14 @@
         public Player(string playerName, int id)
         {
             Name = playerName;
+            AvailableSpells = new List<Spell>();
+            SelectedSpell = null;
             this.id = id;
         }
 
         public string Name { get; set; }
+
+        public List<Spell> AvailableSpells;
+        public Spell SelectedSpell;
     }
 }

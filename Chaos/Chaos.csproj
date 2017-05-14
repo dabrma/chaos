@@ -64,25 +64,50 @@
   <ItemGroup>
     <Compile Include="Engine\Gameboard.cs" />
     <Compile Include="Engine\GameEngine.cs" />
+    <Compile Include="Engine\MonsterActions.cs" />
+    <Compile Include="Engine\Spellcasting.cs" />
+    <Compile Include="Misc\CreateCursorFromStream.cs" />
+    <Compile Include="Model\MonsterTemplate.cs" />
     <Compile Include="Engine\SpellBoard.cs" />
     <Compile Include="Engine\SpellsGenerator.cs" />
-    <Compile Include="Engine\SpellTile.cs" />
+    <Compile Include="Model\SpellTile.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DescriptionPanel.cs" />
+    <Compile Include="UI\Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Form2.Designer.cs">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FormStart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FormStart.Designer.cs">
+      <DependentUpon>FormStart.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\GameObject.cs" />
     <Compile Include="Engine\MonsterGenerator.cs" />
     <Compile Include="Model\Nothing.cs" />
     <Compile Include="Engine\SoundEngine.cs" />
     <Compile Include="Model\Spell.cs" />
     <Compile Include="Model\Tile.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="UI\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="UI\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Monster.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\SimpleProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\EventLogger.cs" />
     <Compile Include="Utility\Logger.cs">
       <SubType>Form</SubType>
@@ -90,19 +115,23 @@
     <Compile Include="Utility\Logger.Designer.cs">
       <DependentUpon>Logger.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="UI\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Form2.resx">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FormStart.resx">
+      <DependentUpon>FormStart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <EmbeddedResource Include="UI\SimpleProgressBar.resx">
+      <DependentUpon>SimpleProgressBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Utility\Logger.resx">
       <DependentUpon>Logger.cs</DependentUpon>
     </EmbeddedResource>
@@ -121,7 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
-    <Folder Include="UI\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Nothing.bmp" />
@@ -209,6 +237,78 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Cobra.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Click.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Update.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SingleCast.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Rat.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Goblin.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Orc.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\BrownBear.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Bat.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Horse.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Crocodile.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Birdy.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Eagle.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GoldenDraon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Combat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Boost.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Boosting.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Wizard21.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\wand.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Crosshair.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Misc\Crosshair.cur">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Normal.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wand_mc_style-a_nightmare.cur" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
