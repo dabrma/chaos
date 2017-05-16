@@ -50,19 +50,22 @@ namespace Chaos.Engine
             var finishedCasting = currentPlayerIndex + 1 == gameEngine.GetPlayers.Count;
             var spell = gameEngine.GetCurrentSpell();
 
-            if (spell.CanCastOnNothing && target.Occupant.GetType() == typeof(Nothing) && !this.finishedCasting && MonsterActions.isActionLegal(gameEngine.GetWizardCoordinates(), target.FieldLocalization))
+            if (spell.CanCastOnNothing && target.GetOccupant() is Nothing &&
+                !this.finishedCasting && 
+                MonsterActions.isActionLegal(gameEngine.GetWizardCoordinates(), target.GetCoordinates()))
             {
                 var monsterFromSpell = gameEngine.monsterGenerator.GetMonsterByName(spell.Caption, gameEngine.CurrentPlayer);
                 monsterFromSpell.Owner = gameEngine.CurrentPlayer;
-                target.OcupantEnter(monsterFromSpell);
+                target.SetOccupant(monsterFromSpell);
                 SoundEngine.play("SingleCast");
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
 
             }
 
-            else if (spell.CanCastOnMonster && target.Occupant.GetType() == typeof(Monster) && !this.finishedCasting)
+            else if (spell.CanCastOnMonster && target.GetOccupant() is Monster &&
+                !this.finishedCasting)
             {
-                Monster spellTarget = target.Occupant as Monster;
+                Monster spellTarget = target.GetOccupant() as Monster;
                 targetField = target;
                 ApplySpellEffect(spell, spellTarget);
                 SoundEngine.play("Boosting");

@@ -1,4 +1,5 @@
 ﻿using Chaos.Engine;
+using System.Drawing;
 
 namespace Chaos.Model
 {
@@ -31,6 +32,7 @@ namespace Chaos.Model
             monsterFromTemplate.MagicResistance = template.MagicResistance;
             monsterFromTemplate.Moves = template.Moves;
             monsterFromTemplate.MovesRemaining = monsterFromTemplate.Moves;
+            monsterFromTemplate.Sprite = (Bitmap)Properties.Resources.ResourceManager.GetObject(monsterFromTemplate.Name);
 
             return monsterFromTemplate;
         }
@@ -54,8 +56,9 @@ namespace Chaos.Model
         public bool canRangedAttack { get; set; }
         public bool isUndead { get; set; }
 
-        #region Fields
-
-        #endregion
+        public override string ToString()
+        {
+            return $"{Name} {Owner} {MaxHealth} {Health} {MagicResistance} {MovesRemaining}";
+        }
     }
 }

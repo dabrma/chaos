@@ -5,10 +5,11 @@ using System.Linq;
 using System.Windows.Forms;
 using Chaos.Model;
 using Chaos.Utility;
+using Chaos.Interfaces;
 
 namespace Chaos.Engine
 {
-    public class SpellBoard
+    public class SpellBoard : ILookupable<SpellTile>
     {
         private const int SPELLBOARD_WIDTH = 2;
         private const int SPELLBOARD_HEIGHT = 10;
@@ -45,7 +46,7 @@ namespace Chaos.Engine
             {
                while(players[ii].AvailableSpells.Count < SPELLS_AMOUNT)
                 {
-                    players[ii].AvailableSpells.Add(spellsGenerator.GenerateSpellFromText());
+                    players[ii].AvailableSpells.Add(spellsGenerator.GenerateRandomSpell());
                 }
             }
         }
@@ -66,12 +67,12 @@ namespace Chaos.Engine
                 var currentPlayerIndex = players.IndexOf(currentPlayer);
                     if (players[currentPlayerIndex].AvailableSpells.Count > (col + 1 * row))
                     {
-                        spellTile.Occupant = players[currentPlayerIndex].AvailableSpells.ElementAt(col + 1 * row);
+                        spellTile.SetOccupant(players[currentPlayerIndex].AvailableSpells.ElementAt(col + 1 * row));
                     }
                     else
-                    { spellTile.Occupant = new Nothing(); }
+                    { spellTile.SetOccupant(); }
 
-                spellTile.OcupantEnter(spellTile.Occupant);
+                spellTile.SetOccupant(spellTile.GetOccupant());
                 spellTiles[col, row] = spellTile;
             }
 
@@ -98,7 +99,7 @@ namespace Chaos.Engine
             var currentPlayerIndex = players.IndexOf(currentPlayer);
             bool finishedPicking = currentPlayerIndex +1 == players.Count;
 
-            var spell = source.Occupant as Spell;
+            var spell = source.GetOccupant() as Spell;
             SoundEngine.playClickSound();
             currentPlayer.SelectedSpell = spell;
             currentPlayer.AvailableSpells.Remove(spell);
@@ -116,6 +117,25 @@ namespace Chaos.Engine
         public void IsSpellboardVisible(bool visible)
         {
             spellboardPanel.Visible = visible;
+        }
+
+        public IEnumerable<SpellTile> GetElementsCollection()
+        {
+            List<SpellTile> spellsList = new List<SpellTile>();
+            foreach (SpellTile spell in spellTiles)
+                spellsList.Add(spell);
+
+            return spellsList.ToArray();
+        }
+
+        public SpellTile GetElement(SpellTile elementReference)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SpellTile GetElement(Point cooridnates)
+        {
+            throw new NotImplementedException();
         }
     }
 }

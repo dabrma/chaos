@@ -24,13 +24,13 @@ namespace Chaos.Engine
 
         public bool Move(Tile source, Tile target)
         {
-            var ocuppant = (Monster)source.Occupant;
-            var sourceCoords = findCoordinatesInMatrix(source);
-            var targetCoords = findCoordinatesInMatrix(target);
+            var ocuppant = (Monster)source.GetOccupant();
+            var sourceCoords = source.GetCoordinates();
+            var targetCoords = target.GetCoordinates();
             if (isActionLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0)
             {
-                source.OcuppantLeave();
-                target.OcupantEnter(ocuppant);
+                source.SetOccupant();
+                target.SetOccupant(ocuppant);
                 ocuppant.MovesRemaining--;
                 SoundEngine.playStepSound();
                 return true;
@@ -41,7 +41,7 @@ namespace Chaos.Engine
 
         public async Task<bool> Attack(Monster attacker, Monster defender)
         {
-            var prevSprite = gameEngine.GetTargetField.Occupant.Sprite;
+            var prevSprite = gameEngine.GetTargetField.GetOccupant().Sprite;
 
             if (defender.isUndead && !attacker.isUndead)
             {
@@ -77,26 +77,12 @@ namespace Chaos.Engine
             SoundEngine.playAttackMoveSound();
             await playCombatAnimation(prevBitmap);
 
-            gameEngine.GetTargetField.OcuppantLeave();
-            gameEngine.GetSourceField.OcuppantLeave();
-            gameEngine.GetTargetField.OcupantEnter(attacker);
+            gameEngine.GetTargetField.SetOccupant();
+            gameEngine.GetSourceField.SetOccupant();
+            gameEngine.GetTargetField.SetOccupant(attacker);
 
             if (defender.Name == "Wizard")
                 MessageBox.Show("Game Over!");
-        }
-
-
-        private Point findCoordinatesInMatrix(Tile searchTarget)
-        {
-            var itemPosition = new Point();
-            var h = gameboard.tiles.GetLength(0);
-            var w = gameboard.tiles.GetLength(1);
-
-            for (var row = 0; row < h; row++)
-                for (var col = 0; col < w; col++)
-                    if (gameboard.tiles[row, col].Equals(searchTarget))
-                        return new Point(row, col);
-            return itemPosition;
         }
 
         public static bool isActionLegal(Point sourcePoint, Point targetPoint)
@@ -125,10 +111,10 @@ namespace Chaos.Engine
 
         private async Task rangedAttack(Tile attackerTile, Tile defenderTile)
         {
-            var attacker = attackerTile.Occupant as Monster;
-            var defender = defenderTile.Occupant as Monster;
+            var attacker = attackerTile.GetOccupant() as Monster;
+            var defender = defenderTile.GetOccupant() as Monster;
 
-            isDefenderInRange(attackerTile.FieldLocalization, defenderTile.FieldLocalization, attacker.Attack);
+            isDefenderInRange(attackerTile.GetCoordinates(), defenderTile.GetCoordinates(), attacker.Attack);
         }
 
         public bool isDefenderInRange(Point attackerCoordinates, Point defenderCoordinates, int attackRange)

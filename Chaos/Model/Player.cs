@@ -8,17 +8,21 @@ namespace Chaos.Model
 
         // TODO: Każdy gracz powinien posiadać listę czarów, które może rzucić.
 
-        public Player(string playerName, int id)
+        public Player(string playerName)
         {
             Name = playerName;
             AvailableSpells = new List<Spell>();
             SelectedSpell = null;
-            this.id = id;
         }
 
         public string Name { get; set; }
 
         public List<Spell> AvailableSpells;
         public Spell SelectedSpell;
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

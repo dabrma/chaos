@@ -36,6 +36,7 @@
             this.discardButton = new System.Windows.Forms.PictureBox();
             this.endTurnButton = new System.Windows.Forms.Button();
             this.descPanel = new System.Windows.Forms.Panel();
+            this.btnSaveGame = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.discardButton)).BeginInit();
             this.SuspendLayout();
@@ -114,8 +115,21 @@
             // 
             this.descPanel.Location = new System.Drawing.Point(12, 12);
             this.descPanel.Name = "descPanel";
-            this.descPanel.Size = new System.Drawing.Size(778, 728);
+            this.descPanel.Size = new System.Drawing.Size(723, 633);
             this.descPanel.TabIndex = 7;
+            // 
+            // btnSaveGame
+            // 
+            this.btnSaveGame.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(64)))));
+            this.btnSaveGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSaveGame.ForeColor = System.Drawing.SystemColors.Info;
+            this.btnSaveGame.Location = new System.Drawing.Point(691, 651);
+            this.btnSaveGame.Name = "btnSaveGame";
+            this.btnSaveGame.Size = new System.Drawing.Size(98, 35);
+            this.btnSaveGame.TabIndex = 8;
+            this.btnSaveGame.Text = "Save Game";
+            this.btnSaveGame.UseVisualStyleBackColor = false;
+            this.btnSaveGame.Click += new System.EventHandler(this.btnSaveGame_Click);
             // 
             // Form1
             // 
@@ -123,6 +137,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(35)))));
             this.ClientSize = new System.Drawing.Size(802, 752);
+            this.Controls.Add(this.btnSaveGame);
             this.Controls.Add(this.endTurnButton);
             this.Controls.Add(this.discardButton);
             this.Controls.Add(this.helpButton);
@@ -150,6 +165,7 @@
         private System.Windows.Forms.PictureBox discardButton;
         private System.Windows.Forms.Button endTurnButton;
         private System.Windows.Forms.Panel descPanel;
+        private System.Windows.Forms.Button btnSaveGame;
     }
 }
 

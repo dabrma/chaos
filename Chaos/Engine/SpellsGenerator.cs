@@ -3,28 +3,61 @@ using System.Drawing;
 using System.Linq;
 using Chaos.Model;
 using Chaos.Properties;
+using System.Collections.Generic;
 
 namespace Chaos.Engine
 {
-    internal class SpellsGenerator
+    public class SpellsGenerator
     {
         private readonly string[] gameObjectStrings;
         private readonly Random random = new Random();
+        public List<Spell> spells = new List<Spell>();
 
         public SpellsGenerator()
         {
             gameObjectStrings = Resources.Spells.Split('\n');
-            //  GenerateSpellFromText(gameObjectStrings);
 
-            /* foreach (string gameObjectString in gameObjectStrings)
+             foreach (string spellLine in gameObjectStrings)
              {
-                 var deserializedGameObject = gameObjectString.Split(' ');
-                 GenerateSpellFromText(deserializedGameObject);
-             }*/
+                var s = spellLine.Split(' ');
+                stringTrimmer(s);
+                Spell spell = new Spell();
+                spell.Caption = s[0];
+                spell.CanCastOnNothing = int.Parse(s[1]) == 1;
+                spell.CanCastOnMonster = int.Parse(s[2]) == 1;
+                if (spell.CanCastOnMonster)
+                {
+                    spell.EffectPower = int.Parse(s[3]);
+                    spell.EffectLabel = s[4];
+                }
+                spell.Sprite = (Bitmap)Resources.ResourceManager.GetObject(s[0]);
+
+                spells.Add(spell);
+            }
         }
 
+        public void stringTrimmer(string[] source)
+        {
+            foreach(string untrimmedString in source)
+            {
+                untrimmedString.TrimEnd('\r');
+            }
+        }
 
-        public Spell GenerateSpellFromText()
+        public Monster GetSpellByName(string name)
+        {
+            foreach (Spell spell in spells)
+            {
+                if (spell.Caption == name)
+                {
+             //       return new Spell();
+                }
+
+            }
+            throw new NullReferenceException();
+        }
+
+        public Spell GenerateRandomSpell()
         {
             // Generate random spell
             var randomIndex = random.Next(0, gameObjectStrings.Length);

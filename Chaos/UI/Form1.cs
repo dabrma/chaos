@@ -43,5 +43,10 @@ namespace Chaos
 
             else { helpButton.BorderStyle = BorderStyle.None;}
         }
+
+        private void btnSaveGame_Click(object sender, EventArgs e)
+        {
+            engine.gameSaver.SaveGame();
+        }
     }
 }

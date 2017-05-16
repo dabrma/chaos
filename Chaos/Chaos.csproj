@@ -48,6 +48,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExtendedXmlSerializer, Version=1.5.0.0, Culture=neutral, PublicKeyToken=0311609c42bdb381, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExtendedXmlSerializer.1.5.0\lib\net45\ExtendedXmlSerializer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Speech" />
@@ -66,7 +70,14 @@
     <Compile Include="Engine\GameEngine.cs" />
     <Compile Include="Engine\MonsterActions.cs" />
     <Compile Include="Engine\Spellcasting.cs" />
+    <Compile Include="Interfaces\IFile.cs" />
+    <Compile Include="Interfaces\ILocalizable.cs" />
+    <Compile Include="Interfaces\ILookupable.cs" />
+    <Compile Include="Interfaces\IOccupiable.cs" />
     <Compile Include="Misc\CreateCursorFromStream.cs" />
+    <Compile Include="Engine\GameLoader.cs" />
+    <Compile Include="Engine\GameSaver.cs" />
+    <Compile Include="Model\MonsterDTO.cs" />
     <Compile Include="Model\MonsterTemplate.cs" />
     <Compile Include="Engine\SpellBoard.cs" />
     <Compile Include="Engine\SpellsGenerator.cs" />
@@ -135,6 +146,7 @@
     <EmbeddedResource Include="Utility\Logger.resx">
       <DependentUpon>Logger.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -148,9 +160,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Resources\Nothing.bmp" />
   </ItemGroup>
