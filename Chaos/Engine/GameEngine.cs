@@ -20,7 +20,7 @@ namespace Chaos.Engine
 
     public class GameEngine
     {
-        private readonly Form1 gameForm;
+        private readonly GameForm gameForm;
         public readonly MonsterGenerator monsterGenerator;
         private readonly MonsterActions actions;
         public bool DescriptionMode = false;
@@ -32,7 +32,7 @@ namespace Chaos.Engine
         private DescriptionPanel monsterDescriptionPanel;
         private readonly Spellcasting spellcasting;
 
-        public GameEngine(int NumberOfPlayers, Gameboard gameboard, Form1 gameForm)
+        public GameEngine(int NumberOfPlayers, Gameboard gameboard, GameForm gameForm)
         {
             this.gameboard = gameboard;
             actions = new MonsterActions(gameboard, this);
@@ -210,15 +210,15 @@ namespace Chaos.Engine
 
         private async Task TileClicked(Tile clickSource)
         {
-            if (DescriptionMode)
-            {
-                if (clickSource.GetOccupant() is Monster) return;
-                gameForm.GetDescriptionPanel.Controls.AddRange(new DescriptionPanel((Monster) clickSource.GetOccupant())
-                    .GetControls());
-                gameForm.GetDescriptionPanel.Visible = true;
-                gameForm.GetDescriptionPanel.BringToFront();
-                return;
-            }
+            //if (DescriptionMode)
+            //{
+            //    if (clickSource.GetOccupant() is Monster) return;
+            //    gameForm.GetDescriptionPanel.Controls.AddRange(new DescriptionPanel((Monster) clickSource.GetOccupant())
+            //        .GetControls());
+            //    gameForm.GetDescriptionPanel.Visible = true;
+            //    gameForm.GetDescriptionPanel.BringToFront();
+            //    return;
+            //}
 
             if (gamePhase == GamePhase.Casting && await spellcasting.CastSpell(clickSource))
             {

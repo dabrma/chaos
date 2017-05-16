@@ -40,17 +40,17 @@ namespace Chaos.Engine
         {
             foreach(string untrimmedString in source)
             {
-                untrimmedString.TrimEnd('\r');
+                 untrimmedString.TrimEnd('\r');
             }
         }
 
-        public Monster GetSpellByName(string name)
+        public Spell GetSpellByName(string name)
         {
             foreach (Spell spell in spells)
             {
                 if (spell.Caption == name)
                 {
-             //       return new Spell();
+                      return new Spell().DeepCopy(spell);
                 }
 
             }

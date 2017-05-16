@@ -55,6 +55,7 @@ namespace Chaos.Model
         public bool canAttack { get; set; }
         public bool canRangedAttack { get; set; }
         public bool isUndead { get; set; }
+        public Point coordinates { get; set; }
 
         public override string ToString()
         {

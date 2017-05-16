@@ -77,7 +77,9 @@
     <Compile Include="Misc\CreateCursorFromStream.cs" />
     <Compile Include="Engine\GameLoader.cs" />
     <Compile Include="Engine\GameSaver.cs" />
-    <Compile Include="Model\MonsterDTO.cs" />
+    <Compile Include="Model\DTOs\GameState.cs" />
+    <Compile Include="Model\DTOs\MonsterDTO.cs" />
+    <Compile Include="Model\DTOs\PlayerDTO.cs" />
     <Compile Include="Model\MonsterTemplate.cs" />
     <Compile Include="Engine\SpellBoard.cs" />
     <Compile Include="Engine\SpellsGenerator.cs" />

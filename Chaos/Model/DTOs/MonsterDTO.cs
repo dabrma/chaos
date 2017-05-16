@@ -11,7 +11,7 @@ namespace Chaos.Model
     [Serializable]
     public class MonsterDTO
     {
-        public Player Owner;
+        public string Owner;
         public Point Coordinates;
         public string Name;
         public int MaxHealth;

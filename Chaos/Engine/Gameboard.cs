@@ -41,6 +41,7 @@ namespace Chaos.Engine
             MovesLeftLabel.Text = "";
             FieldName.Text = "";
 
+
             InitializeTiles();
             InitializeGameboard();
         }

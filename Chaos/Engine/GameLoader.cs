@@ -3,10 +3,9 @@ using Chaos.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ExtendedXmlSerialization;
 using System.Windows.Forms;
+using Chaos.Model.DTOs;
 
 namespace Chaos.Model
 {
@@ -14,7 +13,7 @@ namespace Chaos.Model
     {
         List<Player> LoadedPlayers = new List<Player>();
         List<Monster> LoadedMonsters = new List<Monster>();
-        Dictionary<Player, Spell> LoadedSpells = new Dictionary<Player, Spell>();
+        readonly ExtendedXmlSerializer xml = new ExtendedXmlSerializer();
 
         public string GetPath()
         {
@@ -27,53 +26,84 @@ namespace Chaos.Model
 
             return "";
         }
-
         public void LoadGame()
         {
-            var filePath = GetPath();
+            var state = LoadData();
+            LoadPlayers(state);
+            LoadMonsters(state);
 
-            if (!string.IsNullOrWhiteSpace(filePath))
+            var game = new GameForm();
+            var gameboard = new Gameboard(game.GetGamePanel, game.GetNameField, game.GetMovesLeftLabel);
+            var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game);
+            var spellboard = new SpellBoard(game.GetSpellPanel, LoadedPlayers, gameEngine, 98, false);
+            foreach (Tile tile in gameboard.GetElementsCollection())
             {
-                using (var reader = new StreamReader(filePath))
+                var coords = tile.GetCoordinates();
+                var occupant = LoadedMonsters.Find(x => x.coordinates == coords);
+                if (occupant != null)
                 {
-
+                    tile.SetOccupant(occupant);
                 }
             }
+            game.Show();
+        }
+
+        private string DeserializedData()
+        {
+            string data = File.ReadAllText(GetPath());
+            if (!string.IsNullOrEmpty(data))
+            {
+                return data;
+            }
+
+            throw new IOException();
         }
         
-        private void LoadPlayers(StreamReader source)
+        private GameState LoadData()
         {
-            while(source.ReadLine() != null)
+            var data = DeserializedData();
+            return xml.Deserialize<GameState>(data);
+        }
+
+        private void LoadPlayers(GameState state)
+        {
+            SpellsGenerator generator = new SpellsGenerator();
+            foreach(PlayerDTO dto in state.players)
             {
-                string line = source.ReadLine();
-                if (line.StartsWith("Player:"))
+                var playerFromDTO = new Player(dto.Name);
+                var playerIndex = state.players.IndexOf(dto);
+                foreach(string spellName in state.players[playerIndex].Spells)
                 {
-                    var Name = line.Split(' ');
-                    Player newPlayer = new Player(Name[1]);
-                    LoadedPlayers.Add(newPlayer);
+                    playerFromDTO.AvailableSpells.Add(generator.GetSpellByName(spellName));
                 }
+
+                LoadedPlayers.Add(playerFromDTO);
             }
         }
-
-        private void LoadSpells(StreamReader source)
+        private void LoadMonsters(GameState state)
         {
-            SpellsGenerator spellGen = new SpellsGenerator();
-            while (source.ReadLine() != null)
+            var temp = new List<Monster>();
+            MonsterGenerator generator = new MonsterGenerator();
+            foreach(MonsterDTO dto in state.monsters)
             {
-                string line = source.ReadLine();
-                if (line.StartsWith("Spell:")) {
+                Player owner = LoadedPlayers.Find(x => x.Name == dto.Owner);
+                var monsterFromDTO = new Monster();
+                if(dto.Name == "Wizard")
+                {
+                    dto.Name = "Wizard" + owner.Name.Substring(owner.Name.Length-1);
+                }
+                monsterFromDTO = generator.GetMonsterByName(dto.Name, owner);
+                monsterFromDTO.Moves = dto.Moves;
+                monsterFromDTO.MovesRemaining = dto.MovesRemaining;
+                monsterFromDTO.Attack = dto.Attack;
+                monsterFromDTO.Health = dto.Health;
+                monsterFromDTO.MaxHealth = dto.MaxHealth;
+                monsterFromDTO.coordinates = dto.Coordinates;
 
-                    var spellLine = line.Split(' ');
-                    var name = spellLine[2];
-                    var owner = spellLine[1];
-                    var spell = spellGen.GetSpellByName(name);
-                    //    spell.Owner = LoadedPlayers.Where(x => x.Name == name)
-               //     Spell newSpell = new Spell
-
-                
-            }
+                LoadedMonsters.Add(monsterFromDTO);
             }
         }
+
     }
     
 }

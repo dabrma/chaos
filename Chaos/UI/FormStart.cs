@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chaos.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -39,7 +40,8 @@ namespace Chaos
 
         private void bLoadGame_Click(object sender, EventArgs e)
         {
-
+            GameLoader gameLoader = new GameLoader();
+            gameLoader.LoadGame();
         }
 
         private void lNumberOfPlayers_Click(object sender, EventArgs e)

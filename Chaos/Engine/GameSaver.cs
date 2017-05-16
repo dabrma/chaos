@@ -8,13 +8,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ExtendedXmlSerialization;
+using Chaos.Model.DTOs;
 
 namespace Chaos.Model
 {
     public class GameSaver : IFile
     {
-        IEnumerable<Tile> gameboardElements;
-        List<Player> players = new List<Player>();
+        readonly IEnumerable<Tile> gameboardElements;
+        readonly List<Player> players = new List<Player>();
 
         public GameSaver(IEnumerable<Tile> gameboard, List<Player> players)
         {
@@ -37,14 +38,14 @@ namespace Chaos.Model
 
         private List<MonsterDTO> monsterDTOs()
         {
-            List<MonsterDTO> temp = new List<MonsterDTO>();
+            var temp = new List<MonsterDTO>();
             foreach(Tile tile in gameboardElements)
             {
                 if(tile.GetOccupant() is Monster)
                 {
                     Monster m = tile.GetOccupant() as Monster;
                     MonsterDTO dto = new MonsterDTO();
-                    dto.Owner = m.Owner;
+                    dto.Owner = m.Owner.Name;
                     dto.Coordinates = tile.GetCoordinates();
                     dto.Name = m.Name;
                     dto.MaxHealth = m.MaxHealth;
@@ -53,21 +54,38 @@ namespace Chaos.Model
                     dto.MagicResistance = m.MagicResistance;
                     dto.Moves = m.Moves;
                     dto.MovesRemaining = m.MovesRemaining;
-
                     temp.Add(dto);
                 }
             }
-
             return temp;
         }
+        private List<PlayerDTO> playerDTOs()
+        {
+            var temp = new List<PlayerDTO>();
+            foreach(Player p in players)
+            {
+                PlayerDTO dto = new PlayerDTO();
+                dto.Name = p.Name;
 
+                foreach(Spell s in p.AvailableSpells)
+                {
+                    dto.Spells.Add(s.Caption);
+                }
+                temp.Add(dto);
+            }
+            return temp;
+        }
         public void SaveGame()
         {
             var filePath = GetPath();
             if (!string.IsNullOrWhiteSpace(filePath))
             {
+                GameState state = new GameState();
+                state.monsters = monsterDTOs();
+                state.players = playerDTOs();
+
                 ExtendedXmlSerializer xml = new ExtendedXmlSerializer();
-                File.WriteAllText(filePath, xml.Serialize(monsterDTOs()));
+                File.AppendAllText(filePath, xml.Serialize(state));
             }
         } 
     }

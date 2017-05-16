@@ -7,7 +7,7 @@ using Chaos.Properties;
 
 namespace Chaos
 {
-    public partial class Form1 : Form
+    public partial class GameForm : Form
     {
         private readonly GameEngine engine;
         private readonly Gameboard gameboard;
@@ -15,7 +15,7 @@ namespace Chaos
 
         public Panel GetDescriptionPanel { get { return descPanel; } set { descPanel = value; } }
 
-        public Form1()
+        public GameForm()
         {
             InitializeComponent();
             this.UseWaitCursor = false;

@@ -31,13 +31,15 @@ namespace Chaos.Engine
         private Tile targetField;
 
 
-        public SpellBoard(Panel spellboardPanel, List<Player> players, GameEngine engine, int spellsAmount)
+        public SpellBoard(Panel spellboardPanel, List<Player> players, GameEngine engine, int spellsAmount, bool generateSpells = true)
         {
             this.engine = engine;
             this.SPELLS_AMOUNT = spellsAmount;
             this.spellboardPanel = spellboardPanel;
             this.players = players;
-            populateSpellsArray();
+
+            if(generateSpells)
+                populateSpellsArray();
         }
 
         private void populateSpellsArray()

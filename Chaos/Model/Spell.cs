@@ -13,6 +13,7 @@ namespace Chaos.Model
         public Spell DeepCopy(Spell template)
         {
             Spell spell = new Spell();
+            spell.Caption = template.Caption;
             spell.CanCastOnMonster = template.CanCastOnMonster;
             spell.CanCastOnNothing = template.CanCastOnNothing;
             spell.EffectLabel = template.EffectLabel;
