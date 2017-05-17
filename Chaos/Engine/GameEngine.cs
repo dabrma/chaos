@@ -57,7 +57,7 @@ namespace Chaos.Engine
         public SpellBoard spellboard { get; set; }
         public Player CurrentPlayer { get; set; }
 
-        public List<Player> GetPlayers { get; } = new List<Player>();
+        public List<Player> GetPlayers = new List<Player>();
 
         private void HideDescriptionPanel(object sender, EventArgs e)
         {
@@ -65,12 +65,21 @@ namespace Chaos.Engine
             panel.Dispose();
         }
 
-        public void InitializeEngineElements()
+        public void InitializeEngineElements(bool isGameLoaded = false)
         {
-            gamePhase = GamePhase.Picking;
-            spellboard.currentPlayer = CurrentPlayer;
-            gameboard.currentPlayer = CurrentPlayer;
-            UpdateSpellboard();
+            if(!isGameLoaded){
+                gamePhase = GamePhase.Picking;
+                spellboard.currentPlayer = CurrentPlayer;
+                gameboard.currentPlayer = CurrentPlayer;
+                UpdateSpellboard();
+            }
+
+            else
+            {
+                gamePhase = GamePhase.Moving;
+                spellboard.currentPlayer = CurrentPlayer;
+                gameboard.currentPlayer = CurrentPlayer;
+            }
         }
 
         public void ChangePhase(GamePhase phase)

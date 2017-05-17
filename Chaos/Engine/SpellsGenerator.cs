@@ -13,7 +13,7 @@ namespace Chaos.Engine
         private readonly Random random = new Random();
         public List<Spell> spells = new List<Spell>();
 
-        public SpellsGenerator()
+        public SpellsGenerator(bool autoGenerate = true)
         {
             gameObjectStrings = Resources.Spells.Split('\n');
 

@@ -6,6 +6,7 @@ using System.IO;
 using ExtendedXmlSerialization;
 using System.Windows.Forms;
 using Chaos.Model.DTOs;
+using Colog.Logging;
 
 namespace Chaos.Model
 {
@@ -28,6 +29,9 @@ namespace Chaos.Model
         }
         public void LoadGame()
         {
+            Colog.Console console = new Colog.Console();
+            Colog.Logging.Messaging.GetInstance.Register(console);
+
             var state = LoadData();
             LoadPlayers(state);
             LoadMonsters(state);
@@ -35,16 +39,33 @@ namespace Chaos.Model
             var game = new GameForm();
             var gameboard = new Gameboard(game.GetGamePanel, game.GetNameField, game.GetMovesLeftLabel);
             var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game);
+            gameEngine.GetPlayers = LoadedPlayers;
+            gameEngine.CurrentPlayer = gameEngine.GetPlayers[0];
             var spellboard = new SpellBoard(game.GetSpellPanel, LoadedPlayers, gameEngine, 98, false);
-            foreach (Tile tile in gameboard.GetElementsCollection())
+            gameEngine.spellboard = spellboard;
+            gameEngine.InitializeEngineElements(true);
+
+            var tiles = (Tile[])gameboard.GetElementsCollection();
+            foreach (Monster monster in LoadedMonsters)
             {
-                var coords = tile.GetCoordinates();
-                var occupant = LoadedMonsters.Find(x => x.coordinates == coords);
-                if (occupant != null)
+                Colog.Logging.Messaging.GetInstance.AddMessage(new PassedMessage($"Generating {monster}"));
+                var mCoords = monster.coordinates;
+                foreach (Tile t in tiles)
                 {
-                    tile.SetOccupant(occupant);
+                    if (t.GetCoordinates() == mCoords)
+                        t.SetOccupant(monster);
+                    break;
                 }
             }
+            //foreach (Tile tile in gameboard.GetElementsCollection())
+            //{
+            //    var coords = tile.GetCoordinates();
+            //    var occupant = LoadedMonsters.Find(x => x.coordinates == coords);
+            //    if (occupant != null)
+            //    {
+            //        tile.SetOccupant(occupant);
+            //    }
+            //}
             game.Show();
         }
 
