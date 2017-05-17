@@ -32,21 +32,22 @@
             this.bExitGame = new System.Windows.Forms.Button();
             this.bLoadGame = new System.Windows.Forms.Button();
             this.bNewGame = new System.Windows.Forms.Button();
-            this.SetingsPanel = new System.Windows.Forms.Panel();
+            this.SettingsPanel = new System.Windows.Forms.Panel();
+            this.lNumberOfPlayersValue = new System.Windows.Forms.Label();
+            this.bNoOfTurnsRight = new System.Windows.Forms.Button();
+            this.bNoOfSpellsRight = new System.Windows.Forms.Button();
+            this.bNoOfTurnsLeft = new System.Windows.Forms.Button();
+            this.bNoOfSpellsLeft = new System.Windows.Forms.Button();
+            this.tNumberOfTurns = new System.Windows.Forms.TextBox();
+            this.tNumberOfSpells = new System.Windows.Forms.TextBox();
+            this.lNumberOfTurns = new System.Windows.Forms.Label();
             this.lNumberOfSpells = new System.Windows.Forms.Label();
-            this.lNamesOfPlayers = new System.Windows.Forms.Label();
             this.tNumberOfPlayer = new System.Windows.Forms.TrackBar();
             this.lNumberOfPlayers = new System.Windows.Forms.Label();
             this.bStart = new System.Windows.Forms.Button();
-            this.tNameOfPlayer = new System.Windows.Forms.TextBox();
-            this.tNumberOfSpells = new System.Windows.Forms.TrackBar();
-            this.lNumberOfTurns = new System.Windows.Forms.Label();
-            this.tNumberOfTurns = new System.Windows.Forms.TrackBar();
             this.buttonsPanel.SuspendLayout();
-            this.SetingsPanel.SuspendLayout();
+            this.SettingsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tNumberOfPlayer)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tNumberOfSpells)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tNumberOfTurns)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonsPanel
@@ -54,151 +55,227 @@
             this.buttonsPanel.Controls.Add(this.bExitGame);
             this.buttonsPanel.Controls.Add(this.bLoadGame);
             this.buttonsPanel.Controls.Add(this.bNewGame);
-            this.buttonsPanel.Location = new System.Drawing.Point(247, 0);
+            this.buttonsPanel.Location = new System.Drawing.Point(245, 2);
             this.buttonsPanel.Name = "buttonsPanel";
-            this.buttonsPanel.Size = new System.Drawing.Size(247, 693);
+            this.buttonsPanel.Size = new System.Drawing.Size(247, 645);
             this.buttonsPanel.TabIndex = 0;
-            this.buttonsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.buttonsPanel_Paint);
             // 
             // bExitGame
             // 
-            this.bExitGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bExitGame.Location = new System.Drawing.Point(0, 460);
+            this.bExitGame.BackColor = System.Drawing.Color.DarkBlue;
+            this.bExitGame.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bExitGame.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bExitGame.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.bExitGame.Location = new System.Drawing.Point(0, 480);
             this.bExitGame.Name = "bExitGame";
-            this.bExitGame.Size = new System.Drawing.Size(247, 150);
+            this.bExitGame.Size = new System.Drawing.Size(247, 80);
             this.bExitGame.TabIndex = 2;
             this.bExitGame.Text = "EXIT GAME";
-            this.bExitGame.UseVisualStyleBackColor = true;
+            this.bExitGame.UseVisualStyleBackColor = false;
             this.bExitGame.Click += new System.EventHandler(this.bExitGame_Click);
             // 
             // bLoadGame
             // 
-            this.bLoadGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bLoadGame.Location = new System.Drawing.Point(0, 250);
+            this.bLoadGame.BackColor = System.Drawing.Color.DarkBlue;
+            this.bLoadGame.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bLoadGame.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bLoadGame.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.bLoadGame.Location = new System.Drawing.Point(0, 280);
             this.bLoadGame.Name = "bLoadGame";
-            this.bLoadGame.Size = new System.Drawing.Size(247, 150);
+            this.bLoadGame.Size = new System.Drawing.Size(247, 80);
             this.bLoadGame.TabIndex = 1;
             this.bLoadGame.Text = "LOAD GAME";
-            this.bLoadGame.UseVisualStyleBackColor = true;
+            this.bLoadGame.UseVisualStyleBackColor = false;
             this.bLoadGame.Click += new System.EventHandler(this.bLoadGame_Click);
             // 
             // bNewGame
             // 
-            this.bNewGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bNewGame.Location = new System.Drawing.Point(0, 40);
+            this.bNewGame.BackColor = System.Drawing.Color.DarkBlue;
+            this.bNewGame.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bNewGame.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bNewGame.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.bNewGame.Location = new System.Drawing.Point(0, 100);
             this.bNewGame.Name = "bNewGame";
-            this.bNewGame.Size = new System.Drawing.Size(247, 150);
+            this.bNewGame.Size = new System.Drawing.Size(247, 80);
             this.bNewGame.TabIndex = 0;
             this.bNewGame.Text = "NEW GAME";
-            this.bNewGame.UseVisualStyleBackColor = true;
+            this.bNewGame.UseVisualStyleBackColor = false;
             this.bNewGame.Click += new System.EventHandler(this.bNewGame_Click);
             // 
-            // SetingsPanel
+            // SettingsPanel
             // 
-            this.SetingsPanel.Controls.Add(this.tNumberOfTurns);
-            this.SetingsPanel.Controls.Add(this.lNumberOfTurns);
-            this.SetingsPanel.Controls.Add(this.tNumberOfSpells);
-            this.SetingsPanel.Controls.Add(this.tNameOfPlayer);
-            this.SetingsPanel.Controls.Add(this.lNumberOfSpells);
-            this.SetingsPanel.Controls.Add(this.lNamesOfPlayers);
-            this.SetingsPanel.Controls.Add(this.tNumberOfPlayer);
-            this.SetingsPanel.Controls.Add(this.lNumberOfPlayers);
-            this.SetingsPanel.Controls.Add(this.bStart);
-            this.SetingsPanel.Location = new System.Drawing.Point(0, 0);
-            this.SetingsPanel.Name = "SetingsPanel";
-            this.SetingsPanel.Size = new System.Drawing.Size(723, 648);
-            this.SetingsPanel.TabIndex = 1;
-            this.SetingsPanel.Hide();
+            this.SettingsPanel.Controls.Add(this.lNumberOfPlayersValue);
+            this.SettingsPanel.Controls.Add(this.bNoOfTurnsRight);
+            this.SettingsPanel.Controls.Add(this.bNoOfSpellsRight);
+            this.SettingsPanel.Controls.Add(this.bNoOfTurnsLeft);
+            this.SettingsPanel.Controls.Add(this.bNoOfSpellsLeft);
+            this.SettingsPanel.Controls.Add(this.tNumberOfTurns);
+            this.SettingsPanel.Controls.Add(this.tNumberOfSpells);
+            this.SettingsPanel.Controls.Add(this.lNumberOfTurns);
+            this.SettingsPanel.Controls.Add(this.lNumberOfSpells);
+            this.SettingsPanel.Controls.Add(this.tNumberOfPlayer);
+            this.SettingsPanel.Controls.Add(this.lNumberOfPlayers);
+            this.SettingsPanel.Controls.Add(this.bStart);
+            this.SettingsPanel.Location = new System.Drawing.Point(2, 2);
+            this.SettingsPanel.Name = "SettingsPanel";
+            this.SettingsPanel.Size = new System.Drawing.Size(723, 648);
+            this.SettingsPanel.TabIndex = 1;
+            this.SettingsPanel.Visible = false;
             // 
-            // lNumberOfSpells
+            // lNumberOfPlayersValue
             // 
-            this.lNumberOfSpells.AutoSize = true;
-            this.lNumberOfSpells.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lNumberOfSpells.ForeColor = System.Drawing.SystemColors.Control;
-            this.lNumberOfSpells.Location = new System.Drawing.Point(269, 250);
-            this.lNumberOfSpells.Name = "lNumberOfSpells";
-            this.lNumberOfSpells.Size = new System.Drawing.Size(146, 17);
-            this.lNumberOfSpells.TabIndex = 4;
-            this.lNumberOfSpells.Text = "NUMBER OF SPELLS";
-            this.lNumberOfSpells.Click += new System.EventHandler(this.label1_Click);
+            this.lNumberOfPlayersValue.AutoSize = true;
+            this.lNumberOfPlayersValue.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lNumberOfPlayersValue.ForeColor = System.Drawing.Color.Fuchsia;
+            this.lNumberOfPlayersValue.Location = new System.Drawing.Point(464, 53);
+            this.lNumberOfPlayersValue.Name = "lNumberOfPlayersValue";
+            this.lNumberOfPlayersValue.Size = new System.Drawing.Size(35, 34);
+            this.lNumberOfPlayersValue.TabIndex = 14;
+            this.lNumberOfPlayersValue.Text = "2";
             // 
-            // lNamesOfPlayers
+            // bNoOfTurnsRight
             // 
-            this.lNamesOfPlayers.AutoSize = true;
-            this.lNamesOfPlayers.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.lNamesOfPlayers.ForeColor = System.Drawing.SystemColors.Control;
-            this.lNamesOfPlayers.Location = new System.Drawing.Point(275, 159);
-            this.lNamesOfPlayers.Name = "lNamesOfPlayers";
-            this.lNamesOfPlayers.Size = new System.Drawing.Size(146, 17);
-            this.lNamesOfPlayers.TabIndex = 3;
-            this.lNamesOfPlayers.Text = "NAMES OF PLAYERS";
+            this.bNoOfTurnsRight.BackColor = System.Drawing.Color.DarkBlue;
+            this.bNoOfTurnsRight.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bNoOfTurnsRight.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bNoOfTurnsRight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.bNoOfTurnsRight.Location = new System.Drawing.Point(514, 310);
+            this.bNoOfTurnsRight.Name = "bNoOfTurnsRight";
+            this.bNoOfTurnsRight.Size = new System.Drawing.Size(32, 32);
+            this.bNoOfTurnsRight.TabIndex = 13;
+            this.bNoOfTurnsRight.Text = ">";
+            this.bNoOfTurnsRight.UseVisualStyleBackColor = false;
+            this.bNoOfTurnsRight.Click += new System.EventHandler(this.bNoOfTurnsRight_Click);
             // 
-            // tNumberOfPlayer
+            // bNoOfSpellsRight
             // 
-            this.tNumberOfPlayer.Location = new System.Drawing.Point(272, 89);
-            this.tNumberOfPlayer.Maximum = 4;
-            this.tNumberOfPlayer.Minimum = 2;
-            this.tNumberOfPlayer.Name = "tNumberOfPlayer";
-            this.tNumberOfPlayer.Size = new System.Drawing.Size(157, 56);
-            this.tNumberOfPlayer.TabIndex = 2;
-            this.tNumberOfPlayer.Value = 2;
+            this.bNoOfSpellsRight.BackColor = System.Drawing.Color.DarkBlue;
+            this.bNoOfSpellsRight.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bNoOfSpellsRight.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bNoOfSpellsRight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.bNoOfSpellsRight.Location = new System.Drawing.Point(514, 200);
+            this.bNoOfSpellsRight.Name = "bNoOfSpellsRight";
+            this.bNoOfSpellsRight.Size = new System.Drawing.Size(32, 32);
+            this.bNoOfSpellsRight.TabIndex = 12;
+            this.bNoOfSpellsRight.Text = ">";
+            this.bNoOfSpellsRight.UseVisualStyleBackColor = false;
+            this.bNoOfSpellsRight.Click += new System.EventHandler(this.bNoOfSpellsRight_Click);
             // 
-            // lNumberOfPlayers
+            // bNoOfTurnsLeft
             // 
-            this.lNumberOfPlayers.AutoSize = true;
-            this.lNumberOfPlayers.ForeColor = System.Drawing.SystemColors.Control;
-            this.lNumberOfPlayers.Location = new System.Drawing.Point(272, 53);
-            this.lNumberOfPlayers.Name = "lNumberOfPlayers";
-            this.lNumberOfPlayers.Size = new System.Drawing.Size(157, 17);
-            this.lNumberOfPlayers.TabIndex = 1;
-            this.lNumberOfPlayers.Text = "NUMBER OF PLAYERS";
-            this.lNumberOfPlayers.Click += new System.EventHandler(this.lNumberOfPlayers_Click);
+            this.bNoOfTurnsLeft.BackColor = System.Drawing.Color.DarkBlue;
+            this.bNoOfTurnsLeft.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bNoOfTurnsLeft.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bNoOfTurnsLeft.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.bNoOfTurnsLeft.Location = new System.Drawing.Point(410, 309);
+            this.bNoOfTurnsLeft.Name = "bNoOfTurnsLeft";
+            this.bNoOfTurnsLeft.Size = new System.Drawing.Size(32, 32);
+            this.bNoOfTurnsLeft.TabIndex = 11;
+            this.bNoOfTurnsLeft.Text = "<";
+            this.bNoOfTurnsLeft.UseVisualStyleBackColor = false;
+            this.bNoOfTurnsLeft.Click += new System.EventHandler(this.bNoOfTurnsLeft_Click);
             // 
-            // bStart
+            // bNoOfSpellsLeft
             // 
-            this.bStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.bStart.Location = new System.Drawing.Point(241, 450);
-            this.bStart.Name = "bStart";
-            this.bStart.Size = new System.Drawing.Size(247, 150);
-            this.bStart.TabIndex = 0;
-            this.bStart.Text = "START";
-            this.bStart.UseVisualStyleBackColor = true;
-            this.bStart.Click += new System.EventHandler(this.bStart_Click);
+            this.bNoOfSpellsLeft.BackColor = System.Drawing.Color.DarkBlue;
+            this.bNoOfSpellsLeft.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bNoOfSpellsLeft.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bNoOfSpellsLeft.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.bNoOfSpellsLeft.Location = new System.Drawing.Point(410, 200);
+            this.bNoOfSpellsLeft.Name = "bNoOfSpellsLeft";
+            this.bNoOfSpellsLeft.Size = new System.Drawing.Size(32, 32);
+            this.bNoOfSpellsLeft.TabIndex = 10;
+            this.bNoOfSpellsLeft.Text = "<";
+            this.bNoOfSpellsLeft.UseVisualStyleBackColor = false;
+            this.bNoOfSpellsLeft.Click += new System.EventHandler(this.bNoOfSpellsLeft_Click);
             // 
-            // tNameOfPlayer
+            // tNumberOfTurns
             // 
-            this.tNameOfPlayer.Location = new System.Drawing.Point(295, 196);
-            this.tNameOfPlayer.Name = "tNameOfPlayer";
-            this.tNameOfPlayer.Size = new System.Drawing.Size(100, 22);
-            this.tNameOfPlayer.TabIndex = 5;
-            this.tNameOfPlayer.TextChanged += new System.EventHandler(this.tNameOfPlayer_TextChanged);
+            this.tNumberOfTurns.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tNumberOfTurns.ForeColor = System.Drawing.Color.Fuchsia;
+            this.tNumberOfTurns.Location = new System.Drawing.Point(448, 310);
+            this.tNumberOfTurns.MaxLength = 2;
+            this.tNumberOfTurns.Name = "tNumberOfTurns";
+            this.tNumberOfTurns.Size = new System.Drawing.Size(60, 32);
+            this.tNumberOfTurns.TabIndex = 9;
+            this.tNumberOfTurns.Text = "0";
+            this.tNumberOfTurns.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tNumberOfTurns.TextChanged += new System.EventHandler(this.tNumberOfTurns_TextChanged);
             // 
             // tNumberOfSpells
             // 
-            this.tNumberOfSpells.Location = new System.Drawing.Point(114, 282);
-            this.tNumberOfSpells.Maximum = 99;
+            this.tNumberOfSpells.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.tNumberOfSpells.ForeColor = System.Drawing.Color.Fuchsia;
+            this.tNumberOfSpells.Location = new System.Drawing.Point(448, 200);
+            this.tNumberOfSpells.MaxLength = 2;
             this.tNumberOfSpells.Name = "tNumberOfSpells";
-            this.tNumberOfSpells.Size = new System.Drawing.Size(471, 56);
-            this.tNumberOfSpells.TabIndex = 6;
-            this.tNumberOfSpells.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            this.tNumberOfSpells.Size = new System.Drawing.Size(60, 32);
+            this.tNumberOfSpells.TabIndex = 8;
+            this.tNumberOfSpells.Text = "0";
+            this.tNumberOfSpells.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.tNumberOfSpells.TextChanged += new System.EventHandler(this.tNumberOfSpells_TextChanged);
             // 
             // lNumberOfTurns
             // 
             this.lNumberOfTurns.AutoSize = true;
-            this.lNumberOfTurns.ForeColor = System.Drawing.SystemColors.Control;
-            this.lNumberOfTurns.Location = new System.Drawing.Point(278, 331);
+            this.lNumberOfTurns.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lNumberOfTurns.ForeColor = System.Drawing.Color.MediumTurquoise;
+            this.lNumberOfTurns.Location = new System.Drawing.Point(40, 310);
             this.lNumberOfTurns.Name = "lNumberOfTurns";
-            this.lNumberOfTurns.Size = new System.Drawing.Size(142, 17);
+            this.lNumberOfTurns.Size = new System.Drawing.Size(196, 25);
             this.lNumberOfTurns.TabIndex = 7;
-            this.lNumberOfTurns.Text = "NUMBER OF TURNS";
+            this.lNumberOfTurns.Text = "Number of turns";
             // 
-            // tNumberOfTurns
+            // lNumberOfSpells
             // 
-            this.tNumberOfTurns.Location = new System.Drawing.Point(114, 363);
-            this.tNumberOfTurns.Maximum = 99;
-            this.tNumberOfTurns.Name = "tNumberOfTurns";
-            this.tNumberOfTurns.Size = new System.Drawing.Size(471, 56);
-            this.tNumberOfTurns.TabIndex = 8;
+            this.lNumberOfSpells.AutoSize = true;
+            this.lNumberOfSpells.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lNumberOfSpells.ForeColor = System.Drawing.Color.MediumTurquoise;
+            this.lNumberOfSpells.Location = new System.Drawing.Point(40, 200);
+            this.lNumberOfSpells.Name = "lNumberOfSpells";
+            this.lNumberOfSpells.Size = new System.Drawing.Size(202, 25);
+            this.lNumberOfSpells.TabIndex = 4;
+            this.lNumberOfSpells.Text = "Number of spells";
+            // 
+            // tNumberOfPlayer
+            // 
+            this.tNumberOfPlayer.AccessibleDescription = "";
+            this.tNumberOfPlayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(35)))));
+            this.tNumberOfPlayer.Location = new System.Drawing.Point(400, 90);
+            this.tNumberOfPlayer.Maximum = 4;
+            this.tNumberOfPlayer.Minimum = 2;
+            this.tNumberOfPlayer.Name = "tNumberOfPlayer";
+            this.tNumberOfPlayer.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.tNumberOfPlayer.RightToLeftLayout = true;
+            this.tNumberOfPlayer.Size = new System.Drawing.Size(157, 56);
+            this.tNumberOfPlayer.TabIndex = 2;
+            this.tNumberOfPlayer.Value = 2;
+            this.tNumberOfPlayer.Scroll += new System.EventHandler(this.tNumberOfPlayer_Scroll);
+            // 
+            // lNumberOfPlayers
+            // 
+            this.lNumberOfPlayers.AutoSize = true;
+            this.lNumberOfPlayers.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.lNumberOfPlayers.ForeColor = System.Drawing.Color.MediumTurquoise;
+            this.lNumberOfPlayers.Location = new System.Drawing.Point(40, 90);
+            this.lNumberOfPlayers.Name = "lNumberOfPlayers";
+            this.lNumberOfPlayers.Size = new System.Drawing.Size(219, 25);
+            this.lNumberOfPlayers.TabIndex = 1;
+            this.lNumberOfPlayers.Text = "Number of players";
+            // 
+            // bStart
+            // 
+            this.bStart.BackColor = System.Drawing.Color.DarkBlue;
+            this.bStart.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bStart.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.bStart.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.bStart.Location = new System.Drawing.Point(241, 450);
+            this.bStart.Name = "bStart";
+            this.bStart.Size = new System.Drawing.Size(247, 80);
+            this.bStart.TabIndex = 0;
+            this.bStart.Text = "START";
+            this.bStart.UseVisualStyleBackColor = false;
+            this.bStart.Click += new System.EventHandler(this.bStart_Click);
             // 
             // FormStart
             // 
@@ -206,17 +283,17 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(35)))));
             this.ClientSize = new System.Drawing.Size(723, 646);
-            this.Controls.Add(this.SetingsPanel);
+            this.Controls.Add(this.SettingsPanel);
             this.Controls.Add(this.buttonsPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FormStart";
             this.Text = "FormStart";
-            this.Load += new System.EventHandler(this.FormStart_Load);
             this.buttonsPanel.ResumeLayout(false);
-            this.SetingsPanel.ResumeLayout(false);
-            this.SetingsPanel.PerformLayout();
+            this.SettingsPanel.ResumeLayout(false);
+            this.SettingsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tNumberOfPlayer)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tNumberOfSpells)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tNumberOfTurns)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -227,15 +304,18 @@
         private System.Windows.Forms.Button bExitGame;
         private System.Windows.Forms.Button bLoadGame;
         private System.Windows.Forms.Button bNewGame;
-        private System.Windows.Forms.Panel SetingsPanel;
+        private System.Windows.Forms.Panel SettingsPanel;
         private System.Windows.Forms.Label lNumberOfPlayers;
         private System.Windows.Forms.Button bStart;
         private System.Windows.Forms.TrackBar tNumberOfPlayer;
-        private System.Windows.Forms.Label lNamesOfPlayers;
         private System.Windows.Forms.Label lNumberOfSpells;
-        private System.Windows.Forms.TextBox tNameOfPlayer;
-        private System.Windows.Forms.TrackBar tNumberOfSpells;
-        private System.Windows.Forms.TrackBar tNumberOfTurns;
         private System.Windows.Forms.Label lNumberOfTurns;
+        private System.Windows.Forms.TextBox tNumberOfTurns;
+        private System.Windows.Forms.TextBox tNumberOfSpells;
+        private System.Windows.Forms.Button bNoOfSpellsLeft;
+        private System.Windows.Forms.Button bNoOfTurnsRight;
+        private System.Windows.Forms.Button bNoOfSpellsRight;
+        private System.Windows.Forms.Button bNoOfTurnsLeft;
+        private System.Windows.Forms.Label lNumberOfPlayersValue;
     }
 }
