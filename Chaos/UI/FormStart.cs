@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chaos.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -44,6 +45,8 @@ namespace Chaos
 
         private void bStart_Click(object sender, EventArgs e)
         {
+        /*
+
             this.Close();
         }
         #endregion
@@ -53,6 +56,10 @@ namespace Chaos
         {
             numberOfPlayers = tNumberOfPlayer.Value;
             this.lNumberOfPlayersValue.Text = Convert.ToString(tNumberOfPlayer.Value);
+
+            GameLoader gameLoader = new GameLoader();
+            gameLoader.LoadGame();
+*/
         }
 
         #region Entering the number of spells and turns

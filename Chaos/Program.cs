@@ -21,7 +21,11 @@ namespace Chaos
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormStart());
-            Application.Run(new Form1());
+//<<<<<<< master
+           // Application.Run(new Form1());
+//=======
+           // Application.Run(new GameForm());
+//>>>>>>> master
         }
     }
 }

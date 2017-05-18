@@ -34,7 +34,7 @@ namespace ChaosUnitTests.GameboardTests
             for (int i = 0; i < testCases.Length; i++)
             {
                 Chaos.Engine.Gameboard gameboard = new Chaos.Engine.Gameboard(mockPanel, mockLabel, mockLabel, testCases[i]);
-                testResults[i] = gameboard.tiles.Length;
+                testResults[i] = gameboard.GetElementsCollection().ToArray().Length;
 
                 // Size of a gameboard should always be equal to SIZE * SIZE
                 Assert.AreEqual(testCases[i] * testCases[i], testResults[i]);
@@ -44,10 +44,10 @@ namespace ChaosUnitTests.GameboardTests
         public void IsGameboardInitializedWithNothingness()
         {
             Chaos.Engine.Gameboard gameboard = InitializeGameboardClassWithMockPanels();
-            var tiles = gameboard.tiles;
+            var tiles = gameboard.GetElementsCollection();
             foreach(Chaos.Engine.Tile Tile in tiles)
             {
-                var typeOfTile = Tile.Occupant.GetType();
+                var typeOfTile = Tile.GetOccupant().GetType();
                 Assert.AreEqual(typeof(Chaos.Engine.Nothing), typeOfTile);
             }
         }

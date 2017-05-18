@@ -49,7 +49,6 @@ namespace Chaos.Engine
             monsterTemplate.Moves = int.Parse(deserializedGameObjectStrings[4]);
             monsterTemplate.isUndead = int.Parse(deserializedGameObjectStrings[5]) == 0 ? false : true;
             monsterTemplate.canAttack = true;
-            monsterTemplate.sprite = (Bitmap) Resources.ResourceManager.GetObject(deserializedGameObjectStrings[0]);
 
             MonsterTemplates.Add(monsterTemplate);
         }
