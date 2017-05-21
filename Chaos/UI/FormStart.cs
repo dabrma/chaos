@@ -1,12 +1,4 @@
-﻿using Chaos.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
 
 namespace Chaos
@@ -14,12 +6,8 @@ namespace Chaos
     public partial class FormStart : Form
     {
         private int numberOfPlayers = 2;
-        private int numberOfSpells = 0;
-        private int numberOfTurns = 0;
-
-        public int NumberOfPlayers { get;}
-        public int NumberOfSpells { get; }
-        public int NumberOfTurns { get; }
+        private int numberOfSpells;
+        private int numberOfTurns;
 
 
         public FormStart()
@@ -27,82 +15,81 @@ namespace Chaos
             InitializeComponent();
         }
 
+        public int NumberOfPlayers { get; }
+        public int NumberOfSpells { get; }
+        public int NumberOfTurns { get; }
+
         #region StartPanel
+
         private void bNewGame_Click(object sender, EventArgs e)
         {
-            this.SettingsPanel.Show();
+            SettingsPanel.Show();
         }
 
         private void bExitGame_Click(object sender, EventArgs e)
         {
-
         }
 
         private void bLoadGame_Click(object sender, EventArgs e)
         {
-
         }
 
         private void bStart_Click(object sender, EventArgs e)
         {
-        /*
-
-            this.Close();
+            var newGame = new GameForm(numberOfPlayers, numberOfTurns, numberOfSpells);
+            newGame.Show();
+            Visible = false;
         }
+
         #endregion
 
         #region SettingsPanel
+
         private void tNumberOfPlayer_Scroll(object sender, EventArgs e)
         {
             numberOfPlayers = tNumberOfPlayer.Value;
-            this.lNumberOfPlayersValue.Text = Convert.ToString(tNumberOfPlayer.Value);
+            lNumberOfPlayersValue.Text = Convert.ToString(tNumberOfPlayer.Value);
 
-            GameLoader gameLoader = new GameLoader();
-            gameLoader.LoadGame();
-*/
+            // GameLoader gameLoader = new GameLoader();
+            // gameLoader.LoadGame();
         }
 
         #region Entering the number of spells and turns
 
         private void bNoOfSpellsLeft_Click(object sender, EventArgs e)
         {
-            String value = this.tNumberOfSpells.Text;
-            this.tNumberOfSpells.Text = ChangeValue(value, "-");
+            var value = tNumberOfSpells.Text;
+            tNumberOfSpells.Text = ChangeValue(value, "-");
         }
 
         private void bNoOfSpellsRight_Click(object sender, EventArgs e)
         {
-            String value = this.tNumberOfSpells.Text;
-            this.tNumberOfSpells.Text = ChangeValue(value, "+");
+            var value = tNumberOfSpells.Text;
+            tNumberOfSpells.Text = ChangeValue(value, "+");
         }
 
         private void bNoOfTurnsLeft_Click(object sender, EventArgs e)
         {
-            String value = this.tNumberOfTurns.Text;
-            this.tNumberOfTurns.Text = ChangeValue(value, "-");
+            var value = tNumberOfTurns.Text;
+            tNumberOfTurns.Text = ChangeValue(value, "-");
         }
 
         private void bNoOfTurnsRight_Click(object sender, EventArgs e)
         {
-            String value = this.tNumberOfTurns.Text;
-            this.tNumberOfTurns.Text = ChangeValue(value, "+");
+            var value = tNumberOfTurns.Text;
+            tNumberOfTurns.Text = ChangeValue(value, "+");
         }
 
 
-        private String ChangeValue(String value, String direction)
+        private string ChangeValue(string value, string direction)
         {
-            int number = Int32.Parse(value);
+            var number = int.Parse(value);
 
-            if (number == 0 && direction=="-")
-            {
+            if (number == 0 && direction == "-")
                 number = 99;
-            }
-            else if (number == 99 && direction=="+")
-            {
+            else if (number == 99 && direction == "+")
                 number = 0;
-            }
             else
-            {
                 switch (direction)
                 {
                     case "+":
@@ -114,33 +101,30 @@ namespace Chaos
                     default:
                         number = -1; //flag to debugging
                         break;
-
                 }
-            }
 
             return Convert.ToString(number);
         }
 
         private void tNumberOfSpells_TextChanged(object sender, EventArgs e)
         {
-            numberOfSpells = ParseTextToValue(this.tNumberOfSpells);
-
+            numberOfSpells = ParseTextToValue(tNumberOfSpells);
         }
 
         private void tNumberOfTurns_TextChanged(object sender, EventArgs e)
         {
-            numberOfTurns = ParseTextToValue(this.tNumberOfTurns);
+            numberOfTurns = ParseTextToValue(tNumberOfTurns);
         }
 
         private int ParseTextToValue(TextBox box)
         {
-            int value=0;
+            var value = 0;
             try
             {
-                value = Int32.Parse(box.Text);
+                value = int.Parse(box.Text);
                 //Console.WriteLine("spells: " + value);
             }
-            catch (System.FormatException ex)
+            catch (FormatException ex)
             {
                 Console.WriteLine(ex.Message);
                 value = 0;
@@ -152,8 +136,9 @@ namespace Chaos
 
             return value;
         }
-        #endregion
+
         #endregion
 
+        #endregion
     }
 }

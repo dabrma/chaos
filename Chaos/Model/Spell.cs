@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Chaos.Engine;
+﻿using Chaos.Engine;
 
 namespace Chaos.Model
 {
@@ -12,7 +11,7 @@ namespace Chaos.Model
 
         public Spell DeepCopy(Spell template)
         {
-            Spell spell = new Spell();
+            var spell = new Spell();
             spell.Caption = template.Caption;
             spell.CanCastOnMonster = template.CanCastOnMonster;
             spell.CanCastOnNothing = template.CanCastOnNothing;

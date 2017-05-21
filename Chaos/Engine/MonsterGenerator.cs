@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using Chaos.Model;
 using Chaos.Properties;
@@ -26,14 +25,9 @@ namespace Chaos.Engine
 
         public Monster GetMonsterByName(string name, Player owner)
         {
-            foreach (MonsterTemplate monsterTemplate in MonsterTemplates)
-            {
+            foreach (var monsterTemplate in MonsterTemplates)
                 if (monsterTemplate.Name == name)
-                {
                     return new Monster().MonsterFromTemplate(monsterTemplate, owner);
-                }
-
-            }
             throw new NullReferenceException();
         }
 

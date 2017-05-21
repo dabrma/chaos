@@ -4,7 +4,9 @@ namespace Chaos.Model
 {
     public class Player
     {
+        public List<Spell> AvailableSpells;
         private int id;
+        public Spell SelectedSpell;
 
         // TODO: Każdy gracz powinien posiadać listę czarów, które może rzucić.
 
@@ -16,9 +18,6 @@ namespace Chaos.Model
         }
 
         public string Name { get; set; }
-
-        public List<Spell> AvailableSpells;
-        public Spell SelectedSpell;
 
         public override string ToString()
         {

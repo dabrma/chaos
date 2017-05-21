@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using Chaos.Engine;
-using Chaos.Utility;
 using Chaos.Misc;
 using Chaos.Properties;
 
@@ -9,24 +8,30 @@ namespace Chaos
 {
     public partial class GameForm : Form
     {
-        private readonly GameEngine engine;
-        private readonly Gameboard gameboard;
-        private readonly SpellBoard spellboard;
+        public GameEngine engine;
+        public Gameboard gameboard;
+        public SpellBoard spellboard;
 
-        public Panel GetDescriptionPanel { get { return descPanel; } set { descPanel = value; } }
+        public GameForm(int numberOfPlayers, int numberOfTurns, int numberOfSpells)
+        {
+            InitializeComponent();
+
+            UseWaitCursor = false;
+            Cursor = CreateCursorFromStream.CreateCursor(Resources.wand_mc_style_a_nightmare);
+            GetDescriptionPanel.Visible = false;
+            gameboard = new Gameboard(gamePanel, fieldName, movesLeftLabel);
+            engine = new GameEngine(numberOfPlayers, gameboard, this);
+            spellboard = new SpellBoard(spellPanel, engine.GetPlayers, engine, numberOfSpells);
+            engine.spellboard = spellboard;
+            engine.InitializeEngineElements();
+        }
 
         public GameForm()
         {
             InitializeComponent();
-            this.UseWaitCursor = false;
-            this.Cursor = CreateCursorFromStream.CreateCursor(Resources.wand_mc_style_a_nightmare);
-            descPanel.Visible = false;
-            gameboard = new Gameboard(gamePanel, fieldName, movesLeftLabel);
-            engine = new GameEngine(2, gameboard, this);
-            spellboard = new SpellBoard(spellPanel, engine.GetPlayers, engine, 98);
-            engine.spellboard = spellboard;
-            engine.InitializeEngineElements();
         }
+
+        public Panel GetDescriptionPanel { get; set; }
 
         private void endTurnButton_Click(object sender, EventArgs e)
         {
@@ -35,13 +40,13 @@ namespace Chaos
 
         private void helpButton_Click(object sender, EventArgs e)
         {
-            engine.DescriptionMode = engine.DescriptionMode == false ? engine.DescriptionMode = true : engine.DescriptionMode = false;
+            engine.DescriptionMode = engine.DescriptionMode == false
+                ? engine.DescriptionMode = true
+                : engine.DescriptionMode = false;
             if (engine.DescriptionMode)
-            {
                 helpButton.BorderStyle = BorderStyle.Fixed3D;
-            }
 
-            else { helpButton.BorderStyle = BorderStyle.None;}
+            else helpButton.BorderStyle = BorderStyle.None;
         }
 
         private void btnSaveGame_Click(object sender, EventArgs e)

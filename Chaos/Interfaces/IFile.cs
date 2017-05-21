@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chaos.Interfaces
+﻿namespace Chaos.Interfaces
 {
-    interface IFile
+    internal interface IFile
     {
         string GetPath();
-
     }
 }

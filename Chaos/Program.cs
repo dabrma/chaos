@@ -1,11 +1,7 @@
-﻿using Chaos.Misc;
-using Chaos.Properties;
-using Chaos.Utility;
-using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.InteropServices;
+﻿using System;
 using System.Windows.Forms;
+using Chaos.Misc;
+using Chaos.Properties;
 
 namespace Chaos
 {
@@ -22,9 +18,9 @@ namespace Chaos
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormStart());
 //<<<<<<< master
-           // Application.Run(new Form1());
+            // Application.Run(new Form1());
 //=======
-           // Application.Run(new GameForm());
+            // Application.Run(new GameForm());
 //>>>>>>> master
         }
     }

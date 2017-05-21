@@ -10,8 +10,8 @@ namespace Chaos.Engine
         public SpellTile(Point coordinates) : base(coordinates)
         {
             FieldLocalization = coordinates;
-            this.SetOccupant();
-           // UpdateField();
+            SetOccupant();
+            // UpdateField();
         }
     }
 }

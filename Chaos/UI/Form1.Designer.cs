@@ -36,7 +36,7 @@ namespace Chaos
             this.helpButton = new System.Windows.Forms.PictureBox();
             this.discardButton = new System.Windows.Forms.PictureBox();
             this.endTurnButton = new System.Windows.Forms.Button();
-            this.descPanel = new System.Windows.Forms.Panel();
+            this.GetDescriptionPanel = new System.Windows.Forms.Panel();
             this.btnSaveGame = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.discardButton)).BeginInit();
@@ -114,10 +114,10 @@ namespace Chaos
             // 
             // descPanel
             // 
-            this.descPanel.Location = new System.Drawing.Point(12, 12);
-            this.descPanel.Name = "descPanel";
-            this.descPanel.Size = new System.Drawing.Size(723, 633);
-            this.descPanel.TabIndex = 7;
+            this.GetDescriptionPanel.Location = new System.Drawing.Point(12, 12);
+            this.GetDescriptionPanel.Name = "GetDescriptionPanel";
+            this.GetDescriptionPanel.Size = new System.Drawing.Size(723, 633);
+            this.GetDescriptionPanel.TabIndex = 7;
             // 
             // btnSaveGame
             // 
@@ -146,7 +146,7 @@ namespace Chaos
             this.Controls.Add(this.movesLeftLabel);
             this.Controls.Add(this.fieldName);
             this.Controls.Add(this.gamePanel);
-            this.Controls.Add(this.descPanel);
+            this.Controls.Add(this.GetDescriptionPanel);
             this.Name = "GameForm";
             this.Text = "GameForm";
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).EndInit();
@@ -169,7 +169,6 @@ namespace Chaos
         private System.Windows.Forms.PictureBox helpButton;
         private System.Windows.Forms.PictureBox discardButton;
         private System.Windows.Forms.Button endTurnButton;
-        private System.Windows.Forms.Panel descPanel;
         private System.Windows.Forms.Button btnSaveGame;
     }
 }

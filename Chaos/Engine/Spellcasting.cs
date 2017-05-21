@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System.Drawing;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Chaos.Model;
 using Chaos.Properties;
-using Chaos.Utility;
 
 namespace Chaos.Engine
 {
-    class Spellcasting
+    internal class Spellcasting
     {
-
-      //  private readonly Gameboard gameboard;
+        //  private readonly Gameboard gameboard;
         private readonly GameEngine gameEngine;
+
+        public bool finishedCasting;
         private Tile targetField;
 
         public Spellcasting(Gameboard gameboard, GameEngine gameEngine)
         {
-         //   this.gameboard = gameboard;
+            //   this.gameboard = gameboard;
             this.gameEngine = gameEngine;
         }
 
@@ -43,7 +38,7 @@ namespace Chaos.Engine
                     break;
             }
         }
-        public bool finishedCasting = false;
+
         public async Task<bool> CastSpell(Tile target)
         {
             var currentPlayerIndex = gameEngine.GetPlayers.IndexOf(gameEngine.CurrentPlayer);
@@ -51,21 +46,21 @@ namespace Chaos.Engine
             var spell = gameEngine.GetCurrentSpell();
 
             if (spell.CanCastOnNothing && target.GetOccupant() is Nothing &&
-                !this.finishedCasting && 
+                !this.finishedCasting &&
                 MonsterActions.isActionLegal(gameEngine.GetWizardCoordinates(), target.GetCoordinates()))
             {
-                var monsterFromSpell = gameEngine.monsterGenerator.GetMonsterByName(spell.Caption, gameEngine.CurrentPlayer);
+                var monsterFromSpell =
+                    gameEngine.monsterGenerator.GetMonsterByName(spell.Caption, gameEngine.CurrentPlayer);
                 monsterFromSpell.Owner = gameEngine.CurrentPlayer;
                 target.SetOccupant(monsterFromSpell);
                 SoundEngine.play("SingleCast");
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
-
             }
 
             else if (spell.CanCastOnMonster && target.GetOccupant() is Monster &&
-                !this.finishedCasting)
+                     !this.finishedCasting)
             {
-                Monster spellTarget = target.GetOccupant() as Monster;
+                var spellTarget = target.GetOccupant() as Monster;
                 targetField = target;
                 ApplySpellEffect(spell, spellTarget);
                 SoundEngine.play("Boosting");
@@ -73,19 +68,17 @@ namespace Chaos.Engine
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 
-            else { return false; }
+            else
+            {
+                return false;
+            }
 
             if (finishedCasting)
             {
                 this.finishedCasting = true;
                 return finishedCasting;
             }
-            else
-            {
-                return false;
-            }
-
-
+            return false;
         }
     }
 }

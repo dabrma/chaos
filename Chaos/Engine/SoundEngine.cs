@@ -1,15 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Media;
-using System.Reflection;
-using System.Resources;
+﻿using System.Media;
 using System.Speech.Synthesis;
-using System.Threading.Tasks;
 using Chaos.Model;
 using Chaos.Properties;
-using Chaos.Utility;
 
 namespace Chaos.Engine
 {

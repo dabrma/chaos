@@ -1,11 +1,11 @@
-﻿using Chaos.Engine;
-using System.Drawing;
+﻿using System.Drawing;
+using Chaos.Engine;
+using Chaos.Properties;
 
 namespace Chaos.Model
 {
     public class Monster : GameObject
     {
-
         public Monster()
         {
         }
@@ -14,27 +14,6 @@ namespace Chaos.Model
         {
             Owner = owner;
             Caption = Owner.Name + "'s " + Name;
-        }
-
-        public Monster MonsterFromTemplate(MonsterTemplate template, Player owner)
-        {
-            Monster monsterFromTemplate = new Monster();
-            monsterFromTemplate.Owner = owner;
-            monsterFromTemplate.MaxHealth = template.MaxHealth;
-            monsterFromTemplate.Sprite = template.sprite;
-            monsterFromTemplate.Caption = owner.Name + " " + template.Name;
-            monsterFromTemplate.canAttack = template.canAttack;
-            monsterFromTemplate.isUndead = template.isUndead;
-            monsterFromTemplate.Name = template.Name;
-            monsterFromTemplate.Attack = template.Attack;
-            monsterFromTemplate.Defense = template.Defense;
-            monsterFromTemplate.Health = template.Health;
-            monsterFromTemplate.MagicResistance = template.MagicResistance;
-            monsterFromTemplate.Moves = template.Moves;
-            monsterFromTemplate.MovesRemaining = monsterFromTemplate.Moves;
-            monsterFromTemplate.Sprite = (Bitmap)Properties.Resources.ResourceManager.GetObject(monsterFromTemplate.Name);
-
-            return monsterFromTemplate;
         }
 
         public string Name { get; set; }
@@ -56,6 +35,27 @@ namespace Chaos.Model
         public bool canRangedAttack { get; set; }
         public bool isUndead { get; set; }
         public Point coordinates { get; set; }
+
+        public Monster MonsterFromTemplate(MonsterTemplate template, Player owner)
+        {
+            var monsterFromTemplate = new Monster();
+            monsterFromTemplate.Owner = owner;
+            monsterFromTemplate.MaxHealth = template.MaxHealth;
+            monsterFromTemplate.Sprite = template.sprite;
+            monsterFromTemplate.Caption = owner.Name + " " + template.Name;
+            monsterFromTemplate.canAttack = template.canAttack;
+            monsterFromTemplate.isUndead = template.isUndead;
+            monsterFromTemplate.Name = template.Name;
+            monsterFromTemplate.Attack = template.Attack;
+            monsterFromTemplate.Defense = template.Defense;
+            monsterFromTemplate.Health = template.Health;
+            monsterFromTemplate.MagicResistance = template.MagicResistance;
+            monsterFromTemplate.Moves = template.Moves;
+            monsterFromTemplate.MovesRemaining = monsterFromTemplate.Moves;
+            monsterFromTemplate.Sprite = (Bitmap) Resources.ResourceManager.GetObject(monsterFromTemplate.Name);
+
+            return monsterFromTemplate;
+        }
 
         public override string ToString()
         {

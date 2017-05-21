@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Chaos.Model;
-using Chaos.Utility;
 using Chaos.Interfaces;
+using Chaos.Model;
 
 namespace Chaos.Engine
 {
@@ -13,50 +12,70 @@ namespace Chaos.Engine
     {
         private const int SPELLBOARD_WIDTH = 2;
         private const int SPELLBOARD_HEIGHT = 10;
-        public int SPELLS_AMOUNT { get; set; }
-
-
-        private bool firstClick = true;
+        private readonly GameEngine engine;
         private readonly List<Player> players;
-        public Player currentPlayer { get; set; }
-        private Tile sourceField;
 
         /// <summary>
         ///     Panel that contains spell Tiles
         /// </summary>
         private readonly Panel spellboardPanel;
-        private readonly GameEngine engine;
+
         private readonly SpellsGenerator spellsGenerator = new SpellsGenerator();
         private readonly SpellTile[,] spellTiles = new SpellTile[SPELLBOARD_WIDTH, SPELLBOARD_HEIGHT];
+
+
+        private bool firstClick = true;
+        private Tile sourceField;
         private Tile targetField;
 
 
-        public SpellBoard(Panel spellboardPanel, List<Player> players, GameEngine engine, int spellsAmount, bool generateSpells = true)
+        public SpellBoard(Panel spellboardPanel, List<Player> players, GameEngine engine, int spellsAmount,
+            bool generateSpells = true)
         {
             this.engine = engine;
-            this.SPELLS_AMOUNT = spellsAmount;
+            SPELLS_AMOUNT = spellsAmount;
             this.spellboardPanel = spellboardPanel;
             this.players = players;
+            // this.currentPlayer = players[0];
 
-            if(generateSpells)
+            if (generateSpells)
                 populateSpellsArray();
+        }
+
+        public int SPELLS_AMOUNT { get; set; }
+        public Player currentPlayer { get; set; }
+
+        public IEnumerable<SpellTile> GetElementsCollection()
+        {
+            var spellsList = new List<SpellTile>();
+            foreach (var spell in spellTiles)
+                spellsList.Add(spell);
+
+            return spellsList.ToArray();
+        }
+
+        public SpellTile GetElement(SpellTile elementReference)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SpellTile GetElement(Point cooridnates)
+        {
+            throw new NotImplementedException();
         }
 
         private void populateSpellsArray()
         {
             for (var ii = 0; ii < players.Count; ii++)
-            {
-               while(players[ii].AvailableSpells.Count < SPELLS_AMOUNT)
-                {
+                while (players[ii].AvailableSpells.Count < SPELLS_AMOUNT)
                     players[ii].AvailableSpells.Add(spellsGenerator.GenerateRandomSpell());
-                }
-            }
         }
 
         internal void UpdateSpellboard(Player currentPlayer)
         {
             InitializeSpellTiles(currentPlayer);
         }
+
         private void InitializeSpellTiles(Player currentPlayer)
         {
             ClearSpellBoard();
@@ -65,14 +84,12 @@ namespace Chaos.Engine
             for (var row = 0; row < SPELLBOARD_HEIGHT; row++)
             {
                 var spellTile = new SpellTile(new Point(col, row));
-                spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile); 
+                spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile);
                 var currentPlayerIndex = players.IndexOf(currentPlayer);
-                    if (players[currentPlayerIndex].AvailableSpells.Count > (col + 1 * row))
-                    {
-                        spellTile.SetOccupant(players[currentPlayerIndex].AvailableSpells.ElementAt(col + 1 * row));
-                    }
-                    else
-                    { spellTile.SetOccupant(); }
+                if (players[currentPlayerIndex].AvailableSpells.Count > col + 1 * row)
+                    spellTile.SetOccupant(players[currentPlayerIndex].AvailableSpells.ElementAt(col + 1 * row));
+                else
+                    spellTile.SetOccupant();
 
                 spellTile.SetOccupant(spellTile.GetOccupant());
                 spellTiles[col, row] = spellTile;
@@ -99,7 +116,7 @@ namespace Chaos.Engine
         public void OnSpellClick(object sender, EventArgs e, Tile source)
         {
             var currentPlayerIndex = players.IndexOf(currentPlayer);
-            bool finishedPicking = currentPlayerIndex +1 == players.Count;
+            var finishedPicking = currentPlayerIndex + 1 == players.Count;
 
             var spell = source.GetOccupant() as Spell;
             SoundEngine.playClickSound();
@@ -110,34 +127,13 @@ namespace Chaos.Engine
             UpdateSpellboard(engine.CurrentPlayer);
 
 
-            if(finishedPicking)
-            {
+            if (finishedPicking)
                 engine.ChangePhase(GamePhase.Casting);
-            }
         }
 
         public void IsSpellboardVisible(bool visible)
         {
             spellboardPanel.Visible = visible;
-        }
-
-        public IEnumerable<SpellTile> GetElementsCollection()
-        {
-            List<SpellTile> spellsList = new List<SpellTile>();
-            foreach (SpellTile spell in spellTiles)
-                spellsList.Add(spell);
-
-            return spellsList.ToArray();
-        }
-
-        public SpellTile GetElement(SpellTile elementReference)
-        {
-            throw new NotImplementedException();
-        }
-
-        public SpellTile GetElement(Point cooridnates)
-        {
-            throw new NotImplementedException();
         }
     }
 }

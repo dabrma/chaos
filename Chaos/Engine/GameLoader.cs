@@ -1,118 +1,122 @@
-﻿using Chaos.Engine;
-using Chaos.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using ExtendedXmlSerialization;
 using System.Windows.Forms;
+using Chaos.Engine;
+using Chaos.Interfaces;
 using Chaos.Model.DTOs;
-using Colog.Logging;
+using ExtendedXmlSerialization;
 
 namespace Chaos.Model
 {
-    class GameLoader : IFile
+    internal class GameLoader : IFile
     {
-        List<Player> LoadedPlayers = new List<Player>();
-        List<Monster> LoadedMonsters = new List<Monster>();
-        readonly ExtendedXmlSerializer xml = new ExtendedXmlSerializer();
+        private readonly ExtendedXmlSerializer xml = new ExtendedXmlSerializer();
+        private readonly List<Monster> LoadedMonsters = new List<Monster>();
+
+        private readonly List<Player> LoadedPlayers = new List<Player>();
 
         public string GetPath()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog();
 
-            if(openFileDialog.ShowDialog() == DialogResult.OK)
-            {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
                 return openFileDialog.FileName;
-            }
 
             return "";
         }
+
         public void LoadGame()
         {
-            Colog.Console console = new Colog.Console();
-            Colog.Logging.Messaging.GetInstance.Register(console);
-
             var state = LoadData();
-            LoadPlayers(state);
-            LoadMonsters(state);
-
-            var game = new GameForm();
-            var gameboard = new Gameboard(game.GetGamePanel, game.GetNameField, game.GetMovesLeftLabel);
-            var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game);
-            gameEngine.GetPlayers = LoadedPlayers;
-            gameEngine.CurrentPlayer = gameEngine.GetPlayers[0];
-            var spellboard = new SpellBoard(game.GetSpellPanel, LoadedPlayers, gameEngine, 98, false);
-            gameEngine.spellboard = spellboard;
-            gameEngine.InitializeEngineElements(true);
-
-            var tiles = (Tile[])gameboard.GetElementsCollection();
-            foreach (Monster monster in LoadedMonsters)
+            if (state != null)
             {
-                Colog.Logging.Messaging.GetInstance.AddMessage(new PassedMessage($"Generating {monster}"));
-                var mCoords = monster.coordinates;
-                foreach (Tile t in tiles)
+                LoadPlayers(state);
+                LoadMonsters(state);
+
+                var game = new GameForm();
+                var gameboard = new Gameboard(game.GetGamePanel, game.GetNameField, game.GetMovesLeftLabel);
+                var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game, false);
+
+                gameEngine.GetPlayers = LoadedPlayers;
+                gameEngine.CurrentPlayer = gameEngine.GetPlayers[0];
+
+                var spellboard = new SpellBoard(game.GetSpellPanel, LoadedPlayers, gameEngine, 98, false);
+                game.engine = gameEngine;
+                game.gameboard = gameboard;
+                game.spellboard = spellboard;
+                gameEngine.spellboard = spellboard;
+                gameEngine.InitializeEngineElements(true);
+
+                var tiles = (Tile[]) gameboard.GetElementsCollection();
+                foreach (var monster in LoadedMonsters)
                 {
-                    if (t.GetCoordinates() == mCoords)
-                        t.SetOccupant(monster);
-                    break;
+                    var mCoords = monster.coordinates;
+                    foreach (var t in tiles)
+                        if (t.GetCoordinates() == mCoords)
+                            t.SetOccupant(monster);
                 }
+                //foreach (Tile tile in gameboard.GetElementsCollection())
+                //{
+                //    var coords = tile.GetCoordinates();
+                //    var occupant = LoadedMonsters.Find(x => x.coordinates == coords);
+                //    if (occupant != null)
+                //    {
+                //        tile.SetOccupant(occupant);
+                //    }
+                //}
+                game.Show();
             }
-            //foreach (Tile tile in gameboard.GetElementsCollection())
-            //{
-            //    var coords = tile.GetCoordinates();
-            //    var occupant = LoadedMonsters.Find(x => x.coordinates == coords);
-            //    if (occupant != null)
-            //    {
-            //        tile.SetOccupant(occupant);
-            //    }
-            //}
-            game.Show();
         }
 
         private string DeserializedData()
         {
-            string data = File.ReadAllText(GetPath());
+            var data = File.ReadAllText(GetPath());
             if (!string.IsNullOrEmpty(data))
-            {
                 return data;
-            }
 
             throw new IOException();
         }
-        
+
         private GameState LoadData()
         {
-            var data = DeserializedData();
+            string data = null;
+            try
+            {
+                data = DeserializedData();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
             return xml.Deserialize<GameState>(data);
         }
 
         private void LoadPlayers(GameState state)
         {
-            SpellsGenerator generator = new SpellsGenerator();
-            foreach(PlayerDTO dto in state.players)
+            var generator = new SpellsGenerator();
+            foreach (var dto in state.players)
             {
                 var playerFromDTO = new Player(dto.Name);
                 var playerIndex = state.players.IndexOf(dto);
-                foreach(string spellName in state.players[playerIndex].Spells)
-                {
+                foreach (var spellName in state.players[playerIndex].Spells)
                     playerFromDTO.AvailableSpells.Add(generator.GetSpellByName(spellName));
-                }
 
                 LoadedPlayers.Add(playerFromDTO);
             }
         }
+
         private void LoadMonsters(GameState state)
         {
             var temp = new List<Monster>();
-            MonsterGenerator generator = new MonsterGenerator();
-            foreach(MonsterDTO dto in state.monsters)
+            var generator = new MonsterGenerator();
+            foreach (var dto in state.monsters)
             {
-                Player owner = LoadedPlayers.Find(x => x.Name == dto.Owner);
+                var owner = LoadedPlayers.Find(x => x.Name == dto.Owner);
                 var monsterFromDTO = new Monster();
-                if(dto.Name == "Wizard")
-                {
-                    dto.Name = "Wizard" + owner.Name.Substring(owner.Name.Length-1);
-                }
+                if (dto.Name == "Wizard")
+                    dto.Name = "Wizard" + owner.Name.Substring(owner.Name.Length - 1);
                 monsterFromDTO = generator.GetMonsterByName(dto.Name, owner);
                 monsterFromDTO.Moves = dto.Moves;
                 monsterFromDTO.MovesRemaining = dto.MovesRemaining;
@@ -124,7 +128,5 @@ namespace Chaos.Model
                 LoadedMonsters.Add(monsterFromDTO);
             }
         }
-
     }
-    
 }

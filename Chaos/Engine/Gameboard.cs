@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Chaos.Model;
 using Chaos.Interfaces;
-using ExtendedXmlSerialization;
+using Chaos.Model;
 
 namespace Chaos.Engine
 {
     public class Gameboard : ILookupable<Tile>
     {
         #region Fields and Properties
-        private Panel GameboardPanel { get; set; }
+
+        private Panel GameboardPanel { get; }
         public Label FieldName { get; set; }
         public Label MovesLeftLabel { get; set; }
 
-        private int gameboardSize;
-        private Tile[,] tiles;
+        private readonly int gameboardSize;
+        private readonly Tile[,] tiles;
         public List<Player> players = new List<Player>();
         public Player currentPlayer = null;
 
@@ -80,19 +80,20 @@ namespace Chaos.Engine
         {
             var tile = sender as PictureBox;
             FieldName.Text = "";
-         //   tile.BorderStyle = BorderStyle.FixedSingle;
+            //   tile.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void OnMouseOver(object sender, EventArgs e, Tile source)
         {
             var tile = sender as PictureBox;
             FieldName.Text = source.GetOccupant().Caption;
-         //   tile.BorderStyle = BorderStyle.None;
+            //   tile.BorderStyle = BorderStyle.None;
         }
+
         public IEnumerable<Tile> GetElementsCollection()
         {
-            List<Tile> tilesList = new List<Tile>();
-            foreach (Tile element in tiles)
+            var tilesList = new List<Tile>();
+            foreach (var element in tiles)
                 tilesList.Add(element);
 
             return tilesList.ToArray();
@@ -100,13 +101,12 @@ namespace Chaos.Engine
 
         public Tile GetElement(Tile element)
         {
-            foreach(Tile e in tiles)
-            {
+            foreach (var e in tiles)
                 if (e.Equals(element))
                     return e;
-            }
-           throw new NullReferenceException();
+            throw new NullReferenceException();
         }
+
         public Tile GetElement(Point cooridnates)
         {
             return tiles[cooridnates.X, cooridnates.Y];

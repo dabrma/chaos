@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chaos.Model;
 using Chaos.Properties;
-using Chaos.Utility;
 
 namespace Chaos.Engine
 {
@@ -24,7 +20,7 @@ namespace Chaos.Engine
 
         public bool Move(Tile source, Tile target)
         {
-            var ocuppant = (Monster)source.GetOccupant();
+            var ocuppant = (Monster) source.GetOccupant();
             var sourceCoords = source.GetCoordinates();
             var targetCoords = target.GetCoordinates();
             if (isActionLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0)
@@ -121,14 +117,12 @@ namespace Chaos.Engine
         {
             //double distance = Math.Sqrt(Math.Pow((defenderCoordinates.Y - attackerCoordinates.Y), 2) +
             //    Math.Pow((defenderCoordinates.X - attackerCoordinates.X), 2));
-            int distance = Math.Max(Math.Abs(attackerCoordinates.X - defenderCoordinates.X), Math.Abs(attackerCoordinates.Y - defenderCoordinates.Y));
+            var distance = Math.Max(Math.Abs(attackerCoordinates.X - defenderCoordinates.X),
+                Math.Abs(attackerCoordinates.Y - defenderCoordinates.Y));
             if (distance <= attackRange)
-            {
                 return true;
-            }
 
             return false;
         }
-
     }
 }

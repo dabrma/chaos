@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace Chaos.UI
@@ -13,31 +7,30 @@ namespace Chaos.UI
     {
         public SimpleProgressBar()
         {
-            this.SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.UserPaint, true);
         }
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-
             // None... Helps control the flicker.
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             const int inset = 2; // A single inset value to control the sizing of the inner rect.
-            using (Image offscreenImage = new Bitmap(this.Width, this.Height))
+            using (Image offscreenImage = new Bitmap(Width, Height))
             {
-                using (Graphics offscreen = Graphics.FromImage(offscreenImage))
+                using (var offscreen = Graphics.FromImage(offscreenImage))
                 {
-                    Rectangle rect = new Rectangle(0, 0, this.Width, this.Height);
+                    var rect = new Rectangle(0, 0, Width, Height);
                     if (ProgressBarRenderer.IsSupported)
                         ProgressBarRenderer.DrawHorizontalBar(offscreen, rect);
 
                     rect.Inflate(new Size(-inset, -inset)); // Deflate inner rect.
-                    rect.Width = (int)(rect.Width * ((double)this.Value / this.Maximum));
+                    rect.Width = (int) (rect.Width * ((double) Value / Maximum));
                     if (rect.Width == 0) rect.Width = 1; // Can't draw rec with width of 0.
 
-                    SolidBrush brush = new SolidBrush(Color.Green);
+                    var brush = new SolidBrush(Color.Green);
                     offscreen.FillRectangle(brush, inset, inset, rect.Width, rect.Height);
 
                     e.Graphics.DrawImage(offscreenImage, 0, 0);

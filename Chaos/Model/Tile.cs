@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 using Chaos.Interfaces;
 
@@ -18,6 +17,28 @@ namespace Chaos.Engine
             FieldLocalization = position;
             Occupant = new Nothing();
             FieldSetup();
+        }
+
+        public Point GetCoordinates()
+        {
+            return FieldLocalization;
+        }
+
+        public GameObject GetOccupant()
+        {
+            return Occupant;
+        }
+
+        public void SetOccupant()
+        {
+            Occupant = new Nothing();
+            UpdateField();
+        }
+
+        public void SetOccupant(GameObject occupant)
+        {
+            Occupant = occupant;
+            UpdateField();
         }
 
         #region Fields
@@ -51,27 +72,5 @@ namespace Chaos.Engine
         }
 
         #endregion
-
-        public GameObject GetOccupant()
-        {
-            return this.Occupant;
-        }
-
-        public void SetOccupant()
-        {
-            this.Occupant = new Nothing();
-            UpdateField();
-        }
-
-        public void SetOccupant(GameObject occupant)
-        {
-            this.Occupant = occupant;
-            UpdateField();
-        }
-
-        public Point GetCoordinates()
-        {
-            return this.FieldLocalization;
-        }
     }
 }

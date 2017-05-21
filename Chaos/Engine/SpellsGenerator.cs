@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Chaos.Model;
 using Chaos.Properties;
-using System.Collections.Generic;
 
 namespace Chaos.Engine
 {
@@ -17,11 +17,11 @@ namespace Chaos.Engine
         {
             gameObjectStrings = Resources.Spells.Split('\n');
 
-             foreach (string spellLine in gameObjectStrings)
-             {
+            foreach (var spellLine in gameObjectStrings)
+            {
                 var s = spellLine.Split(' ');
                 stringTrimmer(s);
-                Spell spell = new Spell();
+                var spell = new Spell();
                 spell.Caption = s[0];
                 spell.CanCastOnNothing = int.Parse(s[1]) == 1;
                 spell.CanCastOnMonster = int.Parse(s[2]) == 1;
@@ -30,7 +30,7 @@ namespace Chaos.Engine
                     spell.EffectPower = int.Parse(s[3]);
                     spell.EffectLabel = s[4];
                 }
-                spell.Sprite = (Bitmap)Resources.ResourceManager.GetObject(s[0]);
+                spell.Sprite = (Bitmap) Resources.ResourceManager.GetObject(s[0]);
 
                 spells.Add(spell);
             }
@@ -38,22 +38,15 @@ namespace Chaos.Engine
 
         public void stringTrimmer(string[] source)
         {
-            foreach(string untrimmedString in source)
-            {
-                 untrimmedString.TrimEnd('\r');
-            }
+            foreach (var untrimmedString in source)
+                untrimmedString.TrimEnd('\r');
         }
 
         public Spell GetSpellByName(string name)
         {
-            foreach (Spell spell in spells)
-            {
+            foreach (var spell in spells)
                 if (spell.Caption == name)
-                {
-                      return new Spell().DeepCopy(spell);
-                }
-
-            }
+                    return new Spell().DeepCopy(spell);
             throw new NullReferenceException();
         }
 
@@ -61,7 +54,7 @@ namespace Chaos.Engine
         {
             // Generate random spell
             var randomIndex = random.Next(0, gameObjectStrings.Length);
-            string[] spellData = gameObjectStrings.ElementAt(randomIndex).Split(' ');
+            var spellData = gameObjectStrings.ElementAt(randomIndex).Split(' ');
             var spell = new Spell();
             spell.CanCastOnNothing = int.Parse(spellData[1]) == 1;
             spell.CanCastOnMonster = int.Parse(spellData[2]) == 1;
