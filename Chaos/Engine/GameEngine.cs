@@ -28,7 +28,7 @@ namespace Chaos.Engine
         private GamePhase gamePhase;
         public GameSaver gameSaver;
 
-        public List<Player> GetPlayers = new List<Player>();
+        public List<Player> Players = new List<Player>();
         private DescriptionPanel monsterDescriptionPanel;
 
         public GameEngine(int NumberOfPlayers, Gameboard gameboard, GameForm gameForm, bool autogenerate = true)
@@ -40,13 +40,13 @@ namespace Chaos.Engine
             if (autogenerate)
             {
                 GenerateWizards(NumberOfPlayers);
-                CurrentPlayer = GetPlayers[0];
+                CurrentPlayer = Players[0];
             }
-            gameboard.players = GetPlayers;
+            gameboard.players = Players;
             spellcasting = new Spellcasting(gameboard, this);
             this.gameForm = gameForm;
             gameForm.GetDescriptionPanel.Click += HideDescriptionPanel;
-            gameSaver = new GameSaver(gameboard.GetElementsCollection(), GetPlayers);
+            gameSaver = new GameSaver(gameboard.GetElementsCollection(), Players);
         }
 
         public Tile GetSourceField { get; private set; }
@@ -58,6 +58,8 @@ namespace Chaos.Engine
         public Gameboard gameboard { get; set; }
         public SpellBoard spellboard { get; set; }
         public Player CurrentPlayer { get; set; }
+
+        private int TurnsPassed = 0;
 
         private void HideDescriptionPanel(object sender, EventArgs e)
         {
@@ -96,13 +98,13 @@ namespace Chaos.Engine
             {
                 case GamePhase.Picking:
                     spellcasting.finishedCasting = false;
-                    CurrentPlayer = GetPlayers[0];
+                    CurrentPlayer = Players[0];
                     spellboard.currentPlayer = CurrentPlayer;
                     spellboard.UpdateSpellboard(CurrentPlayer);
                     spellboard.IsSpellboardVisible(true);
                     break;
                 case GamePhase.Casting:
-                    CurrentPlayer = GetPlayers[0];
+                    CurrentPlayer = Players[0];
                     spellboard.IsSpellboardVisible(false);
                     break;
                 case GamePhase.Moving:
@@ -114,13 +116,6 @@ namespace Chaos.Engine
         public Spell GetCurrentSpell()
         {
             return CurrentPlayer.SelectedSpell;
-        }
-
-        public void AddMonster(int posX, int posY)
-        {
-            //     var monster = monsterGenerator.GetMonsterByName("Wraith");
-            //     monster.Owner = GetPlayers[0];
-            //     gameboard.tiles[posX, posY].OcupantEnter(monster);
         }
 
         private void UpdateSpellboard()
@@ -136,38 +131,36 @@ namespace Chaos.Engine
 
         public Player SwitchPlayer()
         {
-            var currentPlayerIndex = GetPlayers.IndexOf(CurrentPlayer);
+            var currentPlayerIndex = Players.IndexOf(CurrentPlayer);
 
-            if (currentPlayerIndex + 1 < GetPlayers.Count)
-                CurrentPlayer = GetPlayers[currentPlayerIndex + 1];
-            else if (currentPlayerIndex + 1 == GetPlayers.Count)
-                CurrentPlayer = GetPlayers[currentPlayerIndex];
+            if (currentPlayerIndex + 1 < Players.Count)
+                CurrentPlayer = Players[currentPlayerIndex + 1];
+            else if (currentPlayerIndex + 1 == Players.Count)
+                CurrentPlayer = Players[currentPlayerIndex];
 
             else
-                CurrentPlayer = GetPlayers[0];
+                CurrentPlayer = Players[0];
 
             return CurrentPlayer;
         }
 
-        public void TurnChange()
+        public async void TurnChange()
         {
-            if (gamePhase == GamePhase.Moving && GetPlayers.IndexOf(CurrentPlayer) == GetPlayers.Count - 1)
+            if (gamePhase == GamePhase.Moving && Players.IndexOf(CurrentPlayer) == Players.Count - 1)
             {
                 ChangePhase(GamePhase.Picking);
                 OnPhaseChange();
             }
 
-            else if (gamePhase == GamePhase.Moving && GetPlayers.IndexOf(CurrentPlayer) < GetPlayers.Count - 1)
+            else if (gamePhase == GamePhase.Moving && Players.IndexOf(CurrentPlayer) < Players.Count - 1)
             {
                 OnPhaseChange();
                 CurrentPlayer = SwitchPlayer();
+                await gameboard.HighlightMonstersOfPlayer(CurrentPlayer);
                 SoundEngine.say(CurrentPlayer.Name);
+                TurnsPassed++;
             }
 
-            // Uncomment for logging purposes
-            //foreach (var tile in gameboard.tiles)
-            //    if (tile.Occupant.GetType() == typeof(Monster))
-            //        EventLogger.WriteLog(tile.Occupant.Owner.Name + " " + tile.Occupant.Caption);
         }
 
         private void ResetMonsterMovement()
@@ -188,7 +181,7 @@ namespace Chaos.Engine
             for (var i = 0; i < numberOfPlayers; i++)
             {
                 var player = new Player("Player" + (i + 1));
-                GetPlayers.Add(player);
+                Players.Add(player);
                 var wizard = monsterGenerator.GetMonsterByName("Wizard" + (i + 1), player);
                 wizard.Name = "Wizard";
                 wizard.Caption = wizard.Name;
@@ -224,9 +217,10 @@ namespace Chaos.Engine
 
             if (gamePhase == GamePhase.Casting && await spellcasting.CastSpell(clickSource))
             {
-                CurrentPlayer = GetPlayers[0];
+                CurrentPlayer = Players[0];
                 ResetMonsterMovement();
                 ChangePhase(GamePhase.Moving);
+                await gameboard.HighlightMonstersOfPlayer(CurrentPlayer);
                 return;
             }
 
@@ -285,7 +279,21 @@ namespace Chaos.Engine
 
         private void GameOver()
         {
-            MessageBox.Show(string.Format("Congratulations {0}, you've won!", CurrentPlayer));
+            MessageBox.Show(string.Format($"Congratulations {CurrentPlayer}, you've won!"));
+        }
+
+        public void RemovePlayer(Player playerToRemove)
+        {
+            Players.Remove(playerToRemove);
+
+            foreach(Tile tile in gameboard.GetElementsCollection())
+            {
+                if (tile.GetOccupant() is Monster && tile.GetOccupant().Owner == playerToRemove)
+                {
+                    var monsterToRemove = tile.GetOccupant() as Monster;
+                    tile.SetOccupant();
+                }
+            }
         }
 
         public void resetEventData()

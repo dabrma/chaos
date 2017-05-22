@@ -78,7 +78,14 @@ namespace Chaos.Engine
             gameEngine.GetTargetField.SetOccupant(attacker);
 
             if (defender.Name == "Wizard")
-                MessageBox.Show("Game Over!");
+            {
+                gameEngine.RemovePlayer(defender.Owner);
+
+                if (gameEngine.Players.Count == 1)
+                {
+                    MessageBox.Show("Game Over!");
+                }
+            }
         }
 
         public static bool isActionLegal(Point sourcePoint, Point targetPoint)

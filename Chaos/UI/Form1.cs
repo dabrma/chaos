@@ -21,7 +21,7 @@ namespace Chaos
             GetDescriptionPanel.Visible = false;
             gameboard = new Gameboard(gamePanel, fieldName, movesLeftLabel);
             engine = new GameEngine(numberOfPlayers, gameboard, this);
-            spellboard = new SpellBoard(spellPanel, engine.GetPlayers, engine, numberOfSpells);
+            spellboard = new SpellBoard(spellPanel, engine.Players, engine, numberOfSpells);
             engine.spellboard = spellboard;
             engine.InitializeEngineElements();
         }

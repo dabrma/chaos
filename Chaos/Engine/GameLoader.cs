@@ -38,8 +38,8 @@ namespace Chaos.Model
                 var gameboard = new Gameboard(game.GetGamePanel, game.GetNameField, game.GetMovesLeftLabel);
                 var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game, false);
 
-                gameEngine.GetPlayers = LoadedPlayers;
-                gameEngine.CurrentPlayer = gameEngine.GetPlayers[0];
+                gameEngine.Players = LoadedPlayers;
+                gameEngine.CurrentPlayer = gameEngine.Players[0];
 
                 var spellboard = new SpellBoard(game.GetSpellPanel, LoadedPlayers, gameEngine, 98, false);
                 game.engine = gameEngine;
@@ -56,15 +56,6 @@ namespace Chaos.Model
                         if (t.GetCoordinates() == mCoords)
                             t.SetOccupant(monster);
                 }
-                //foreach (Tile tile in gameboard.GetElementsCollection())
-                //{
-                //    var coords = tile.GetCoordinates();
-                //    var occupant = LoadedMonsters.Find(x => x.coordinates == coords);
-                //    if (occupant != null)
-                //    {
-                //        tile.SetOccupant(occupant);
-                //    }
-                //}
                 game.Show();
             }
         }

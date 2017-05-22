@@ -7,7 +7,6 @@ namespace Chaos.Engine
 {
     internal class Spellcasting
     {
-        //  private readonly Gameboard gameboard;
         private readonly GameEngine gameEngine;
 
         public bool finishedCasting;
@@ -15,7 +14,6 @@ namespace Chaos.Engine
 
         public Spellcasting(Gameboard gameboard, GameEngine gameEngine)
         {
-            //   this.gameboard = gameboard;
             this.gameEngine = gameEngine;
         }
 
@@ -41,8 +39,8 @@ namespace Chaos.Engine
 
         public async Task<bool> CastSpell(Tile target)
         {
-            var currentPlayerIndex = gameEngine.GetPlayers.IndexOf(gameEngine.CurrentPlayer);
-            var finishedCasting = currentPlayerIndex + 1 == gameEngine.GetPlayers.Count;
+            var currentPlayerIndex = gameEngine.Players.IndexOf(gameEngine.CurrentPlayer);
+            var finishedCasting = currentPlayerIndex + 1 == gameEngine.Players.Count;
             var spell = gameEngine.GetCurrentSpell();
 
             if (spell.CanCastOnNothing && target.GetOccupant() is Nothing &&
