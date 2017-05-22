@@ -111,25 +111,27 @@ namespace Chaos.Engine
             await Task.Delay(550);
             gameEngine.GetTargetField.Field.Image = previousBitmap;
         }
+        
 
-        private async Task rangedAttack(Tile attackerTile, Tile defenderTile)
-        {
-            var attacker = attackerTile.GetOccupant() as Monster;
-            var defender = defenderTile.GetOccupant() as Monster;
+        //TODO: Implement ranged attack mechanics
+        //private async Task rangedAttack(Tile attackerTile, Tile defenderTile)
+        //{
+        //    var attacker = attackerTile.GetOccupant() as Monster;
+        //    var defender = defenderTile.GetOccupant() as Monster;
 
-            isDefenderInRange(attackerTile.GetCoordinates(), defenderTile.GetCoordinates(), attacker.Attack);
-        }
+        //    isDefenderInRange(attackerTile.GetCoordinates(), defenderTile.GetCoordinates(), attacker.Attack);
+        //}
 
-        public bool isDefenderInRange(Point attackerCoordinates, Point defenderCoordinates, int attackRange)
-        {
-            //double distance = Math.Sqrt(Math.Pow((defenderCoordinates.Y - attackerCoordinates.Y), 2) +
-            //    Math.Pow((defenderCoordinates.X - attackerCoordinates.X), 2));
-            var distance = Math.Max(Math.Abs(attackerCoordinates.X - defenderCoordinates.X),
-                Math.Abs(attackerCoordinates.Y - defenderCoordinates.Y));
-            if (distance <= attackRange)
-                return true;
+        //public bool isDefenderInRange(Point attackerCoordinates, Point defenderCoordinates, int attackRange)
+        //{
+        //    //double distance = Math.Sqrt(Math.Pow((defenderCoordinates.Y - attackerCoordinates.Y), 2) +
+        //    //    Math.Pow((defenderCoordinates.X - attackerCoordinates.X), 2));
+        //    var distance = Math.Max(Math.Abs(attackerCoordinates.X - defenderCoordinates.X),
+        //        Math.Abs(attackerCoordinates.Y - defenderCoordinates.Y));
+        //    if (distance <= attackRange)
+        //        return true;
 
-            return false;
-        }
+        //    return false;
+        //}
     }
 }

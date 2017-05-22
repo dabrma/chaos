@@ -92,6 +92,9 @@ namespace Chaos.Engine
             OnPhaseChange();
         }
 
+        /// <summary>
+        /// Calls methods to perform depending on game phase.
+        /// </summary>
         public void OnPhaseChange()
         {
             switch (gamePhase)
@@ -123,6 +126,7 @@ namespace Chaos.Engine
             spellboard.UpdateSpellboard(CurrentPlayer);
         }
 
+        // Add a monster to a Tile under X(posX) and Y(posY), give it an owner
         public void AddMonster(Monster monster, Player owner, int posX, int posY)
         {
             monster.Owner = owner;
@@ -185,11 +189,15 @@ namespace Chaos.Engine
                 var wizard = monsterGenerator.GetMonsterByName("Wizard" + (i + 1), player);
                 wizard.Name = "Wizard";
                 wizard.Caption = wizard.Name;
-                if (i == 0)
+                if (i >= 1)
+                {
                     AddMonster(wizard, player, 0, 0);
-                else if (i == 1) AddMonster(wizard, player, 13, 13);
-                else
                     AddMonster(wizard, player, 0, 13);
+                }
+                if (i >= 2)
+                    AddMonster(wizard, player, 13, 0);
+                if (i >= 3)
+                    AddMonster(wizard, player, 13, 13);
             }
         }
 
@@ -258,6 +266,7 @@ namespace Chaos.Engine
                     }
                 }
 
+                // Check if target tile is an enemy Monster, if so call Attack() on it
                 else if (GetTargetField.GetOccupant() is Monster &&
                          GetTargetField.GetOccupant().Owner != GetSourceField.GetOccupant().Owner &&
                          MonsterActions.isActionLegal(GetSourceField.GetCoordinates(),
@@ -296,6 +305,7 @@ namespace Chaos.Engine
             }
         }
 
+        // Reset selection data.
         public void resetEventData()
         {
             firstClick = true;
@@ -305,6 +315,7 @@ namespace Chaos.Engine
             gameboard.MovesLeftLabel.Text = "";
         }
 
+        // Get Y, Z coordinates of a wizard in a grid
         public Point GetWizardCoordinates()
         {
             foreach (var tile in gameboard.GetElementsCollection())
