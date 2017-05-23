@@ -24,12 +24,7 @@ namespace Chaos.UI
         private System.Windows.Forms.Label MRMAXlabel;
         private System.Windows.Forms.Label CMBlabel;
         private System.Windows.Forms.Label CMAXlabel;
-        private string HPvalue;
-        private string HPMAXvalue;
-        private string MRvalue;
-        private string MRMAXvalue;
-        private string CMBvalue;
-        private string CMAXvalue;
+        private System.Windows.Forms.Button btn;
 
         private ProgressBar CombatBar;
         private ProgressBar MresBar;
@@ -42,17 +37,11 @@ namespace Chaos.UI
         {
 
 
-            HPvalue = monster.Health.ToString();
-            HPMAXvalue = monster.MaxHealth.ToString();
-            MRvalue = monster.MagicResistance.ToString();
-            MRMAXvalue = monster.MaxMagicResistance.ToString();
-            CMAXvalue = monster.MaxAttack.ToString();
-            CMBvalue = monster.Attack.ToString();
             NumOfMoves = monster.MovesRemaining;
 
             InitializeComponent();
 
-            CombatBar.Maximum = monster.Attack;
+            CombatBar.Maximum = monster.MaxAttack;
             CombatBar.Value = monster.Attack;
             CombatBar.Step = 1;
             
@@ -61,11 +50,13 @@ namespace Chaos.UI
             lblCanAttackUndead.ForeColor = monster.isUndead ? Color.Green : Color.Red;
 
             lblIsUndead.ForeColor = monster.isUndead ? Color.Green : Color.Red;
-           
+
             HPlabel.Text = monster.Health.ToString();
             HPMAXlabel.Text = monster.MaxHealth.ToString();
             MRlabel.Text = monster.MagicResistance.ToString();
+            MRMAXlabel.Text = monster.MagicResistance.ToString();
             CMBlabel.Text = monster.Attack.ToString();
+            CMAXlabel.Text = monster.MagicResistance.ToString();
 
             LifeBar.Maximum = monster.MaxHealth;
             LifeBar.Step = 1;
@@ -102,7 +93,8 @@ namespace Chaos.UI
         private void InitializeComponent()
         {
             DrawMovementBar();
-
+            this.btn = new Button();
+            btn.Location = new Point(200, 200);
             this.LifeBar = new ProgressBar();
             this.MresBar = new ProgressBar();
             this.CombatBar = new ProgressBar();
@@ -239,7 +231,6 @@ namespace Chaos.UI
             this.HPlabel.Name = "HPlabel";
             this.HPlabel.Size = new System.Drawing.Size(94, 18);
             this.HPlabel.TabIndex = 1;
-            this.HPlabel.Text.Equals(HPvalue);
             ListOfControls.Add(HPlabel);
             //
             //HPMAXlabel
@@ -251,7 +242,6 @@ namespace Chaos.UI
             this.HPMAXlabel.Name = "HPMAXlabel";
             this.HPMAXlabel.Size = new System.Drawing.Size(94, 18);
             this.HPMAXlabel.TabIndex = 1;
-            this.HPMAXlabel.Text.Equals(HPMAXvalue);
             ListOfControls.Add(HPMAXlabel);
             //
             //MRlabel
@@ -263,7 +253,6 @@ namespace Chaos.UI
             this.MRlabel.Name = "MRlabel";
             this.MRlabel.Size = new System.Drawing.Size(94, 18);
             this.MRlabel.TabIndex = 1;
-            this.MRlabel.Text.Equals(MRvalue);
             ListOfControls.Add(MRlabel);
             //
             //MRMAXlabel
@@ -275,19 +264,17 @@ namespace Chaos.UI
             this.MRMAXlabel.Name = "MRMAXlabel";
             this.MRMAXlabel.Size = new System.Drawing.Size(94, 18);
             this.MRMAXlabel.TabIndex = 1;
-            this.MRMAXlabel.Text.Equals(MRMAXvalue);
             ListOfControls.Add(MRMAXlabel);
             //
             //CMBlabel
             //
-            this.CMBlabel.AutoSize = true;
-            this.CMBlabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CMBlabel.ForeColor = System.Drawing.Color.MediumTurquoise;
-            this.CMBlabel.Location = new System.Drawing.Point(230, 279);
-            this.CMBlabel.Name = "CMBlabel";
-            this.CMBlabel.Size = new System.Drawing.Size(94, 18);
-            this.CMBlabel.TabIndex = 1;
-            this.CMBlabel.Text.Equals(CMBvalue);
+            CMBlabel.AutoSize = true;
+            CMBlabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            CMBlabel.ForeColor = System.Drawing.Color.MediumTurquoise;
+            CMBlabel.Location = new System.Drawing.Point(230, 279);
+            CMBlabel.Name = "CMBlabel";
+            CMBlabel.Size = new System.Drawing.Size(94, 18);
+            CMBlabel.TabIndex = 1;
             ListOfControls.Add(CMBlabel);
             //
             //CMAXlabel
@@ -299,7 +286,7 @@ namespace Chaos.UI
             this.CMAXlabel.Name = "CMAXlabel";
             this.CMAXlabel.Size = new System.Drawing.Size(94, 18);
             this.CMAXlabel.TabIndex = 1;
-            this.CMAXlabel.Text.Equals(CMAXvalue);
+ 
             ListOfControls.Add(CMAXlabel);
         }
 
