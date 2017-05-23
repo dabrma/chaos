@@ -38,23 +38,23 @@ namespace Chaos.Model
 
         public Monster MonsterFromTemplate(MonsterTemplate template, Player owner)
         {
-            var monsterFromTemplate = new Monster();
-            monsterFromTemplate.Owner = owner;
-            monsterFromTemplate.MaxHealth = template.MaxHealth;
-            monsterFromTemplate.Sprite = template.sprite;
-            monsterFromTemplate.Caption = owner.Name + " " + template.Name;
-            monsterFromTemplate.canAttack = template.canAttack;
-            monsterFromTemplate.isUndead = template.isUndead;
-            monsterFromTemplate.Name = template.Name;
-            monsterFromTemplate.Attack = template.Attack;
-            monsterFromTemplate.Defense = template.Defense;
-            monsterFromTemplate.Health = template.Health;
-            monsterFromTemplate.MagicResistance = template.MagicResistance;
-            monsterFromTemplate.Moves = template.Moves;
-            monsterFromTemplate.MovesRemaining = monsterFromTemplate.Moves;
-            monsterFromTemplate.Sprite = (Bitmap) Resources.ResourceManager.GetObject(monsterFromTemplate.Name);
+            var monster = new Monster();
+            monster.Owner = owner;
+            monster.MaxHealth = template.MaxHealth;
+            monster.Sprite = template.sprite;
+            monster.Caption = owner.Name + " " + template.Name;
+            monster.canAttack = template.canAttack;
+            monster.isUndead = template.isUndead;
+            monster.Name = template.Name;
+            monster.Attack = template.Attack;
+            monster.Defense = template.Defense;
+            monster.Health = template.Health;
+            monster.MagicResistance = template.MagicResistance;
+            monster.Moves = template.Moves;
+            monster.MovesRemaining = monster.Moves;
+            monster.Sprite = (Bitmap) Resources.ResourceManager.GetObject(monster.Name);
 
-            return monsterFromTemplate;
+            return monster;
         }
 
         public override string ToString()

@@ -36,7 +36,7 @@ namespace Chaos.Model
 
                 var game = new GameForm();
                 var gameboard = new Gameboard(game.GetGamePanel, game.GetNameField, game.GetMovesLeftLabel);
-                var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game, false);
+                var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game, 0 ,false);
 
                 gameEngine.Players = LoadedPlayers;
                 gameEngine.CurrentPlayer = gameEngine.Players[0];

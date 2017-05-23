@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Chaos.Model;
 using Chaos.Properties;
+using System.Windows.Forms;
 
 namespace Chaos.Engine
 {
@@ -37,13 +38,18 @@ namespace Chaos.Engine
             }
         }
 
-        public async Task<bool> CastSpell(Tile target)
+        public async Task<bool> CastSpell(Tile target, MouseEventArgs e)
         {
             var currentPlayerIndex = gameEngine.Players.IndexOf(gameEngine.CurrentPlayer);
             var finishedCasting = currentPlayerIndex + 1 == gameEngine.Players.Count;
             var spell = gameEngine.GetCurrentSpell();
 
-            if (spell.CanCastOnNothing && target.GetOccupant() is Nothing &&
+            if(e.Button == MouseButtons.Right)
+            {
+                gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
+            }
+
+            else if (spell.CanCastOnNothing && target.GetOccupant() is Nothing &&
                 !this.finishedCasting &&
                 MonsterActions.isActionLegal(gameEngine.GetWizardCoordinates(), target.GetCoordinates()))
             {
@@ -52,7 +58,6 @@ namespace Chaos.Engine
                 monsterFromSpell.Owner = gameEngine.CurrentPlayer;
                 target.SetOccupant(monsterFromSpell);
                 SoundEngine.play("SingleCast");
-                gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 
             else if (spell.CanCastOnMonster && target.GetOccupant() is Monster &&

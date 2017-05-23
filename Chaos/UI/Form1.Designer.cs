@@ -3,6 +3,7 @@ namespace Chaos
 {
     partial class GameForm
     {
+        
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -36,7 +37,7 @@ namespace Chaos
             this.helpButton = new System.Windows.Forms.PictureBox();
             this.discardButton = new System.Windows.Forms.PictureBox();
             this.endTurnButton = new System.Windows.Forms.Button();
-            this.GetDescriptionPanel = new System.Windows.Forms.Panel();
+            this.DescriptionPanel = new System.Windows.Forms.Panel();
             this.btnSaveGame = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.discardButton)).BeginInit();
@@ -114,10 +115,10 @@ namespace Chaos
             // 
             // descPanel
             // 
-            this.GetDescriptionPanel.Location = new System.Drawing.Point(12, 12);
-            this.GetDescriptionPanel.Name = "GetDescriptionPanel";
-            this.GetDescriptionPanel.Size = new System.Drawing.Size(723, 633);
-            this.GetDescriptionPanel.TabIndex = 7;
+            this.DescriptionPanel.Location = new System.Drawing.Point(12, 12);
+            this.DescriptionPanel.Name = "GetDescriptionPanel";
+            this.DescriptionPanel.Size = new System.Drawing.Size(723, 633);
+            this.DescriptionPanel.TabIndex = 7;
             // 
             // btnSaveGame
             // 
@@ -146,7 +147,7 @@ namespace Chaos
             this.Controls.Add(this.movesLeftLabel);
             this.Controls.Add(this.fieldName);
             this.Controls.Add(this.gamePanel);
-            this.Controls.Add(this.GetDescriptionPanel);
+            this.Controls.Add(this.DescriptionPanel);
             this.Name = "GameForm";
             this.Text = "GameForm";
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).EndInit();
@@ -159,6 +160,8 @@ namespace Chaos
         #endregion
 
         private System.Windows.Forms.Panel gamePanel;
+        private System.Windows.Forms.Panel DescriptionPanel;
+        public Panel GetDescriptionPanel { get { return DescriptionPanel; } }
         public Panel GetGamePanel { get { return gamePanel; } }
         private System.Windows.Forms.Label fieldName;
         public Label GetNameField { get { return fieldName; } }

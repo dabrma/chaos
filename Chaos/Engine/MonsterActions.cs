@@ -72,10 +72,11 @@ namespace Chaos.Engine
         {
             SoundEngine.playAttackMoveSound();
             await playCombatAnimation(prevBitmap);
+            gameEngine.GetTargetField.SetOccupant(); // Set target field occupant as Nothing
+            gameEngine.GetSourceField.SetOccupant(); // Set source field occupant as Nothing
+            gameEngine.GetTargetField.SetOccupant(attacker); // Put previous source field occupant into target field
 
-            gameEngine.GetTargetField.SetOccupant();
-            gameEngine.GetSourceField.SetOccupant();
-            gameEngine.GetTargetField.SetOccupant(attacker);
+            attacker.Owner.Points += CalculatePointsForKilling(defender); // Add points for killing a monster or a wizard.
 
             if (defender.Name == "Wizard")
             {
@@ -86,6 +87,13 @@ namespace Chaos.Engine
                     MessageBox.Show("Game Over!");
                 }
             }
+        }
+
+        public int CalculatePointsForKilling(Monster killedMonster)
+        {
+            if (killedMonster.Name == "Wizard") return 100;
+            else
+                return ((killedMonster.MaxHealth / 2) + killedMonster.Attack + killedMonster.MagicResistance);
         }
 
         public static bool isActionLegal(Point sourcePoint, Point targetPoint)
@@ -113,7 +121,7 @@ namespace Chaos.Engine
         }
         
 
-        //TODO: Implement ranged attack mechanics
+        //TODO: Implement ranged attack mechanics - NOT GOING TO BE IMPLEMENTED IN VERSION 1.0
         //private async Task rangedAttack(Tile attackerTile, Tile defenderTile)
         //{
         //    var attacker = attackerTile.GetOccupant() as Monster;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chaos.Model;
 using Chaos.UI;
+using System.Linq;
 
 namespace Chaos.Engine
 {
@@ -19,24 +20,36 @@ namespace Chaos.Engine
     {
         private readonly MonsterActions actions;
         private readonly GameForm gameForm;
-        public readonly MonsterGenerator monsterGenerator;
         private readonly Spellcasting spellcasting;
-        public bool DescriptionMode = false;
+        private bool firstClick = true;
+        private int TurnsPassed = 0;
+        private int turnsLimit = 0;
+        private GamePhase gamePhase;
         private SoundEngine eng = new SoundEngine();
 
-        private bool firstClick = true;
-        private GamePhase gamePhase;
         public GameSaver gameSaver;
+        public readonly MonsterGenerator monsterGenerator = new MonsterGenerator();
+        public bool DescriptionMode = false;
+
+        public Tile GetSourceField { get; private set; }
+
+        public Monster GetSelectedMonster { get; private set; }
+
+        public Tile GetTargetField { get; private set; }
+
+        public Gameboard gameboard { get; set; }
+        public SpellBoard spellboard { get; set; }
+        public Player CurrentPlayer { get; set; }
 
         public List<Player> Players = new List<Player>();
         private DescriptionPanel monsterDescriptionPanel;
 
-        public GameEngine(int NumberOfPlayers, Gameboard gameboard, GameForm gameForm, bool autogenerate = true)
+        public GameEngine(int NumberOfPlayers, Gameboard gameboard, GameForm gameForm, int turnsLimit, bool autogenerate = true)
         {
             this.gameboard = gameboard;
+            this.turnsLimit = turnsLimit * NumberOfPlayers;
             actions = new MonsterActions(gameboard, this);
             SetTileEvents();
-            monsterGenerator = new MonsterGenerator();
             if (autogenerate)
             {
                 GenerateWizards(NumberOfPlayers);
@@ -49,17 +62,6 @@ namespace Chaos.Engine
             gameSaver = new GameSaver(gameboard.GetElementsCollection(), Players);
         }
 
-        public Tile GetSourceField { get; private set; }
-
-        public Monster GetSelectedMonster { get; private set; }
-
-        public Tile GetTargetField { get; private set; }
-
-        public Gameboard gameboard { get; set; }
-        public SpellBoard spellboard { get; set; }
-        public Player CurrentPlayer { get; set; }
-
-        private int TurnsPassed = 0;
 
         private void HideDescriptionPanel(object sender, EventArgs e)
         {
@@ -126,7 +128,13 @@ namespace Chaos.Engine
             spellboard.UpdateSpellboard(CurrentPlayer);
         }
 
-        // Add a monster to a Tile under X(posX) and Y(posY), give it an owner
+        /// <summary>
+        /// Adds a monster to a Tile and gives it an owner
+        /// </summary>
+        /// <param name="monster"></param>
+        /// <param name="owner"></param>
+        /// <param name="posX"></param>
+        /// <param name="posY"></param>
         public void AddMonster(Monster monster, Player owner, int posX, int posY)
         {
             monster.Owner = owner;
@@ -162,7 +170,10 @@ namespace Chaos.Engine
                 CurrentPlayer = SwitchPlayer();
                 await gameboard.HighlightMonstersOfPlayer(CurrentPlayer);
                 SoundEngine.say(CurrentPlayer.Name);
-                TurnsPassed++;
+                if (!IsGameOver())
+                {
+                    TurnsPassed++;
+                }
             }
 
         }
@@ -206,12 +217,12 @@ namespace Chaos.Engine
             foreach (var field in gameboard.GetElementsCollection())
             {
                 var pictureBox = field.Field;
-                pictureBox.Click += (sender, args) => TileClicked(field);
+                pictureBox.MouseClick += (sender, args) => TileClicked(field, args);
             }
         }
 
 
-        private async Task TileClicked(Tile clickSource)
+        private async Task TileClicked(Tile clickSource, MouseEventArgs e)
         {
             //if (DescriptionMode)
             //{
@@ -223,7 +234,7 @@ namespace Chaos.Engine
             //    return;
             //}
 
-            if (gamePhase == GamePhase.Casting && await spellcasting.CastSpell(clickSource))
+            if (gamePhase == GamePhase.Casting && await spellcasting.CastSpell(clickSource, e))
             {
                 CurrentPlayer = Players[0];
                 ResetMonsterMovement();
@@ -285,10 +296,21 @@ namespace Chaos.Engine
             }
         }
 
-
-        private void GameOver()
+        /// <summary>
+        /// If max turns parameter has been specified - check if turns has passed, if so, pick a Player with the most points as a winner
+        /// </summary>
+        private bool IsGameOver()
         {
-            MessageBox.Show(string.Format($"Congratulations {CurrentPlayer}, you've won!"));
+            if(turnsLimit != 0)
+            {
+                if(turnsLimit == TurnsPassed)
+                {
+                    var winner = Players.OrderByDescending(p => p.Points).First();
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public void RemovePlayer(Player playerToRemove)

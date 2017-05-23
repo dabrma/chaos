@@ -37,7 +37,8 @@ namespace Chaos.Engine
             this.spellboardPanel = spellboardPanel;
             this.players = players;
             // this.currentPlayer = players[0];
-
+            
+            // Only generate new spellset, when new game is starting. Do not load them if game is loaded
             if (generateSpells)
                 populateSpellsArray();
         }
