@@ -106,8 +106,10 @@ namespace Chaos.Model
             {
                 var owner = LoadedPlayers.Find(x => x.Name == dto.Owner);
                 var monsterFromDTO = new Monster();
-                if (dto.Name == "Wizard")
+                if (dto.Name == "Wizard") { 
                     dto.Name = "Wizard" + owner.Name.Substring(owner.Name.Length - 1);
+                    }
+
                 monsterFromDTO = generator.GetMonsterByName(dto.Name, owner);
                 monsterFromDTO.Moves = dto.Moves;
                 monsterFromDTO.MovesRemaining = dto.MovesRemaining;

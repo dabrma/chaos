@@ -58,6 +58,7 @@ namespace Chaos.Engine
                 monsterFromSpell.Owner = gameEngine.CurrentPlayer;
                 target.SetOccupant(monsterFromSpell);
                 SoundEngine.play("SingleCast");
+                gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 
             else if (spell.CanCastOnMonster && target.GetOccupant() is Monster &&

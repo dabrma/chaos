@@ -80,20 +80,29 @@ namespace Chaos.Engine
         private void InitializeSpellTiles(Player currentPlayer)
         {
             ClearSpellBoard();
-
+            int spellIndex = 0;
             for (var col = 0; col < SPELLBOARD_WIDTH; col++)
-            for (var row = 0; row < SPELLBOARD_HEIGHT; row++)
             {
-                var spellTile = new SpellTile(new Point(col, row));
-                spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile);
-                var currentPlayerIndex = players.IndexOf(currentPlayer);
-                if (players[currentPlayerIndex].AvailableSpells.Count > col + 1 * row)
-                    spellTile.SetOccupant(players[currentPlayerIndex].AvailableSpells.ElementAt(col + 1 * row));
-                else
-                    spellTile.SetOccupant();
+                for (var row = 0; row < SPELLBOARD_HEIGHT; row++)
+                {
+                    var spellTile = new SpellTile(new Point(col, row));
+                    spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile);
+                    var currentPlayerIndex = players.IndexOf(currentPlayer);
 
-                spellTile.SetOccupant(spellTile.GetOccupant());
-                spellTiles[col, row] = spellTile;
+                    if (currentPlayer.AvailableSpells.Count > spellIndex)
+                    {
+                        spellTile.SetOccupant(players[currentPlayerIndex].AvailableSpells.ElementAt(spellIndex));
+                    }
+                    else
+                    {
+                        spellTile.SetOccupant();
+                    }
+
+                    spellIndex++;
+
+                    spellTile.SetOccupant(spellTile.GetOccupant());
+                    spellTiles[col, row] = spellTile;
+                }
             }
 
             InitializeSpellBoard();

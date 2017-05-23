@@ -200,14 +200,17 @@ namespace Chaos.Engine
                 var wizard = monsterGenerator.GetMonsterByName("Wizard" + (i + 1), player);
                 wizard.Name = "Wizard";
                 wizard.Caption = wizard.Name;
-                if (i >= 1)
-                {
+
+                if (i == 0)                
                     AddMonster(wizard, player, 0, 0);
+                
+                if (i == 1)
                     AddMonster(wizard, player, 0, 13);
-                }
-                if (i >= 2)
+                
+                if (i == 2)
                     AddMonster(wizard, player, 13, 0);
-                if (i >= 3)
+
+                if (i == 3)
                     AddMonster(wizard, player, 13, 13);
             }
         }
@@ -224,15 +227,18 @@ namespace Chaos.Engine
 
         private async Task TileClicked(Tile clickSource, MouseEventArgs e)
         {
-            //if (DescriptionMode)
-            //{
-            //    if (clickSource.GetOccupant() is Monster) return;
-            //    gameForm.GetDescriptionPanel.Controls.AddRange(new DescriptionPanel((Monster) clickSource.GetOccupant())
-            //        .GetControls());
-            //    gameForm.GetDescriptionPanel.Visible = true;
-            //    gameForm.GetDescriptionPanel.BringToFront();
-            //    return;
-            //}
+            if (DescriptionMode)
+            {
+                if (clickSource.GetOccupant() is Monster)
+                {
+                    gameForm.GetDescriptionPanel.Controls.AddRange(
+                        new DescriptionPanel((Monster) clickSource.GetOccupant())
+                            .GetControls());
+                    gameForm.GetDescriptionPanel.Visible = true;
+                    gameForm.GetDescriptionPanel.BringToFront();
+                    return;
+                }
+            }
 
             if (gamePhase == GamePhase.Casting && await spellcasting.CastSpell(clickSource, e))
             {

@@ -25,8 +25,10 @@ namespace Chaos.Model
         public int MovesRemaining { get; set; }
 
         public int MagicResistance { get; set; }
+        public int MaxMagicResistance { get; set; }
 
         public int Attack { get; set; }
+        public int MaxAttack { get; set; }
         public int RangedAttack { get; set; }
         public int Range { get; set; }
         public int Defense { get; set; }
@@ -47,9 +49,11 @@ namespace Chaos.Model
             monster.isUndead = template.isUndead;
             monster.Name = template.Name;
             monster.Attack = template.Attack;
+            monster.MaxAttack = template.Attack;
             monster.Defense = template.Defense;
             monster.Health = template.Health;
             monster.MagicResistance = template.MagicResistance;
+            monster.MaxMagicResistance = template.MagicResistance;
             monster.Moves = template.Moves;
             monster.MovesRemaining = monster.Moves;
             monster.Sprite = (Bitmap) Resources.ResourceManager.GetObject(monster.Name);
