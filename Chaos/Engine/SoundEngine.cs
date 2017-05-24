@@ -2,6 +2,7 @@
 using System.Speech.Synthesis;
 using Chaos.Model;
 using Chaos.Properties;
+using System.Threading.Tasks;
 
 namespace Chaos.Engine
 {
@@ -36,6 +37,13 @@ namespace Chaos.Engine
             var synth = new SpeechSynthesizer();
             synth.Rate = -4;
             synth.SpeakAsync(source);
+        }
+
+        public static async Task SayPlayerName(Player currentPlayer)
+        {
+            var synth = new SpeechSynthesizer();
+            synth.Rate = -4;
+            synth.SpeakAsync(currentPlayer.Name);
         }
 
         public static void SaySpellAndPlayerName(Player source)

@@ -31,9 +31,9 @@ namespace Chaos.UI
         private string CMBvalue;
         private string CMAXvalue;
 
-        private ProgressBar CombatBar;
-        private ProgressBar MresBar;
-        private ProgressBar LifeBar;
+        private SimpleProgressBar CombatBar;
+        private SimpleProgressBar MresBar;
+        private SimpleProgressBar LifeBar;
         private int NumOfMoves;
         List<Control> ListOfControls = new List<Control>();
 
@@ -88,7 +88,7 @@ namespace Chaos.UI
             int BarLocationX = 150;
             for (int i = 0; i < NumOfMoves; i++)
             {
-                ProgressBar move = new ProgressBar();
+                SimpleProgressBar move = new SimpleProgressBar();
                 move.Maximum = 1;
                 move.Value = 1;
                 move.ForeColor = Color.FromArgb(255, 0, 0);
@@ -103,9 +103,9 @@ namespace Chaos.UI
         {
             DrawMovementBar();
 
-            this.LifeBar = new ProgressBar();
-            this.MresBar = new ProgressBar();
-            this.CombatBar = new ProgressBar();
+            this.LifeBar = new SimpleProgressBar();
+            this.MresBar = new SimpleProgressBar();
+            this.CombatBar = new SimpleProgressBar();
             this.lblCanAttackUndead = new System.Windows.Forms.Label();
             this.lblIsUndead = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();

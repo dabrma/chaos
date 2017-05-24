@@ -169,10 +169,15 @@ namespace Chaos.Engine
                 OnPhaseChange();
                 CurrentPlayer = SwitchPlayer();
                 await gameboard.HighlightMonstersOfPlayer(CurrentPlayer);
-                SoundEngine.say(CurrentPlayer.Name);
                 if (!IsGameOver())
                 {
                     TurnsPassed++;
+                }
+                 
+                else
+                {
+                    gameForm.Close();
+
                 }
             }
 
@@ -220,7 +225,7 @@ namespace Chaos.Engine
             foreach (var field in gameboard.GetElementsCollection())
             {
                 var pictureBox = field.Field;
-                pictureBox.MouseClick += (sender, args) => TileClicked(field, args);
+                pictureBox.MouseClick += async (sender, args) => await TileClicked(field, args);
             }
         }
 

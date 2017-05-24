@@ -103,7 +103,8 @@ namespace Chaos.Engine
         public async Task HighlightMonstersOfPlayer(Player player)
         {
             var tilesToHighlight = new List<Tile>();
-            foreach(Tile tile in tiles)
+            await SoundEngine.SayPlayerName(player);
+            foreach (Tile tile in tiles)
             {
                 if(tile.GetOccupant() is Monster && tile.GetOccupant().Owner == player)
                 {
