@@ -171,7 +171,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Wizard3.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Nothing.bmp" />
   </ItemGroup>
@@ -330,6 +332,33 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\wand_mc_style-a_nightmare.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Wizard4.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenDragon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Armor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Slow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Speed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Fireball.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CombatSpell.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SpeedUp.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Debuffing.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

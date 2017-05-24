@@ -21,6 +21,7 @@ namespace Chaos.Engine
         private readonly MonsterActions actions;
         private readonly GameForm gameForm;
         private readonly Spellcasting spellcasting;
+        public FormStart startForm;
         private bool firstClick = true;
         private int TurnsPassed = 0;
         private int turnsLimit = 0;
@@ -32,11 +33,8 @@ namespace Chaos.Engine
         public bool DescriptionMode = false;
 
         public Tile GetSourceField { get; private set; }
-
         public Monster GetSelectedMonster { get; private set; }
-
         public Tile GetTargetField { get; private set; }
-
         public Gameboard gameboard { get; set; }
         public SpellBoard spellboard { get; set; }
         public Player CurrentPlayer { get; set; }
@@ -156,31 +154,34 @@ namespace Chaos.Engine
             return CurrentPlayer;
         }
 
-        public async void TurnChange()
+        public async Task TurnChange()
         {
-            if (gamePhase == GamePhase.Moving && Players.IndexOf(CurrentPlayer) == Players.Count - 1)
-            {
-                ChangePhase(GamePhase.Picking);
-                OnPhaseChange();
-            }
 
-            else if (gamePhase == GamePhase.Moving && Players.IndexOf(CurrentPlayer) < Players.Count - 1)
+            if (!IsGameOver())
             {
-                OnPhaseChange();
-                CurrentPlayer = SwitchPlayer();
-                await gameboard.HighlightMonstersOfPlayer(CurrentPlayer);
-                if (!IsGameOver())
+                TurnsPassed++;
+
+                if (gamePhase == GamePhase.Moving && Players.IndexOf(CurrentPlayer) == Players.Count - 1)
                 {
-                    TurnsPassed++;
+                    ChangePhase(GamePhase.Picking);
+                    OnPhaseChange();
                 }
-                 
-                else
-                {
-                    gameForm.Close();
 
+                else if (gamePhase == GamePhase.Moving && Players.IndexOf(CurrentPlayer) < Players.Count - 1)
+                {
+                    OnPhaseChange();
+                    CurrentPlayer = SwitchPlayer();
+                    await gameboard.HighlightMonstersOfPlayer(CurrentPlayer);
                 }
             }
 
+            else
+            {
+                GameOver gameOverScreen = new GameOver(Players);
+                gameOverScreen.ShowDialog();
+                startForm.Visible = true;
+                gameForm.Dispose();
+            }
         }
 
         private void ResetMonsterMovement()
@@ -210,13 +211,13 @@ namespace Chaos.Engine
                     AddMonster(wizard, player, 0, 0);
                 
                 if (i == 1)
-                    AddMonster(wizard, player, 0, 13);
+                    AddMonster(wizard, player, 13, 13);
                 
                 if (i == 2)
-                    AddMonster(wizard, player, 13, 0);
+                    AddMonster(wizard, player, 0, 13);
 
                 if (i == 3)
-                    AddMonster(wizard, player, 13, 13);
+                    AddMonster(wizard, player, 13, 0);
             }
         }
 
@@ -225,7 +226,7 @@ namespace Chaos.Engine
             foreach (var field in gameboard.GetElementsCollection())
             {
                 var pictureBox = field.Field;
-                pictureBox.MouseClick += async (sender, args) => await TileClicked(field, args);
+                pictureBox.MouseClick += async (sender, args) => TileClicked(field, args);
             }
         }
 

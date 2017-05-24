@@ -16,8 +16,8 @@ namespace Chaos
         {
             InitializeComponent();
 
-            UseWaitCursor = false;
-            Cursor = CreateCursorFromStream.CreateCursor(Resources.wand_mc_style_a_nightmare);
+           // UseWaitCursor = false;
+            //Cursor = CreateCursorFromStream.CreateCursor(Resources.wand_mc_style_a_nightmare);
             DescriptionPanel.Visible = false;
             gameboard = new Gameboard(gamePanel, fieldName, movesLeftLabel);
             engine = new GameEngine(numberOfPlayers, gameboard, this, numberOfTurns);

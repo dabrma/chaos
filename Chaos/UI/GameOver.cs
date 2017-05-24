@@ -17,22 +17,28 @@ namespace Chaos.UI
         public GameOver(List<Player> players)
         {
             this.Players = players;
-            Players.OrderByDescending(p => p.Points);
-            Player mock = new Player("Player1");
-            mock.Points = 100;
-            Player mock2 = new Player("Player2");
-            mock.Points = 30;
 
-            Players.Add(mock);
-            Players.Add(mock2);
+            //Player mock = new Player("Player1");
+            //mock.Points = 100;
+            //Player mock2 = new Player("Player2");
+            //mock2.Points = 80;
+            //Player mock3 = new Player("Player3");
+            //mock3.Points = 20;
+            //Player mock4 = new Player("Player4");
+            //mock4.Points = 60;
 
+            //Players.Add(mock);
+            //Players.Add(mock2);
+            //Players.Add(mock3);
+            //Players.Add(mock4);
+            Players = new List<Player>(Players.OrderByDescending(p => p.Points));
             InitializeComponent();
             DisplayScore();
         }
 
         public void DisplayScore()
         {
-            Point location = new Point(0, 150);
+            Point location = new Point(0, 120);
             foreach (Player player in Players) {
 
                 CreateControlsGroup(player, location);
@@ -56,18 +62,27 @@ namespace Chaos.UI
             playerName.Size = new Size(76, 18);
             playerName.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             playerName.Text = player.Name;
-            playerName.Location = new Point((position.X + 50), position.Y + 16);
+            playerName.Location = new Point(150, position.Y + 16);
 
             Label pointsLabel = new Label();
             pointsLabel.AutoSize = true;
             pointsLabel.ForeColor = Color.White;
             pointsLabel.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             pointsLabel.Text = player.Points.ToString();
-            pointsLabel.Location = new Point((position.X + 60 + 80), position.Y + 16);
+            pointsLabel.Location = new Point((290), position.Y + 16);
 
             this.Controls.Add(pb);
             this.Controls.Add(playerName);
             this.Controls.Add(pointsLabel);
+        }
+
+        private void GameOver_Load(object sender, EventArgs e)
+        {
+
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

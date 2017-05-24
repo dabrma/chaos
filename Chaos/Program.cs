@@ -17,13 +17,9 @@ namespace Chaos
             Cursor.Current = CreateCursorFromStream.CreateCursor(Resources.Normal);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //  Application.Run(new FormStart());
-            Application.Run(new GameOver(new System.Collections.Generic.List<Model.Player>()));
-//<<<<<<< master
-            // Application.Run(new Form1());
-//=======
-            // Application.Run(new GameForm());
-//>>>>>>> master
+            Application.Run(new FormStart());
+           // Application.Run(new GameOver(new System.Collections.Generic.List<Model.Player>()));
+
         }
     }
 }

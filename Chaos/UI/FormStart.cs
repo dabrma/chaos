@@ -29,21 +29,26 @@ namespace Chaos
 
         private void bExitGame_Click(object sender, EventArgs e)
         {
+            this.Dispose();
         }
 
         private void bLoadGame_Click(object sender, EventArgs e)
         {
 
              GameLoader gameLoader = new GameLoader();
+             gameLoader.StartMenu = this;
              gameLoader.LoadGame();
+             SettingsPanel.Hide();
 
         }
 
         private void bStart_Click(object sender, EventArgs e)
         {
             var newGame = new GameForm(numberOfPlayers, numberOfTurns, numberOfSpells);
+            newGame.engine.startForm = this;
             newGame.Show();
-            Visible = false;
+            this.Visible = false;
+            SettingsPanel.Hide();
         }
 
         #endregion

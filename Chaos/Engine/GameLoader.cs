@@ -13,6 +13,7 @@ namespace Chaos.Model
     {
         private readonly ExtendedXmlSerializer xml = new ExtendedXmlSerializer();
         private readonly List<Monster> LoadedMonsters = new List<Monster>();
+        public FormStart StartMenu;
 
         private readonly List<Player> LoadedPlayers = new List<Player>();
 
@@ -38,6 +39,7 @@ namespace Chaos.Model
                 var gameboard = new Gameboard(game.GetGamePanel, game.GetNameField, game.GetMovesLeftLabel);
                 var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game, 0 ,false);
 
+                gameEngine.startForm = StartMenu;
                 gameEngine.Players = LoadedPlayers;
                 gameEngine.CurrentPlayer = gameEngine.Players[0];
 
