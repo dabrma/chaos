@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chaos.Model;
+using System;
 using System.Windows.Forms;
 
 namespace Chaos
@@ -32,6 +33,10 @@ namespace Chaos
 
         private void bLoadGame_Click(object sender, EventArgs e)
         {
+
+             GameLoader gameLoader = new GameLoader();
+             gameLoader.LoadGame();
+
         }
 
         private void bStart_Click(object sender, EventArgs e)
@@ -49,9 +54,6 @@ namespace Chaos
         {
             numberOfPlayers = tNumberOfPlayer.Value;
             lNumberOfPlayersValue.Text = Convert.ToString(tNumberOfPlayer.Value);
-
-            // GameLoader gameLoader = new GameLoader();
-            // gameLoader.LoadGame();
         }
 
         #region Entering the number of spells and turns

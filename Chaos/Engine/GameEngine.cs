@@ -66,7 +66,7 @@ namespace Chaos.Engine
         private void HideDescriptionPanel(object sender, EventArgs e)
         {
             var panel = sender as Panel;
-            panel.Dispose();
+            panel.Hide();
         }
 
         public void InitializeEngineElements(bool isGameLoaded = false)
@@ -231,6 +231,7 @@ namespace Chaos.Engine
             {
                 if (clickSource.GetOccupant() is Monster)
                 {
+                    gameForm.GetDescriptionPanel.Controls.Clear();
                     gameForm.GetDescriptionPanel.Controls.AddRange(
                         new DescriptionPanel((Monster) clickSource.GetOccupant())
                             .GetControls());

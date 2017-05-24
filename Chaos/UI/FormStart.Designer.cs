@@ -55,9 +55,10 @@
             this.buttonsPanel.Controls.Add(this.bExitGame);
             this.buttonsPanel.Controls.Add(this.bLoadGame);
             this.buttonsPanel.Controls.Add(this.bNewGame);
-            this.buttonsPanel.Location = new System.Drawing.Point(245, 2);
+            this.buttonsPanel.Location = new System.Drawing.Point(184, 2);
+            this.buttonsPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonsPanel.Name = "buttonsPanel";
-            this.buttonsPanel.Size = new System.Drawing.Size(247, 645);
+            this.buttonsPanel.Size = new System.Drawing.Size(185, 524);
             this.buttonsPanel.TabIndex = 0;
             // 
             // bExitGame
@@ -66,9 +67,10 @@
             this.bExitGame.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bExitGame.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bExitGame.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.bExitGame.Location = new System.Drawing.Point(0, 480);
+            this.bExitGame.Location = new System.Drawing.Point(0, 390);
+            this.bExitGame.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bExitGame.Name = "bExitGame";
-            this.bExitGame.Size = new System.Drawing.Size(247, 80);
+            this.bExitGame.Size = new System.Drawing.Size(185, 65);
             this.bExitGame.TabIndex = 2;
             this.bExitGame.Text = "EXIT GAME";
             this.bExitGame.UseVisualStyleBackColor = false;
@@ -80,9 +82,10 @@
             this.bLoadGame.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bLoadGame.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bLoadGame.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.bLoadGame.Location = new System.Drawing.Point(0, 280);
+            this.bLoadGame.Location = new System.Drawing.Point(0, 228);
+            this.bLoadGame.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bLoadGame.Name = "bLoadGame";
-            this.bLoadGame.Size = new System.Drawing.Size(247, 80);
+            this.bLoadGame.Size = new System.Drawing.Size(185, 65);
             this.bLoadGame.TabIndex = 1;
             this.bLoadGame.Text = "LOAD GAME";
             this.bLoadGame.UseVisualStyleBackColor = false;
@@ -94,9 +97,10 @@
             this.bNewGame.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bNewGame.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bNewGame.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.bNewGame.Location = new System.Drawing.Point(0, 100);
+            this.bNewGame.Location = new System.Drawing.Point(0, 81);
+            this.bNewGame.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bNewGame.Name = "bNewGame";
-            this.bNewGame.Size = new System.Drawing.Size(247, 80);
+            this.bNewGame.Size = new System.Drawing.Size(185, 65);
             this.bNewGame.TabIndex = 0;
             this.bNewGame.Text = "NEW GAME";
             this.bNewGame.UseVisualStyleBackColor = false;
@@ -117,8 +121,9 @@
             this.SettingsPanel.Controls.Add(this.lNumberOfPlayers);
             this.SettingsPanel.Controls.Add(this.bStart);
             this.SettingsPanel.Location = new System.Drawing.Point(2, 2);
+            this.SettingsPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SettingsPanel.Name = "SettingsPanel";
-            this.SettingsPanel.Size = new System.Drawing.Size(723, 648);
+            this.SettingsPanel.Size = new System.Drawing.Size(542, 526);
             this.SettingsPanel.TabIndex = 1;
             this.SettingsPanel.Visible = false;
             // 
@@ -127,9 +132,10 @@
             this.lNumberOfPlayersValue.AutoSize = true;
             this.lNumberOfPlayersValue.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lNumberOfPlayersValue.ForeColor = System.Drawing.Color.Fuchsia;
-            this.lNumberOfPlayersValue.Location = new System.Drawing.Point(464, 53);
+            this.lNumberOfPlayersValue.Location = new System.Drawing.Point(348, 43);
+            this.lNumberOfPlayersValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lNumberOfPlayersValue.Name = "lNumberOfPlayersValue";
-            this.lNumberOfPlayersValue.Size = new System.Drawing.Size(35, 34);
+            this.lNumberOfPlayersValue.Size = new System.Drawing.Size(28, 26);
             this.lNumberOfPlayersValue.TabIndex = 14;
             this.lNumberOfPlayersValue.Text = "2";
             // 
@@ -139,9 +145,10 @@
             this.bNoOfTurnsRight.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bNoOfTurnsRight.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bNoOfTurnsRight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.bNoOfTurnsRight.Location = new System.Drawing.Point(514, 310);
+            this.bNoOfTurnsRight.Location = new System.Drawing.Point(386, 243);
+            this.bNoOfTurnsRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bNoOfTurnsRight.Name = "bNoOfTurnsRight";
-            this.bNoOfTurnsRight.Size = new System.Drawing.Size(32, 32);
+            this.bNoOfTurnsRight.Size = new System.Drawing.Size(24, 28);
             this.bNoOfTurnsRight.TabIndex = 13;
             this.bNoOfTurnsRight.Text = ">";
             this.bNoOfTurnsRight.UseVisualStyleBackColor = false;
@@ -153,9 +160,10 @@
             this.bNoOfSpellsRight.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bNoOfSpellsRight.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bNoOfSpellsRight.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.bNoOfSpellsRight.Location = new System.Drawing.Point(514, 200);
+            this.bNoOfSpellsRight.Location = new System.Drawing.Point(386, 162);
+            this.bNoOfSpellsRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bNoOfSpellsRight.Name = "bNoOfSpellsRight";
-            this.bNoOfSpellsRight.Size = new System.Drawing.Size(32, 32);
+            this.bNoOfSpellsRight.Size = new System.Drawing.Size(24, 28);
             this.bNoOfSpellsRight.TabIndex = 12;
             this.bNoOfSpellsRight.Text = ">";
             this.bNoOfSpellsRight.UseVisualStyleBackColor = false;
@@ -167,9 +175,10 @@
             this.bNoOfTurnsLeft.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bNoOfTurnsLeft.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bNoOfTurnsLeft.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.bNoOfTurnsLeft.Location = new System.Drawing.Point(410, 309);
+            this.bNoOfTurnsLeft.Location = new System.Drawing.Point(308, 242);
+            this.bNoOfTurnsLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bNoOfTurnsLeft.Name = "bNoOfTurnsLeft";
-            this.bNoOfTurnsLeft.Size = new System.Drawing.Size(32, 32);
+            this.bNoOfTurnsLeft.Size = new System.Drawing.Size(24, 28);
             this.bNoOfTurnsLeft.TabIndex = 11;
             this.bNoOfTurnsLeft.Text = "<";
             this.bNoOfTurnsLeft.UseVisualStyleBackColor = false;
@@ -181,9 +190,10 @@
             this.bNoOfSpellsLeft.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bNoOfSpellsLeft.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bNoOfSpellsLeft.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.bNoOfSpellsLeft.Location = new System.Drawing.Point(410, 200);
+            this.bNoOfSpellsLeft.Location = new System.Drawing.Point(308, 162);
+            this.bNoOfSpellsLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bNoOfSpellsLeft.Name = "bNoOfSpellsLeft";
-            this.bNoOfSpellsLeft.Size = new System.Drawing.Size(32, 32);
+            this.bNoOfSpellsLeft.Size = new System.Drawing.Size(24, 28);
             this.bNoOfSpellsLeft.TabIndex = 10;
             this.bNoOfSpellsLeft.Text = "<";
             this.bNoOfSpellsLeft.UseVisualStyleBackColor = false;
@@ -193,10 +203,11 @@
             // 
             this.tNumberOfTurns.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tNumberOfTurns.ForeColor = System.Drawing.Color.Fuchsia;
-            this.tNumberOfTurns.Location = new System.Drawing.Point(448, 310);
+            this.tNumberOfTurns.Location = new System.Drawing.Point(336, 243);
+            this.tNumberOfTurns.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tNumberOfTurns.MaxLength = 2;
             this.tNumberOfTurns.Name = "tNumberOfTurns";
-            this.tNumberOfTurns.Size = new System.Drawing.Size(60, 32);
+            this.tNumberOfTurns.Size = new System.Drawing.Size(46, 27);
             this.tNumberOfTurns.TabIndex = 9;
             this.tNumberOfTurns.Text = "0";
             this.tNumberOfTurns.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -206,10 +217,11 @@
             // 
             this.tNumberOfSpells.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.tNumberOfSpells.ForeColor = System.Drawing.Color.Fuchsia;
-            this.tNumberOfSpells.Location = new System.Drawing.Point(448, 200);
+            this.tNumberOfSpells.Location = new System.Drawing.Point(336, 162);
+            this.tNumberOfSpells.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tNumberOfSpells.MaxLength = 2;
             this.tNumberOfSpells.Name = "tNumberOfSpells";
-            this.tNumberOfSpells.Size = new System.Drawing.Size(60, 32);
+            this.tNumberOfSpells.Size = new System.Drawing.Size(46, 27);
             this.tNumberOfSpells.TabIndex = 8;
             this.tNumberOfSpells.Text = "0";
             this.tNumberOfSpells.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -220,9 +232,10 @@
             this.lNumberOfTurns.AutoSize = true;
             this.lNumberOfTurns.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lNumberOfTurns.ForeColor = System.Drawing.Color.MediumTurquoise;
-            this.lNumberOfTurns.Location = new System.Drawing.Point(40, 310);
+            this.lNumberOfTurns.Location = new System.Drawing.Point(30, 252);
+            this.lNumberOfTurns.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lNumberOfTurns.Name = "lNumberOfTurns";
-            this.lNumberOfTurns.Size = new System.Drawing.Size(196, 25);
+            this.lNumberOfTurns.Size = new System.Drawing.Size(152, 18);
             this.lNumberOfTurns.TabIndex = 7;
             this.lNumberOfTurns.Text = "Number of turns";
             // 
@@ -231,9 +244,10 @@
             this.lNumberOfSpells.AutoSize = true;
             this.lNumberOfSpells.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lNumberOfSpells.ForeColor = System.Drawing.Color.MediumTurquoise;
-            this.lNumberOfSpells.Location = new System.Drawing.Point(40, 200);
+            this.lNumberOfSpells.Location = new System.Drawing.Point(30, 162);
+            this.lNumberOfSpells.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lNumberOfSpells.Name = "lNumberOfSpells";
-            this.lNumberOfSpells.Size = new System.Drawing.Size(202, 25);
+            this.lNumberOfSpells.Size = new System.Drawing.Size(154, 18);
             this.lNumberOfSpells.TabIndex = 4;
             this.lNumberOfSpells.Text = "Number of spells";
             // 
@@ -241,13 +255,15 @@
             // 
             this.tNumberOfPlayer.AccessibleDescription = "";
             this.tNumberOfPlayer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(35)))));
-            this.tNumberOfPlayer.Location = new System.Drawing.Point(400, 90);
+            this.tNumberOfPlayer.LargeChange = 1;
+            this.tNumberOfPlayer.Location = new System.Drawing.Point(300, 73);
+            this.tNumberOfPlayer.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tNumberOfPlayer.Maximum = 4;
             this.tNumberOfPlayer.Minimum = 2;
             this.tNumberOfPlayer.Name = "tNumberOfPlayer";
             this.tNumberOfPlayer.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tNumberOfPlayer.RightToLeftLayout = true;
-            this.tNumberOfPlayer.Size = new System.Drawing.Size(157, 56);
+            this.tNumberOfPlayer.Size = new System.Drawing.Size(118, 45);
             this.tNumberOfPlayer.TabIndex = 2;
             this.tNumberOfPlayer.Value = 2;
             this.tNumberOfPlayer.Scroll += new System.EventHandler(this.tNumberOfPlayer_Scroll);
@@ -257,9 +273,10 @@
             this.lNumberOfPlayers.AutoSize = true;
             this.lNumberOfPlayers.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lNumberOfPlayers.ForeColor = System.Drawing.Color.MediumTurquoise;
-            this.lNumberOfPlayers.Location = new System.Drawing.Point(40, 90);
+            this.lNumberOfPlayers.Location = new System.Drawing.Point(30, 73);
+            this.lNumberOfPlayers.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lNumberOfPlayers.Name = "lNumberOfPlayers";
-            this.lNumberOfPlayers.Size = new System.Drawing.Size(219, 25);
+            this.lNumberOfPlayers.Size = new System.Drawing.Size(170, 18);
             this.lNumberOfPlayers.TabIndex = 1;
             this.lNumberOfPlayers.Text = "Number of players";
             // 
@@ -269,9 +286,10 @@
             this.bStart.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.bStart.Font = new System.Drawing.Font("Verdana", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.bStart.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.bStart.Location = new System.Drawing.Point(241, 450);
+            this.bStart.Location = new System.Drawing.Point(181, 366);
+            this.bStart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bStart.Name = "bStart";
-            this.bStart.Size = new System.Drawing.Size(247, 80);
+            this.bStart.Size = new System.Drawing.Size(185, 65);
             this.bStart.TabIndex = 0;
             this.bStart.Text = "START";
             this.bStart.UseVisualStyleBackColor = false;
@@ -279,13 +297,14 @@
             // 
             // FormStart
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(35)))));
-            this.ClientSize = new System.Drawing.Size(723, 646);
+            this.ClientSize = new System.Drawing.Size(542, 525);
             this.Controls.Add(this.SettingsPanel);
             this.Controls.Add(this.buttonsPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormStart";
