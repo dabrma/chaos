@@ -11,10 +11,10 @@ namespace Chaos.Engine
         private static readonly SoundPlayer soundPlayer = new SoundPlayer();
 
         /// <summary>
-        ///     Says the name of a monster after clicking on it
+        /// Text-to-speech operation on a Monster passed to an argument
         /// </summary>
         /// <param name="source">Monster that is the source of sound</param>
-        public static void say(Monster source)
+        public static void Speak(Monster source)
         {
             soundPlayer.Stream = Resources.selectionBeep;
             soundPlayer.LoadAsync();
@@ -24,78 +24,29 @@ namespace Chaos.Engine
             synth.SpeakAsync(source.Name);
         }
 
-
-        /// <summary>
-        ///     Text-to-speech operation on the string passed to an argument
-        /// </summary>
-        /// <param name="source">Speakable text/param>
-        public static void say(string source)
-        {
-            soundPlayer.Stream = Resources.selectionBeep;
-            soundPlayer.LoadAsync();
-            soundPlayer.Play();
-            var synth = new SpeechSynthesizer();
-            synth.Rate = -4;
-            synth.SpeakAsync(source);
-        }
-
-        public static async Task SayPlayerName(Player currentPlayer)
+        public static void PlayerName(Player currentPlayer)
         {
             var synth = new SpeechSynthesizer();
             synth.Rate = -4;
             synth.SpeakAsync(currentPlayer.Name);
         }
 
-        public static void SaySpellAndPlayerName(Player source)
+        public static void SpellAndPlayerName(Player source)
         {
             var synth = new SpeechSynthesizer();
             synth.Rate = -4;
             synth.SpeakAsync(source.Name + "   " + source.SelectedSpell.Caption);
         }
 
-        /*
-         * TODO: Look if there is a pattern, that supports a scenarion, where we create only one method
-         * and it takes care of playing sounds based on place it's used from / caller method.
-         */
-
-        public static void play(string sound)
+        /// <summary>
+        /// Gets the audio resource by string passed to a parameter and plays it.
+        /// </summary>
+        /// <param name="sound">
+        /// String with name of an audio resource
+        /// </param>
+        public static void PlaySound(string sound, bool async = true)
         {
             soundPlayer.Stream = Resources.ResourceManager.GetStream(sound);
-            soundPlayer.LoadAsync();
-            soundPlayer.Play();
-        }
-
-        public static void playStepSound()
-        {
-            soundPlayer.Stream = Resources.MovementSound;
-            soundPlayer.LoadAsync();
-            soundPlayer.Play();
-        }
-
-        public static void playAttackSound()
-        {
-            soundPlayer.Stream = Resources.fighting;
-            soundPlayer.LoadAsync();
-            soundPlayer.Play();
-        }
-
-        public static void playClickSound()
-        {
-            soundPlayer.Stream = Resources.Click;
-            soundPlayer.LoadAsync();
-            soundPlayer.Play();
-        }
-
-        public static void playAttackMoveSound()
-        {
-            soundPlayer.Stream = Resources.combatMove;
-            soundPlayer.LoadAsync();
-            soundPlayer.Play();
-        }
-
-        public static void playUndeadAttackSound()
-        {
-            soundPlayer.Stream = Resources.wrongTarget;
             soundPlayer.LoadAsync();
             soundPlayer.Play();
         }

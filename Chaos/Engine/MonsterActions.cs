@@ -28,7 +28,7 @@ namespace Chaos.Engine
                 source.SetOccupant();
                 target.SetOccupant(ocuppant);
                 ocuppant.MovesRemaining--;
-                SoundEngine.playStepSound();
+                SoundEngine.PlaySound("MovementSound");
                 return true;
             }
 
@@ -41,7 +41,7 @@ namespace Chaos.Engine
 
             if (defender.isUndead && !attacker.isUndead)
             {
-                SoundEngine.playUndeadAttackSound();
+                SoundEngine.PlaySound("wrongTarget");
                 PostCombat(attacker);
                 return false;
             }
@@ -55,7 +55,7 @@ namespace Chaos.Engine
 
             else
             {
-                SoundEngine.playAttackSound();
+                SoundEngine.PlaySound("fighting");
                 await playCombatAnimation(prevSprite);
             }
             PostCombat(attacker);
@@ -70,7 +70,7 @@ namespace Chaos.Engine
 
         private async Task Die(Monster attacker, Monster defender, Bitmap prevBitmap)
         {
-            SoundEngine.playAttackMoveSound();
+            SoundEngine.PlaySound("combatMove");
             await playCombatAnimation(prevBitmap);
             gameEngine.GetTargetField.SetOccupant(); // Set target field occupant as Nothing
             gameEngine.GetSourceField.SetOccupant(); // Set source field occupant as Nothing

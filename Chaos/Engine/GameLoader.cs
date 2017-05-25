@@ -80,7 +80,7 @@ namespace Chaos.Model
             }
             catch (Exception ex)
             {
-                return null;
+                MessageBox.Show($"An error has ocurred during game loading {ex.Message}");
             }
 
             return xml.Deserialize<GameState>(data);

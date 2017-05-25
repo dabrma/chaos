@@ -16,18 +16,12 @@ namespace Chaos.Engine
         private readonly List<Player> players;
 
         /// <summary>
-        ///     Panel that contains spell Tiles
+        /// Panel that holds spell Tiles
         /// </summary>
         private readonly Panel spellboardPanel;
 
         private readonly SpellsGenerator spellsGenerator = new SpellsGenerator();
         private readonly SpellTile[,] spellTiles = new SpellTile[SPELLBOARD_WIDTH, SPELLBOARD_HEIGHT];
-
-
-        private bool firstClick = true;
-        private Tile sourceField;
-        private Tile targetField;
-
 
         public SpellBoard(Panel spellboardPanel, List<Player> players, GameEngine engine, int spellsAmount,
             bool generateSpells = true)
@@ -129,7 +123,7 @@ namespace Chaos.Engine
             var finishedPicking = currentPlayerIndex + 1 == players.Count;
 
             var spell = source.GetOccupant() as Spell;
-            SoundEngine.playClickSound();
+            SoundEngine.PlaySound("Click");
             currentPlayer.SelectedSpell = spell;
             currentPlayer.AvailableSpells.Remove(spell);
 
