@@ -137,6 +137,7 @@ namespace Chaos
             this.Controls.Add(this.DescriptionPanel);
             this.Name = "GameForm";
             this.Text = "GameForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

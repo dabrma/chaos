@@ -78,13 +78,14 @@ namespace Chaos.Engine
 
             attacker.Owner.Points += CalculatePointsForKilling(defender); // Add points for killing a monster or a wizard.
 
-            if (defender.Name == "Wizard")
+            if (defender.Name.Contains("Wizard"))
             {
                 gameEngine.RemovePlayer(defender.Owner);
 
                 if (gameEngine.Players.Count == 1)
                 {
-                    MessageBox.Show("Game Over!");
+                    gameEngine.postGamePlayersList.Add(attacker.Owner);
+                    gameEngine.ShowGameOverScreen();
                 }
             }
         }

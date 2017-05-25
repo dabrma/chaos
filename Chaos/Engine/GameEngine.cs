@@ -54,7 +54,6 @@ namespace Chaos.Engine
             spellcasting = new Spellcasting(gameboard, this);
             this.gameForm = gameForm;
             gameForm.GetDescriptionPanel.Click += HideDescriptionPanel;
-            gameSaver = new GameSaver(gameboard.GetElementsCollection(), Players);
         }
 
         #endregion
@@ -67,6 +66,7 @@ namespace Chaos.Engine
         public SpellBoard spellboard { get; set; }
         public Player CurrentPlayer { get; set; }
 
+        public List<Player> postGamePlayersList = new List<Player>();
         #endregion
 
         #region Public Methods
@@ -106,19 +106,27 @@ namespace Chaos.Engine
             monster.Owner = owner;
             gameboard.GetElement(new Point(posX, posY)).SetOccupant(monster);
         }
+        /// <summary>
+        /// Helper method to decide whether sound should be played or not
+        /// </summary>
+        /// <returns></returns>
+
         public Player SwitchPlayer()
         {
             var currentPlayerIndex = Players.IndexOf(CurrentPlayer);
 
             if (currentPlayerIndex + 1 < Players.Count)
+            {
                 CurrentPlayer = Players[currentPlayerIndex + 1];
+                if(gamePhase == GamePhase.Casting && CurrentPlayer.SelectedSpell != null) SoundEngine.SpellAndPlayerName(CurrentPlayer);
+            }
             else if (currentPlayerIndex + 1 == Players.Count)
+            {
                 CurrentPlayer = Players[currentPlayerIndex];
+            }
 
             else
                 CurrentPlayer = Players[0];
-
-            HighlightCurrentlyCastingPlayer();
 
             return CurrentPlayer;
         }
@@ -145,18 +153,25 @@ namespace Chaos.Engine
 
             else
             {
-                GameOver gameOverScreen = new GameOver(Players);
-                gameOverScreen.ShowDialog();
-                startForm.Visible = true;
-                gameForm.Dispose();
+                ShowGameOverScreen();
             }
         }
+
+        public void ShowGameOverScreen()
+        {
+            GameOver gameOverScreen = new GameOver(postGamePlayersList);
+            gameOverScreen.ShowDialog();
+            startForm.Visible = true;
+            gameForm.Dispose();
+        }
+
         public Spell GetCurrentSpell()
         {
             return CurrentPlayer.SelectedSpell;
         }
         public void RemovePlayer(Player playerToRemove)
         {
+            postGamePlayersList.Add(playerToRemove);
             Players.Remove(playerToRemove);
 
             foreach (Tile tile in gameboard.GetElementsCollection())
@@ -220,7 +235,7 @@ namespace Chaos.Engine
                     break;
                 case GamePhase.Casting:
                     CurrentPlayer = Players[0];
-                    HighlightCurrentlyCastingPlayer();
+                    if(CurrentPlayer.SelectedSpell != null) SoundEngine.SpellAndPlayerName(CurrentPlayer);
                     spellboard.IsSpellboardVisible(false);
                     break;
                 case GamePhase.Moving:
@@ -355,13 +370,18 @@ namespace Chaos.Engine
         /// <summary>
         /// If max turns parameter has been specified - check if turns has passed, if so, pick a Player with the most points as a winner
         /// </summary>
-        private bool IsGameOver()
+        public bool IsGameOver()
         {
             if (turnsLimit != 0)
             {
                 if (turnsLimit == TurnsPassed)
                 {
-                    var winner = Players.OrderByDescending(p => p.Points).First();
+                    foreach (Player pl in Players)
+                    {
+                        //if(!postGamePlayersList.Contains(pl)) 
+                            postGamePlayersList.Add(pl);
+                    }
+                    var winner = postGamePlayersList.OrderByDescending(p => p.Points).First();
                     return true;
                 }
             }

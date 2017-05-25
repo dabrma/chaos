@@ -12,11 +12,15 @@ namespace Chaos.Model
     {
         private readonly IEnumerable<Tile> gameboardElements;
         private readonly List<Player> players = new List<Player>();
+        private readonly Player currentPlayer;
+        private readonly int TurnsLimit;
 
-        public GameSaver(IEnumerable<Tile> gameboard, List<Player> players)
+        public GameSaver(IEnumerable<Tile> gameboardElements, List<Player> players, Player currentPlayer, int TurnsLimit)
         {
-            gameboardElements = gameboard;
+            this.gameboardElements = gameboardElements;
             this.players = players;
+            this.currentPlayer = currentPlayer;
+            this.TurnsLimit = TurnsLimit;
         }
 
         public string GetPath()
@@ -59,6 +63,7 @@ namespace Chaos.Model
             {
                 var dto = new PlayerDTO();
                 dto.Name = p.Name;
+                dto.Points = p.Points;
 
                 foreach (var s in p.AvailableSpells)
                     dto.Spells.Add(s.Caption);
@@ -75,6 +80,8 @@ namespace Chaos.Model
                 var state = new GameState();
                 state.monsters = monsterDTOs();
                 state.players = playerDTOs();
+                state.currentPlayerIndex = players.IndexOf(currentPlayer);
+                state.TurnsAmount = TurnsLimit;
 
                 var xml = new ExtendedXmlSerializer();
                 File.AppendAllText(filePath, xml.Serialize(state));

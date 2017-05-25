@@ -360,6 +360,12 @@
   <ItemGroup>
     <None Include="Resources\Debuffing.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Casting.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Damage.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

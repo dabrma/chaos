@@ -130,6 +130,16 @@ namespace Chaos.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Casting {
+            get {
+                object obj = ResourceManager.GetObject("Casting", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream Click {
@@ -182,6 +192,16 @@ namespace Chaos.Properties {
         internal static System.Drawing.Bitmap Crocodile {
             get {
                 object obj = ResourceManager.GetObject("Crocodile", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Damage {
+            get {
+                object obj = ResourceManager.GetObject("Damage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

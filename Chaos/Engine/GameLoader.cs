@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Chaos.Engine;
 using Chaos.Interfaces;
@@ -37,11 +38,11 @@ namespace Chaos.Model
 
                 var game = new GameForm();
                 var gameboard = new Gameboard(game.GetGamePanel, game.GetNameField, game.GetMovesLeftLabel);
-                var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game, 0 ,false);
+                var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game, state.TurnsAmount ,false);
 
                 gameEngine.startForm = StartMenu;
                 gameEngine.Players = LoadedPlayers;
-                gameEngine.CurrentPlayer = gameEngine.Players[0];
+                gameEngine.CurrentPlayer = LoadedPlayers.ElementAt(state.currentPlayerIndex);
 
                 var spellboard = new SpellBoard(game.GetSpellPanel, LoadedPlayers, gameEngine, 98, false);
                 game.engine = gameEngine;

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Chaos.Engine;
 using Chaos.Misc;
+using Chaos.Model;
 using Chaos.Properties;
 
 namespace Chaos
@@ -11,13 +13,13 @@ namespace Chaos
         public GameEngine engine;
         public Gameboard gameboard;
         public SpellBoard spellboard;
+        private readonly int NumberOfTurns;
 
         public GameForm(int numberOfPlayers, int numberOfTurns, int numberOfSpells)
         {
             InitializeComponent();
+            NumberOfTurns = numberOfTurns;
 
-           // UseWaitCursor = false;
-            //Cursor = CreateCursorFromStream.CreateCursor(Resources.wand_mc_style_a_nightmare);
             DescriptionPanel.Visible = false;
             gameboard = new Gameboard(gamePanel, fieldName, movesLeftLabel);
             engine = new GameEngine(numberOfPlayers, gameboard, this, numberOfTurns);
@@ -30,8 +32,6 @@ namespace Chaos
         {
             InitializeComponent();
         }
-
-       // public Panel GetDescriptionPanel { get; set; }
 
         private void endTurnButton_Click(object sender, EventArgs e)
         {
@@ -51,7 +51,14 @@ namespace Chaos
 
         private void btnSaveGame_Click(object sender, EventArgs e)
         {
-            engine.gameSaver.SaveGame();
+            var gameSaver = new GameSaver(gameboard.GetElementsCollection(), engine.Players, engine.CurrentPlayer, NumberOfTurns);
+            gameSaver.SaveGame();
+
+        }
+
+        private void GameForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Environment.Exit(-1);
         }
     }
 }

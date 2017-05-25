@@ -61,22 +61,26 @@ namespace Chaos.Engine
             }         
         }
 
-        public void ApplySpellEffect(Spell spell, Monster target)
+        public async Task ApplySpellEffect(Spell spell, Monster target)
         {
             switch (spell.EffectLabel.First().ToString())
             {
                 case "C":
+                    SoundEngine.PlaySound("Boosting");
+                    await PlayAnimation(targetField, targetField.GetOccupant().Sprite, "Boost");
                     target.Attack = target.Attack + spell.EffectPower > 1 ? target.Attack + spell.EffectPower : 1;
                     break;
                 case "H":
                     if (spell.EffectPower < 0)
                     {
                         SoundEngine.PlaySound("CombatSpell");
+                        await PlayAnimation(targetField, targetField.GetOccupant().Sprite, "Damage");
                         DamageSpellAction(spell.EffectPower, target);
                     }
                     else
                     {
                         SoundEngine.PlaySound("Boosting");
+                        await PlayAnimation(targetField, targetField.GetOccupant().Sprite, "Boost");
                         target.Health += spell.EffectPower;
                         target.MaxHealth += spell.EffectPower;
                     }
@@ -94,7 +98,8 @@ namespace Chaos.Engine
             var finishedCasting = currentPlayerIndex + 1 == gameEngine.Players.Count;
             var spell = gameEngine.GetCurrentSpell();
 
-            if(e.Button == MouseButtons.Right)
+          
+            if (e.Button == MouseButtons.Right)
             {
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
@@ -107,9 +112,9 @@ namespace Chaos.Engine
                     gameEngine.monsterGenerator.GetMonsterByName(spell.Caption, gameEngine.CurrentPlayer);
                 monsterFromSpell.Owner = gameEngine.CurrentPlayer;
                 targetField = target;
-                await PlayAnimation(targetField, monsterFromSpell.Sprite, "Boost");
+                SoundEngine.PlaySound("SingleCast");
+                await PlayAnimation(targetField, monsterFromSpell.Sprite, "Casting");
                 target.SetOccupant(monsterFromSpell);
-                //SoundEngine.PlaySound("SingleCast");
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 
@@ -118,8 +123,7 @@ namespace Chaos.Engine
             {
                 var spellTarget = target.GetOccupant() as Monster;
                 targetField = target;
-                ApplySpellEffect(spell, spellTarget);
-                await PlayAnimation(target, spellTarget.Sprite, "Boost");
+                await ApplySpellEffect(spell, spellTarget);
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 
