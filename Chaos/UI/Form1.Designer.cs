@@ -72,7 +72,7 @@ namespace Chaos
             // 
             // spellPanel
             // 
-            this.spellPanel.Location = new System.Drawing.Point(691, 67);
+            this.spellPanel.Location = new System.Drawing.Point(691, 61);
             this.spellPanel.Name = "spellPanel";
             this.spellPanel.Size = new System.Drawing.Size(98, 481);
             this.spellPanel.TabIndex = 3;
@@ -80,7 +80,7 @@ namespace Chaos
             // helpButton
             // 
             this.helpButton.Image = global::Chaos.Properties.Resources.Question_mark;
-            this.helpButton.Location = new System.Drawing.Point(691, 13);
+            this.helpButton.Location = new System.Drawing.Point(691, 11);
             this.helpButton.Name = "helpButton";
             this.helpButton.Size = new System.Drawing.Size(48, 48);
             this.helpButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -137,6 +137,7 @@ namespace Chaos
             this.Controls.Add(this.DescriptionPanel);
             this.Name = "GameForm";
             this.Text = "GameForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -17,7 +17,7 @@ namespace Chaos.Engine
         public Label MovesLeftLabel { get; set; }
 
         private readonly int gameboardSize;
-        private readonly Tile[,] tiles;
+        public Tile[,] tiles;
         public List<Player> players = new List<Player>();
         public Player currentPlayer = null;
 
@@ -103,7 +103,8 @@ namespace Chaos.Engine
         public async Task HighlightMonstersOfPlayer(Player player)
         {
             var tilesToHighlight = new List<Tile>();
-            foreach(Tile tile in tiles)
+            SoundEngine.PlayerName(player);
+            foreach (Tile tile in tiles)
             {
                 if(tile.GetOccupant() is Monster && tile.GetOccupant().Owner == player)
                 {

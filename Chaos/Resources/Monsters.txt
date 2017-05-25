@@ -1,6 +1,7 @@
 Wizard1 20 4 1 1 0
 Wizard2 20 4 1 1 0
 Wizard3 20 4 1 1 0
+Wizard4 20 4 1 1 0
 Lion 30 3 8 4 0
 Skeleton 5 5 2 1 1
 Wraith 22 7 3 2 1
@@ -18,3 +19,4 @@ Crocodile 37 2 7 1 0
 Eagle 15 4 4 6 0
 Birdy 25 5 5 6 0
 GoldenDragon 53 3 10 4 0
+GreenDragon 39 4 9 3 0

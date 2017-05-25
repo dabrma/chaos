@@ -20,19 +20,21 @@ namespace Chaos.Engine
 
         public bool Move(Tile source, Tile target)
         {
-            var ocuppant = (Monster) source.GetOccupant();
+            var occuppant = (Monster)source.GetOccupant();
             var sourceCoords = source.GetCoordinates();
             var targetCoords = target.GetCoordinates();
-            if (isActionLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0)
+            var tiles = gameboard.tiles;
+            if (isActionLegal(sourceCoords, targetCoords) && occuppant.MovesRemaining > 0&&
+                IsMoveLegal(gameboard,sourceCoords,tiles,gameEngine))
             {
                 source.SetOccupant();
-                target.SetOccupant(ocuppant);
-                ocuppant.MovesRemaining--;
-                SoundEngine.playStepSound();
+                target.SetOccupant(occuppant);
+                occuppant.MovesRemaining--;
+                SoundEngine.PlaySound("MovementSound");             
                 return true;
-            }
-
+            }          
             return false;
+           
         }
 
         public async Task<bool> Attack(Monster attacker, Monster defender)
@@ -41,7 +43,7 @@ namespace Chaos.Engine
 
             if (defender.isUndead && !attacker.isUndead)
             {
-                SoundEngine.playUndeadAttackSound();
+                SoundEngine.PlaySound("wrongTarget");
                 PostCombat(attacker);
                 return false;
             }
@@ -55,7 +57,7 @@ namespace Chaos.Engine
 
             else
             {
-                SoundEngine.playAttackSound();
+                SoundEngine.PlaySound("fighting");
                 await playCombatAnimation(prevSprite);
             }
             PostCombat(attacker);
@@ -70,7 +72,7 @@ namespace Chaos.Engine
 
         private async Task Die(Monster attacker, Monster defender, Bitmap prevBitmap)
         {
-            SoundEngine.playAttackMoveSound();
+            SoundEngine.PlaySound("combatMove");
             await playCombatAnimation(prevBitmap);
             gameEngine.GetTargetField.SetOccupant(); // Set target field occupant as Nothing
             gameEngine.GetSourceField.SetOccupant(); // Set source field occupant as Nothing
@@ -78,13 +80,14 @@ namespace Chaos.Engine
 
             attacker.Owner.Points += CalculatePointsForKilling(defender); // Add points for killing a monster or a wizard.
 
-            if (defender.Name == "Wizard")
+            if (defender.Name.Contains("Wizard"))
             {
                 gameEngine.RemovePlayer(defender.Owner);
 
                 if (gameEngine.Players.Count == 1)
                 {
-                    MessageBox.Show("Game Over!");
+                    gameEngine.postGamePlayersList.Add(attacker.Owner);
+                    gameEngine.ShowGameOverScreen();
                 }
             }
         }
@@ -98,8 +101,8 @@ namespace Chaos.Engine
 
         public static bool isActionLegal(Point sourcePoint, Point targetPoint)
         {
-            if (
-                sourcePoint.X - 1 == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
+            if
+                (sourcePoint.X - 1 == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
                 sourcePoint.X == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
                 sourcePoint.X + 1 == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
                 sourcePoint.X - 1 == targetPoint.X && sourcePoint.Y == targetPoint.Y ||
@@ -112,14 +115,35 @@ namespace Chaos.Engine
 
             return false;
         }
+        public static bool IsMoveLegal(Gameboard gameboard, Point Sourcepoint, Tile[,] tiles,GameEngine gameengine)
+        {        
 
+            for (int i = 0; i < 14; i++)
+            {
+                for (int j = 0; j < 14; j++) 
+                {
+                    if ((Math.Abs(Sourcepoint.X-i) == 1) && (Math.Abs(Sourcepoint.Y-j) == 1))
+                    {
+                        if (tiles[j,i].GetOccupant().Caption!="Nothing"&&
+                            tiles[j,i].GetOccupant().Owner!=gameengine.CurrentPlayer)
+                            return false;
+                    }
+                      
+                       
+                }
+
+            }
+
+            return true;
+        }
+        
         private async Task playCombatAnimation(Bitmap previousBitmap)
         {
             gameEngine.GetTargetField.Field.Image = Resources.combat;
             await Task.Delay(550);
             gameEngine.GetTargetField.Field.Image = previousBitmap;
         }
-        
+
 
         //TODO: Implement ranged attack mechanics - NOT GOING TO BE IMPLEMENTED IN VERSION 1.0
         //private async Task rangedAttack(Tile attackerTile, Tile defenderTile)
