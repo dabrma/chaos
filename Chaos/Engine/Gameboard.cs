@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Chaos.Interfaces;
 using Chaos.Model;
+using System.Threading.Tasks;
 
 namespace Chaos.Engine
 {
@@ -99,6 +100,32 @@ namespace Chaos.Engine
             return tilesList.ToArray();
         }
 
+        public async Task HighlightMonstersOfPlayer(Player player)
+        {
+            var tilesToHighlight = new List<Tile>();
+            SoundEngine.PlayerName(player);
+            foreach (Tile tile in tiles)
+            {
+                if(tile.GetOccupant() is Monster && tile.GetOccupant().Owner == player)
+                {
+                    tilesToHighlight.Add(tile);
+                }
+            }
+            BorderStyle originalBorder = 0;
+            foreach(Tile tileToHighlight in tilesToHighlight)
+            {
+                originalBorder = tileToHighlight.Field.BorderStyle;
+                tileToHighlight.Field.BorderStyle = BorderStyle.Fixed3D;
+            }
+
+            await Task.Delay(700);
+
+            foreach (Tile tileToHighlight in tilesToHighlight)
+            {
+                tileToHighlight.Field.BorderStyle = originalBorder;
+            }
+        }
+        
         public Tile GetElement(Tile element)
         {
             foreach (var e in tiles)

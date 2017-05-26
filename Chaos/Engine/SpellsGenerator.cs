@@ -52,7 +52,6 @@ namespace Chaos.Engine
 
         public Spell GenerateRandomSpell()
         {
-            // Generate random spell
             var randomIndex = random.Next(0, gameObjectStrings.Length);
             var spellData = gameObjectStrings.ElementAt(randomIndex).Split(' ');
             var spell = new Spell();

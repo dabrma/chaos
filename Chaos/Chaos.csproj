@@ -118,6 +118,12 @@
     <Compile Include="Model\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\GameOver.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\GameOver.Designer.cs">
+      <DependentUpon>GameOver.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\SimpleProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -142,6 +148,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\GameOver.resx">
+      <DependentUpon>GameOver.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\SimpleProgressBar.resx">
       <DependentUpon>SimpleProgressBar.cs</DependentUpon>
     </EmbeddedResource>
@@ -162,7 +171,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\Wizard3.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Nothing.bmp" />
   </ItemGroup>
@@ -321,6 +332,39 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\wand_mc_style-a_nightmare.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Wizard4.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\GreenDragon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Armor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Slow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Speed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Fireball.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CombatSpell.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SpeedUp.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Debuffing.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Casting.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Damage.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

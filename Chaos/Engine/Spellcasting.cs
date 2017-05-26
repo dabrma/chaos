@@ -1,13 +1,15 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using Chaos.Model;
 using Chaos.Properties;
+using System.Windows.Forms;
 
 namespace Chaos.Engine
 {
     internal class Spellcasting
     {
-        //  private readonly Gameboard gameboard;
         private readonly GameEngine gameEngine;
 
         public bool finishedCasting;
@@ -15,45 +17,104 @@ namespace Chaos.Engine
 
         public Spellcasting(Gameboard gameboard, GameEngine gameEngine)
         {
-            //   this.gameboard = gameboard;
             this.gameEngine = gameEngine;
         }
 
-        public async Task PlayBoostAnimation(Tile targeTile, Bitmap previousBitmap)
+        private void DamageSpellAction(int spellPower, Monster target)
         {
-            targeTile.Field.Image = Resources.Boost;
-            await Task.Delay(550);
-            targeTile.Field.Image = previousBitmap;
+            int LeftOverDamage = 0;
+
+            if (target.MagicResistance > 0)
+            {
+                target.MagicResistance = target.MagicResistance + spellPower;
+                LeftOverDamage = target.MagicResistance;
+                if (target.MagicResistance <= 0)
+                {
+                    target.MagicResistance = 0;
+                    target.Health += LeftOverDamage;
+                }
+            }
+
+            else if (target.MagicResistance <= 0)
+            {
+                target.Health += spellPower;
+            }
+
+            if (target.Health <= 0)
+            {
+                targetField.SetOccupant();
+            }
         }
 
-        public void ApplySpellEffect(Spell spell, Monster target)
+        public async Task PlayAnimation (Tile target, Bitmap previousSprite, string animationResource, int msDelay = 500)
         {
-            switch (spell.EffectLabel)
+            try
+            {
+                var prevSprite = previousSprite;
+                targetField.Field.Image = (Bitmap)Resources.ResourceManager.GetObject(animationResource);
+                await Task.Delay(msDelay);
+                targetField.Field.Image = prevSprite;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }         
+        }
+
+        public async Task ApplySpellEffect(Spell spell, Monster target)
+        {
+            switch (spell.EffectLabel.First().ToString())
             {
                 case "C":
+                    SoundEngine.PlaySound("Boosting");
+                    await PlayAnimation(targetField, targetField.GetOccupant().Sprite, "Boost");
                     target.Attack = target.Attack + spell.EffectPower > 1 ? target.Attack + spell.EffectPower : 1;
                     break;
                 case "H":
-                    target.Health += spell.EffectPower;
+                    if (spell.EffectPower < 0)
+                    {
+                        SoundEngine.PlaySound("CombatSpell");
+                        await PlayAnimation(targetField, targetField.GetOccupant().Sprite, "Damage");
+                        DamageSpellAction(spell.EffectPower, target);
+                    }
+                    else
+                    {
+                        SoundEngine.PlaySound("Boosting");
+                        await PlayAnimation(targetField, targetField.GetOccupant().Sprite, "Boost");
+                        target.Health += spell.EffectPower;
+                        target.MaxHealth += spell.EffectPower;
+                    }
+                    break;
+                case "S":
+                    target.Moves = target.Moves + spell.EffectPower > 1 ? target.Moves + spell.EffectPower : 1;
+                    SoundEngine.PlaySound(spell.EffectPower < 0 ? "Debuffing" : "SpeedUp");
                     break;
             }
         }
 
-        public async Task<bool> CastSpell(Tile target)
+        public async Task<bool> CastSpell(Tile target, MouseEventArgs e)
         {
-            var currentPlayerIndex = gameEngine.GetPlayers.IndexOf(gameEngine.CurrentPlayer);
-            var finishedCasting = currentPlayerIndex + 1 == gameEngine.GetPlayers.Count;
+            var currentPlayerIndex = gameEngine.Players.IndexOf(gameEngine.CurrentPlayer);
+            var finishedCasting = currentPlayerIndex + 1 == gameEngine.Players.Count;
             var spell = gameEngine.GetCurrentSpell();
 
-            if (spell.CanCastOnNothing && target.GetOccupant() is Nothing &&
+          
+            if (e.Button == MouseButtons.Right)
+            {
+                gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
+            }
+
+            else if (spell.CanCastOnNothing && target.GetOccupant() is Nothing &&
                 !this.finishedCasting &&
                 MonsterActions.isActionLegal(gameEngine.GetWizardCoordinates(), target.GetCoordinates()))
             {
                 var monsterFromSpell =
                     gameEngine.monsterGenerator.GetMonsterByName(spell.Caption, gameEngine.CurrentPlayer);
                 monsterFromSpell.Owner = gameEngine.CurrentPlayer;
+                targetField = target;
+                SoundEngine.PlaySound("SingleCast");
+                await PlayAnimation(targetField, monsterFromSpell.Sprite, "Casting");
                 target.SetOccupant(monsterFromSpell);
-                SoundEngine.play("SingleCast");
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 
@@ -62,9 +123,7 @@ namespace Chaos.Engine
             {
                 var spellTarget = target.GetOccupant() as Monster;
                 targetField = target;
-                ApplySpellEffect(spell, spellTarget);
-                SoundEngine.play("Boosting");
-                await PlayBoostAnimation(target, spellTarget.Sprite);
+                await ApplySpellEffect(spell, spellTarget);
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 

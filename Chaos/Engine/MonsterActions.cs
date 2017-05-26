@@ -28,7 +28,7 @@ namespace Chaos.Engine
                 source.SetOccupant();
                 target.SetOccupant(ocuppant);
                 ocuppant.MovesRemaining--;
-                SoundEngine.playStepSound();
+                SoundEngine.PlaySound("MovementSound");
                 return true;
             }
 
@@ -41,7 +41,7 @@ namespace Chaos.Engine
 
             if (defender.isUndead && !attacker.isUndead)
             {
-                SoundEngine.playUndeadAttackSound();
+                SoundEngine.PlaySound("wrongTarget");
                 PostCombat(attacker);
                 return false;
             }
@@ -55,7 +55,7 @@ namespace Chaos.Engine
 
             else
             {
-                SoundEngine.playAttackSound();
+                SoundEngine.PlaySound("fighting");
                 await playCombatAnimation(prevSprite);
             }
             PostCombat(attacker);
@@ -70,15 +70,31 @@ namespace Chaos.Engine
 
         private async Task Die(Monster attacker, Monster defender, Bitmap prevBitmap)
         {
-            SoundEngine.playAttackMoveSound();
+            SoundEngine.PlaySound("combatMove");
             await playCombatAnimation(prevBitmap);
+            gameEngine.GetTargetField.SetOccupant(); // Set target field occupant as Nothing
+            gameEngine.GetSourceField.SetOccupant(); // Set source field occupant as Nothing
+            gameEngine.GetTargetField.SetOccupant(attacker); // Put previous source field occupant into target field
 
-            gameEngine.GetTargetField.SetOccupant();
-            gameEngine.GetSourceField.SetOccupant();
-            gameEngine.GetTargetField.SetOccupant(attacker);
+            attacker.Owner.Points += CalculatePointsForKilling(defender); // Add points for killing a monster or a wizard.
 
-            if (defender.Name == "Wizard")
-                MessageBox.Show("Game Over!");
+            if (defender.Name.Contains("Wizard"))
+            {
+                gameEngine.RemovePlayer(defender.Owner);
+
+                if (gameEngine.Players.Count == 1)
+                {
+                    gameEngine.postGamePlayersList.Add(attacker.Owner);
+                    gameEngine.ShowGameOverScreen();
+                }
+            }
+        }
+
+        public int CalculatePointsForKilling(Monster killedMonster)
+        {
+            if (killedMonster.Name == "Wizard") return 100;
+            else
+                return ((killedMonster.MaxHealth / 2) + killedMonster.Attack + killedMonster.MagicResistance);
         }
 
         public static bool isActionLegal(Point sourcePoint, Point targetPoint)
@@ -144,25 +160,27 @@ namespace Chaos.Engine
             await Task.Delay(550);
             gameEngine.GetTargetField.Field.Image = previousBitmap;
         }
+        
 
-        private async Task rangedAttack(Tile attackerTile, Tile defenderTile)
-        {
-            var attacker = attackerTile.GetOccupant() as Monster;
-            var defender = defenderTile.GetOccupant() as Monster;
+        //TODO: Implement ranged attack mechanics - NOT GOING TO BE IMPLEMENTED IN VERSION 1.0
+        //private async Task rangedAttack(Tile attackerTile, Tile defenderTile)
+        //{
+        //    var attacker = attackerTile.GetOccupant() as Monster;
+        //    var defender = defenderTile.GetOccupant() as Monster;
 
-            isDefenderInRange(attackerTile.GetCoordinates(), defenderTile.GetCoordinates(), attacker.Attack);
-        }
+        //    isDefenderInRange(attackerTile.GetCoordinates(), defenderTile.GetCoordinates(), attacker.Attack);
+        //}
 
-        public bool isDefenderInRange(Point attackerCoordinates, Point defenderCoordinates, int attackRange)
-        {
-            //double distance = Math.Sqrt(Math.Pow((defenderCoordinates.Y - attackerCoordinates.Y), 2) +
-            //    Math.Pow((defenderCoordinates.X - attackerCoordinates.X), 2));
-            var distance = Math.Max(Math.Abs(attackerCoordinates.X - defenderCoordinates.X),
-                Math.Abs(attackerCoordinates.Y - defenderCoordinates.Y));
-            if (distance <= attackRange)
-                return true;
+        //public bool isDefenderInRange(Point attackerCoordinates, Point defenderCoordinates, int attackRange)
+        //{
+        //    //double distance = Math.Sqrt(Math.Pow((defenderCoordinates.Y - attackerCoordinates.Y), 2) +
+        //    //    Math.Pow((defenderCoordinates.X - attackerCoordinates.X), 2));
+        //    var distance = Math.Max(Math.Abs(attackerCoordinates.X - defenderCoordinates.X),
+        //        Math.Abs(attackerCoordinates.Y - defenderCoordinates.Y));
+        //    if (distance <= attackRange)
+        //        return true;
 
-            return false;
-        }
+        //    return false;
+        //}
     }
 }

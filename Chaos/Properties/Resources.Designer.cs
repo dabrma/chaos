@@ -63,6 +63,26 @@ namespace Chaos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Anger {
+            get {
+                object obj = ResourceManager.GetObject("Anger", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Armor {
+            get {
+                object obj = ResourceManager.GetObject("Armor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Bat {
             get {
                 object obj = ResourceManager.GetObject("Bat", resourceCulture);
@@ -110,6 +130,16 @@ namespace Chaos.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Casting {
+            get {
+                object obj = ResourceManager.GetObject("Casting", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream Click {
@@ -139,21 +169,20 @@ namespace Chaos.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.Drawing.Bitmap Combat1 {
+        internal static System.IO.UnmanagedMemoryStream combatMove {
             get {
-                object obj = ResourceManager.GetObject("Combat1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetStream("combatMove", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream combatMove {
+        internal static System.IO.UnmanagedMemoryStream CombatSpell {
             get {
-                return ResourceManager.GetStream("combatMove", resourceCulture);
+                return ResourceManager.GetStream("CombatSpell", resourceCulture);
             }
         }
         
@@ -164,6 +193,25 @@ namespace Chaos.Properties {
             get {
                 object obj = ResourceManager.GetObject("Crocodile", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Damage {
+            get {
+                object obj = ResourceManager.GetObject("Damage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream Debuffing {
+            get {
+                return ResourceManager.GetStream("Debuffing", resourceCulture);
             }
         }
         
@@ -189,6 +237,16 @@ namespace Chaos.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Fireball {
+            get {
+                object obj = ResourceManager.GetObject("Fireball", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Goblin {
             get {
                 object obj = ResourceManager.GetObject("Goblin", resourceCulture);
@@ -202,6 +260,16 @@ namespace Chaos.Properties {
         internal static System.Drawing.Bitmap GoldenDragon {
             get {
                 object obj = ResourceManager.GetObject("GoldenDragon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap GreenDragon {
+            get {
+                object obj = ResourceManager.GetObject("GreenDragon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -240,6 +308,7 @@ namespace Chaos.Properties {
         ///   Looks up a localized string similar to Wizard1 20 4 1 1 0
         ///Wizard2 20 4 1 1 0
         ///Wizard3 20 4 1 1 0
+        ///Wizard4 20 4 1 1 0
         ///Lion 30 3 8 4 0
         ///Skeleton 5 5 2 1 1
         ///Wraith 22 7 3 2 1
@@ -256,7 +325,8 @@ namespace Chaos.Properties {
         ///Crocodile 37 2 7 1 0
         ///Eagle 15 4 4 6 0
         ///Birdy 25 5 5 6 0
-        ///GoldenDragon 53 3 10 4 0.
+        ///GoldenDragon 53 3 10 4 0
+        ///GreenDragon 39 4 9 3 0.
         /// </summary>
         internal static string Monsters {
             get {
@@ -372,6 +442,35 @@ namespace Chaos.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Slow {
+            get {
+                object obj = ResourceManager.GetObject("Slow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Speed {
+            get {
+                object obj = ResourceManager.GetObject("Speed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream SpeedUp {
+            get {
+                return ResourceManager.GetStream("SpeedUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lion 1 0
         ///Skeleton 1 0
         ///Wraith 1 0
@@ -389,7 +488,12 @@ namespace Chaos.Properties {
         ///Eagle 1 0
         ///Birdy 1 0
         ///GoldenDragon 1 0
-        ///Combat1 0 1 -2 C.
+        ///GreenDragon 1 0
+        ///Anger 0 1 2 C
+        ///Armor 0 1 3 H
+        ///Speed 0 1 2 S
+        ///Slow 0 1 -2 S
+        ///Fireball 0 1 -4 H.
         /// </summary>
         internal static string Spells {
             get {
@@ -413,16 +517,6 @@ namespace Chaos.Properties {
         internal static System.IO.UnmanagedMemoryStream Update {
             get {
                 return ResourceManager.GetStream("Update", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap wand {
-            get {
-                object obj = ResourceManager.GetObject("wand", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -462,6 +556,16 @@ namespace Chaos.Properties {
         internal static System.Drawing.Bitmap Wizard3 {
             get {
                 object obj = ResourceManager.GetObject("Wizard3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Wizard4 {
+            get {
+                object obj = ResourceManager.GetObject("Wizard4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

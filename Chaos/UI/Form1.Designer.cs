@@ -3,6 +3,7 @@ namespace Chaos
 {
     partial class GameForm
     {
+        
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -34,12 +35,10 @@ namespace Chaos
             this.movesLeftLabel = new System.Windows.Forms.Label();
             this.spellPanel = new System.Windows.Forms.Panel();
             this.helpButton = new System.Windows.Forms.PictureBox();
-            this.discardButton = new System.Windows.Forms.PictureBox();
             this.endTurnButton = new System.Windows.Forms.Button();
-            this.GetDescriptionPanel = new System.Windows.Forms.Panel();
+            this.DescriptionPanel = new System.Windows.Forms.Panel();
             this.btnSaveGame = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.discardButton)).BeginInit();
             this.SuspendLayout();
             // 
             // gamePanel
@@ -73,7 +72,7 @@ namespace Chaos
             // 
             // spellPanel
             // 
-            this.spellPanel.Location = new System.Drawing.Point(691, 67);
+            this.spellPanel.Location = new System.Drawing.Point(691, 61);
             this.spellPanel.Name = "spellPanel";
             this.spellPanel.Size = new System.Drawing.Size(98, 481);
             this.spellPanel.TabIndex = 3;
@@ -81,23 +80,13 @@ namespace Chaos
             // helpButton
             // 
             this.helpButton.Image = global::Chaos.Properties.Resources.Question_mark;
-            this.helpButton.Location = new System.Drawing.Point(691, 13);
+            this.helpButton.Location = new System.Drawing.Point(691, 11);
             this.helpButton.Name = "helpButton";
             this.helpButton.Size = new System.Drawing.Size(48, 48);
             this.helpButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.helpButton.TabIndex = 4;
             this.helpButton.TabStop = false;
             this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
-            // 
-            // discardButton
-            // 
-            this.discardButton.Image = global::Chaos.Properties.Resources.red_letter_d_512;
-            this.discardButton.Location = new System.Drawing.Point(741, 15);
-            this.discardButton.Name = "discardButton";
-            this.discardButton.Size = new System.Drawing.Size(48, 46);
-            this.discardButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.discardButton.TabIndex = 5;
-            this.discardButton.TabStop = false;
             // 
             // endTurnButton
             // 
@@ -112,12 +101,12 @@ namespace Chaos
             this.endTurnButton.UseVisualStyleBackColor = false;
             this.endTurnButton.Click += new System.EventHandler(this.endTurnButton_Click);
             // 
-            // descPanel
+            // DescriptionPanel
             // 
-            this.GetDescriptionPanel.Location = new System.Drawing.Point(12, 12);
-            this.GetDescriptionPanel.Name = "GetDescriptionPanel";
-            this.GetDescriptionPanel.Size = new System.Drawing.Size(723, 633);
-            this.GetDescriptionPanel.TabIndex = 7;
+            this.DescriptionPanel.Location = new System.Drawing.Point(12, 12);
+            this.DescriptionPanel.Name = "DescriptionPanel";
+            this.DescriptionPanel.Size = new System.Drawing.Size(778, 727);
+            this.DescriptionPanel.TabIndex = 7;
             // 
             // btnSaveGame
             // 
@@ -140,17 +129,16 @@ namespace Chaos
             this.ClientSize = new System.Drawing.Size(802, 752);
             this.Controls.Add(this.btnSaveGame);
             this.Controls.Add(this.endTurnButton);
-            this.Controls.Add(this.discardButton);
             this.Controls.Add(this.helpButton);
             this.Controls.Add(this.spellPanel);
             this.Controls.Add(this.movesLeftLabel);
             this.Controls.Add(this.fieldName);
             this.Controls.Add(this.gamePanel);
-            this.Controls.Add(this.GetDescriptionPanel);
+            this.Controls.Add(this.DescriptionPanel);
             this.Name = "GameForm";
             this.Text = "GameForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.discardButton)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -159,6 +147,8 @@ namespace Chaos
         #endregion
 
         private System.Windows.Forms.Panel gamePanel;
+        private System.Windows.Forms.Panel DescriptionPanel;
+        public Panel GetDescriptionPanel { get { return DescriptionPanel; } set { DescriptionPanel = value; } }
         public Panel GetGamePanel { get { return gamePanel; } }
         private System.Windows.Forms.Label fieldName;
         public Label GetNameField { get { return fieldName; } }
@@ -167,7 +157,6 @@ namespace Chaos
         private System.Windows.Forms.Panel spellPanel;
         public Panel GetSpellPanel { get { return spellPanel; } }
         private System.Windows.Forms.PictureBox helpButton;
-        private System.Windows.Forms.PictureBox discardButton;
         private System.Windows.Forms.Button endTurnButton;
         private System.Windows.Forms.Button btnSaveGame;
     }

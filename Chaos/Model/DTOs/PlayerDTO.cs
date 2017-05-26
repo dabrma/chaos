@@ -8,5 +8,6 @@ namespace Chaos.Model.DTOs
     {
         public string Name;
         public List<string> Spells = new List<string>();
+        public int Points;
     }
 }

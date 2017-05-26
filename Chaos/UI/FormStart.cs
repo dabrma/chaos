@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chaos.Model;
+using System;
 using System.Windows.Forms;
 
 namespace Chaos
@@ -6,8 +7,8 @@ namespace Chaos
     public partial class FormStart : Form
     {
         private int numberOfPlayers = 2;
-        private int numberOfSpells = 99;
-        private int numberOfTurns = 0;
+        private int numberOfSpells;
+        private int numberOfTurns;
 
 
         public FormStart()
@@ -28,18 +29,26 @@ namespace Chaos
 
         private void bExitGame_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Dispose();
         }
 
         private void bLoadGame_Click(object sender, EventArgs e)
         {
+
+            GameLoader gameLoader = new GameLoader();
+            gameLoader.StartMenu = this;
+            gameLoader.LoadGame();
+            SettingsPanel.Hide();
+
         }
 
         private void bStart_Click(object sender, EventArgs e)
         {
             var newGame = new GameForm(numberOfPlayers, numberOfTurns, numberOfSpells);
+            newGame.engine.startForm = this;
             newGame.Show();
-            Visible = false;
+            this.Visible = false;
+            SettingsPanel.Hide();
         }
 
         #endregion
@@ -50,9 +59,6 @@ namespace Chaos
         {
             numberOfPlayers = tNumberOfPlayer.Value;
             lNumberOfPlayersValue.Text = Convert.ToString(tNumberOfPlayer.Value);
-
-            // GameLoader gameLoader = new GameLoader();
-            // gameLoader.LoadGame();
         }
 
         #region Entering the number of spells and turns
