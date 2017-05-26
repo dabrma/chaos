@@ -23,9 +23,8 @@ namespace Chaos.Engine
             var occuppant = (Monster)source.GetOccupant();
             var sourceCoords = source.GetCoordinates();
             var targetCoords = target.GetCoordinates();
-            var tiles = gameboard.tiles;
             if (isActionLegal(sourceCoords, targetCoords) && occuppant.MovesRemaining > 0&&
-                IsMoveLegal(gameboard,sourceCoords,tiles,gameEngine))
+                IsMoveLegal(gameboard,sourceCoords,gameEngine))
             {
                 source.SetOccupant();
                 target.SetOccupant(occuppant);
@@ -115,17 +114,44 @@ namespace Chaos.Engine
 
             return false;
         }
-        public static bool IsMoveLegal(Gameboard gameboard, Point Sourcepoint, Tile[,] tiles,GameEngine gameengine)
-        {        
 
+        public static bool IsMoveLegal(Gameboard gameboard, Point sourcePoint, GameEngine gameengine)
+        {
+            if ((!(gameboard.GetRawTilesData[sourcePoint.X-1, sourcePoint.Y].GetOccupant() is Nothing) &&
+              gameboard.GetRawTilesData[sourcePoint.X - 1, sourcePoint.Y].GetOccupant().Owner != gameengine.CurrentPlayer)||
+               (!(gameboard.GetRawTilesData[sourcePoint.X + 1, sourcePoint.Y].GetOccupant() is Nothing) &&
+              gameboard.GetRawTilesData[sourcePoint.X + 1, sourcePoint.Y].GetOccupant().Owner != gameengine.CurrentPlayer)||
+                (!(gameboard.GetRawTilesData[sourcePoint.X, sourcePoint.Y-1].GetOccupant() is Nothing) &&
+              gameboard.GetRawTilesData[sourcePoint.X, sourcePoint.Y-1].GetOccupant().Owner != gameengine.CurrentPlayer)||
+                 (!(gameboard.GetRawTilesData[sourcePoint.X, sourcePoint.Y+1].GetOccupant() is Nothing) &&
+              gameboard.GetRawTilesData[sourcePoint.X, sourcePoint.Y+1].GetOccupant().Owner != gameengine.CurrentPlayer)||
+               (!(gameboard.GetRawTilesData[sourcePoint.X- 1, sourcePoint.Y-1].GetOccupant() is Nothing) &&
+              gameboard.GetRawTilesData[sourcePoint.X - 1, sourcePoint.Y-1].GetOccupant().Owner != gameengine.CurrentPlayer)||
+               (!(gameboard.GetRawTilesData[sourcePoint.X + 1, sourcePoint.Y+1].GetOccupant() is Nothing) &&
+              gameboard.GetRawTilesData[sourcePoint.X + 1, sourcePoint.Y+1].GetOccupant().Owner != gameengine.CurrentPlayer)||
+                 (!(gameboard.GetRawTilesData[sourcePoint.X- 1, sourcePoint.Y+1].GetOccupant() is Nothing) &&
+              gameboard.GetRawTilesData[sourcePoint.X - 1, sourcePoint.Y+1].GetOccupant().Owner != gameengine.CurrentPlayer)||
+                 (!(gameboard.GetRawTilesData[sourcePoint.X + 1, sourcePoint.Y-1].GetOccupant() is Nothing) &&
+              gameboard.GetRawTilesData[sourcePoint.X + 1, sourcePoint.Y-1].GetOccupant().Owner != gameengine.CurrentPlayer))
+              return false;
+           
+                return true;
+
+
+        }
+        /* public static bool IsMoveLegal(Gameboard gameboard, Point Sourcepoint, GameEngine gameengine)
+        {
+           
             for (int i = 0; i < 14; i++)
             {
                 for (int j = 0; j < 14; j++) 
                 {
+              
                     if ((Math.Abs(Sourcepoint.X-i) == 1) && (Math.Abs(Sourcepoint.Y-j) == 1))
                     {
-                        if (tiles[j,i].GetOccupant().Caption!="Nothing"&&
-                            tiles[j,i].GetOccupant().Owner!=gameengine.CurrentPlayer)
+                        if (
+                            !(gameboard.GetRawTilesData[j,i].GetOccupant() is Nothing) &&
+                            gameboard.GetRawTilesData[j,i].GetOccupant().Owner != gameengine.CurrentPlayer)
                             return false;
                     }
                       
@@ -133,9 +159,9 @@ namespace Chaos.Engine
                 }
 
             }
-
+         
             return true;
-        }
+        }*/
         
         private async Task playCombatAnimation(Bitmap previousBitmap)
         {

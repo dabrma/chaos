@@ -17,7 +17,10 @@ namespace Chaos.Engine
         public Label MovesLeftLabel { get; set; }
 
         private readonly int gameboardSize;
-        public Tile[,] tiles;
+        private Tile[,] tiles; // !!! TEGO NIE WOLNO RUSZAC !!!
+
+        public Tile[,] GetRawTilesData { get { return tiles; } private set { } }
+
         public List<Player> players = new List<Player>();
         public Player currentPlayer = null;
 
