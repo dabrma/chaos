@@ -1,7 +1,23 @@
-Lion
-Skeleton
-Wraith
-Griffon
-Unicorn
-Cobra
-Pegasus
+Lion 1 0
+Skeleton 1 0
+Wraith 1 0
+Gryphon 1 0
+Unicorn 1 0
+Cobra 1 0
+Pegasus 1 0
+Bat 1 0
+Rat 1 0
+Goblin 1 0
+Orc 1 0
+Bear 1 0
+Horse 1 0
+Crocodile 1 0
+Eagle 1 0
+Birdy 1 0
+GoldenDragon 1 0
+GreenDragon 1 0
+Anger 0 1 2 C
+Armor 0 1 3 H
+Speed 0 1 2 S
+Slow 0 1 -2 S
+Fireball 0 1 -4 H

@@ -1,162 +1,379 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chaos.Model;
-using Chaos.Properties;
+using Chaos.UI;
 
 namespace Chaos.Engine
 {
-    internal enum GamePhase
+    public enum GamePhase
     {
+        Picking,
         Casting,
-        Moving,
-
+        Moving
     }
-    internal class GameEngine
-    {
-        private bool firstClick = true;
-        private readonly MonsterGenerator monsterGenerator;
-        private Monster selectedMonster;
-        private Tile sourceField;
-        private Tile targetField;
-        private GamePhase gamePhase;
 
-        public GameEngine(int NumberOfPlayers, Gameboard gameboard)
+    public class GameEngine
+    {
+        #region Constructors
+
+        public GameEngine(int NumberOfPlayers, Gameboard gameboard, GameForm gameForm, int turnsLimit,
+            bool autogenerate = true)
         {
             this.gameboard = gameboard;
+            this.turnsLimit = turnsLimit * NumberOfPlayers;
+            actions = new MonsterActions(gameboard, this);
             SetTileEvents();
-            monsterGenerator = new MonsterGenerator();
-            GenerateWizards(NumberOfPlayers);
-            gameboard.players = GetPlayers;
-            GetCurrentPlayer = GetPlayers[0];
+            if (autogenerate)
+            {
+                GenerateWizards(NumberOfPlayers);
+                CurrentPlayer = Players[0];
+            }
+            gameboard.players = Players;
+            spellcasting = new Spellcasting(gameboard, this);
+            this.gameForm = gameForm;
+            gameForm.GetDescriptionPanel.Click += HideDescriptionPanel;
         }
 
-        public void InitializeEngineElements()
-        {
-            gamePhase = GamePhase.Casting;
-            UpdateSpellboard();
-        }
+        #endregion
 
+        #region Fields and Initializers
+
+        public GameSaver gameSaver;
+        public FormStart startForm;
+        private readonly GameForm gameForm;
+        private readonly MonsterActions actions;
+        private readonly Spellcasting spellcasting;
+        private bool firstClick = true;
+        private int TurnsPassed;
+        private readonly int turnsLimit;
+        private GamePhase gamePhase;
+        public bool DescriptionMode = false;
+        private SoundEngine eng = new SoundEngine();
+        public readonly MonsterGenerator monsterGenerator = new MonsterGenerator();
+        public List<Player> Players = new List<Player>();
+        #endregion
+
+        #region Properties
+
+        public Tile GetSourceField { get; private set; }
+        public Monster GetSelectedMonster { get; private set; }
+        public Tile GetTargetField { get; private set; }
         public Gameboard gameboard { get; set; }
         public SpellBoard spellboard { get; set; }
-        public Player GetCurrentPlayer { get; private set; }
+        public Player CurrentPlayer { get; set; }
 
-        public List<Player> GetPlayers { get; } = new List<Player>();
+        public List<Player> postGamePlayersList = new List<Player>();
 
+        #endregion
 
-        public void AddMonster(int posX, int posY)
+        #region Public Methods
+
+        public void InitializeEngineElements(bool isGameLoaded = false)
         {
-            var monster = monsterGenerator.Monsters[2];
-            monster.Owner = GetPlayers[0];
-            gameboard.tiles[posX, posY].OcupantEnter(monster);
+            if (!isGameLoaded)
+            {
+                gamePhase = GamePhase.Picking;
+                spellboard.currentPlayer = CurrentPlayer;
+                gameboard.currentPlayer = CurrentPlayer;
+                UpdateSpellboard();
+            }
+
+            else
+            {
+                gamePhase = GamePhase.Moving;
+                spellboard.IsSpellboardVisible(false);
+                spellboard.currentPlayer = CurrentPlayer;
+                gameboard.currentPlayer = CurrentPlayer;
+            }
+        }
+
+        public void ChangePhase(GamePhase phase)
+        {
+            gamePhase = phase;
+            OnPhaseChange();
+        }
+
+        /// <summary>
+        ///     Adds a monster to a Tile and gives it an owner
+        /// </summary>
+        /// <param name="monster"></param>
+        /// <param name="owner"></param>
+        /// <param name="posX"></param>
+        /// <param name="posY"></param>
+        public void AddMonster(Monster monster, Player owner, int posX, int posY)
+        {
+            monster.Owner = owner;
+            gameboard.GetElement(new Point(posX, posY)).SetOccupant(monster);
+        }
+
+        /// <summary>
+        ///     Helper method to decide whether sound should be played or not
+        /// </summary>
+        /// <returns></returns>
+        public Player SwitchPlayer()
+        {
+            var currentPlayerIndex = Players.IndexOf(CurrentPlayer);
+
+            if (currentPlayerIndex + 1 < Players.Count)
+            {
+                CurrentPlayer = Players[currentPlayerIndex + 1];
+                if (gamePhase == GamePhase.Casting && CurrentPlayer.SelectedSpell != null)
+                    SoundEngine.SpellAndPlayerName(CurrentPlayer);
+            }
+            else if (currentPlayerIndex + 1 == Players.Count)
+            {
+                CurrentPlayer = Players[currentPlayerIndex];
+            }
+
+            else
+            {
+                CurrentPlayer = Players[0];
+            }
+
+            return CurrentPlayer;
+        }
+
+        public async Task TurnChange()
+        {
+            if (!IsGameOver())
+            {
+                TurnsPassed++;
+
+                if (gamePhase == GamePhase.Moving && Players.IndexOf(CurrentPlayer) == Players.Count - 1)
+                {
+                    ChangePhase(GamePhase.Picking);
+                    OnPhaseChange();
+                }
+
+                else if (gamePhase == GamePhase.Moving && Players.IndexOf(CurrentPlayer) < Players.Count - 1)
+                {
+                    OnPhaseChange();
+                    CurrentPlayer = SwitchPlayer();
+                    await gameboard.HighlightMonstersOfPlayer(CurrentPlayer);
+                }
+            }
+
+            else
+            {
+                ShowGameOverScreen();
+            }
+        }
+
+        public void ShowGameOverScreen()
+        {
+            var gameOverScreen = new GameOver(postGamePlayersList);
+            gameOverScreen.ShowDialog();
+
+            var startNewGame = new FormStart();
+            startNewGame.Show();
+
+            gameForm.Dispose();
+        }
+
+        public Spell GetCurrentSpell()
+        {
+            return CurrentPlayer.SelectedSpell;
+        }
+
+        public void RemovePlayer(Player playerToRemove)
+        {
+            postGamePlayersList.Add(playerToRemove);
+            Players.Remove(playerToRemove);
+
+            foreach (var tile in gameboard.GetElementsCollection())
+                if (tile.GetOccupant() is Monster && tile.GetOccupant().Owner == playerToRemove)
+                {
+                    var monsterToRemove = tile.GetOccupant() as Monster;
+                    tile.SetOccupant();
+                }
+        }
+
+        // Reset selection data.
+        public void resetEventData()
+        {
+            firstClick = true;
+            GetTargetField = null;
+            GetSelectedMonster = null;
+            GetSourceField = null;
+            gameboard.MovesLeftLabel.Text = "";
+        }
+
+        // Get Y, Z coordinates of a wizard in a grid
+        public Point GetWizardCoordinates()
+        {
+            foreach (var tile in gameboard.GetElementsCollection())
+                if (tile.GetOccupant().Caption.Contains("Wizard") && tile.GetOccupant().Owner == CurrentPlayer)
+                    return tile.GetCoordinates();
+
+            throw new NullReferenceException();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void HighlightCurrentlyCastingPlayer()
+        {
+            if (gamePhase == GamePhase.Casting)
+            {
+                var tile = gameboard.GetElement(GetWizardCoordinates());
+                tile.Field.BorderStyle = BorderStyle.Fixed3D;
+            }
+        }
+
+        private void HideDescriptionPanel(object sender, EventArgs e)
+        {
+            var panel = sender as Panel;
+            panel.Hide();
+        }
+
+        /// <summary>
+        ///     Perform actions while Gamephase changes.
+        /// </summary>
+        private void OnPhaseChange()
+        {
+            switch (gamePhase)
+            {
+                case GamePhase.Picking:
+                    spellcasting.finishedCasting = false;
+                    CurrentPlayer = Players[0];
+                    spellboard.currentPlayer = CurrentPlayer;
+                    spellboard.UpdateSpellboard(CurrentPlayer);
+                    spellboard.IsSpellboardVisible(true);
+                    break;
+                case GamePhase.Casting:
+                    CurrentPlayer = Players[0];
+                    if (CurrentPlayer.SelectedSpell != null) SoundEngine.SpellAndPlayerName(CurrentPlayer);
+                    spellboard.IsSpellboardVisible(false);
+                    break;
+                case GamePhase.Moving:
+                    resetEventData();
+                    break;
+            }
         }
 
         private void UpdateSpellboard()
         {
-            spellboard.UpdateSpellboard(GetCurrentPlayer);
-        }
-
-        public void AddMonster(Monster monster, Player owner, int posX, int posY)
-        {
-            monster.Owner = owner;
-            gameboard.tiles[posX, posY].OcupantEnter(monster);
-        }
-
-        public void TurnChange()
-        {
-            if (gamePhase == GamePhase.Moving)
-            {
-                gameboard.currentPlayer = gameboard.currentPlayer == GetPlayers[0] ? GetPlayers[1] : GetPlayers[0];
-                gamePhase = GamePhase.Casting;
-                GetCurrentPlayer = gameboard.currentPlayer;
-                resetEventData();
-                ResetMonsterMovement();
-                SoundEngine.say(GetCurrentPlayer.Name);
-                UpdateSpellboard();
-            }
+            spellboard.UpdateSpellboard(CurrentPlayer);
         }
 
         private void ResetMonsterMovement()
         {
-            foreach (var tile in gameboard.tiles)
-                if (tile.Occupant.Owner == GetCurrentPlayer && GetCurrentPlayer != null)
+            foreach (var tile in gameboard.GetElementsCollection())
+            {
+                var monster = tile.GetOccupant() as Monster;
+                if (monster != null)
                 {
-                    var monster = tile.Occupant as Monster;
                     monster.MovesRemaining = monster.Moves;
+                    monster.canAttack = true;
                 }
+            }
         }
 
         private void GenerateWizards(int numberOfPlayers)
         {
             for (var i = 0; i < numberOfPlayers; i++)
             {
-                var player = new Player("Player" + (i + 1), i + 1);
-                GetPlayers.Add(player);
+                var player = new Player("Player" + (i + 1));
+                Players.Add(player);
+                var wizard = monsterGenerator.GetMonsterByName("Wizard" + (i + 1), player);
+                wizard.Name = "Wizard";
+                wizard.Caption = wizard.Name;
+
+                if (i == 0)
+                    AddMonster(wizard, player, 0, 0);
+
+                if (i == 1)
+                    AddMonster(wizard, player, 13, 13);
+
+                if (i == 2)
+                    AddMonster(wizard, player, 0, 13);
+
+                if (i == 3)
+                    AddMonster(wizard, player, 13, 0);
             }
-
-            var wizard1 = monsterGenerator.Monsters[3];
-            wizard1.Name = "Wizard";
-            wizard1.Caption = wizard1.Name;
-            var wizard2 = monsterGenerator.Monsters[1];
-            wizard2.Name = "Wizard";
-            wizard2.Caption = wizard1.Name;
-
-            AddMonster(wizard1, GetPlayers[0], 0, 0);
-            AddMonster(wizard2, GetPlayers[1], 11, 11);
         }
 
         private void SetTileEvents()
         {
-            foreach (var field in gameboard.tiles)
+            foreach (var field in gameboard.GetElementsCollection())
             {
                 var pictureBox = field.Field;
-                pictureBox.Click += (sender, args) => TileClicked(sender, args, field);
+                pictureBox.MouseClick += (sender, args) => TileClicked(field, args);
             }
         }
 
-
-        public void TileClicked(object sender, EventArgs e, Tile clickSource)
+        private async Task TileClicked(Tile clickSource, MouseEventArgs e)
         {
+            if (DescriptionMode)
+                if (clickSource.GetOccupant() is Monster)
+                {
+                    gameForm.GetDescriptionPanel.Controls.Clear();
+                    gameForm.GetDescriptionPanel.Controls.AddRange(
+                        new DescriptionPanel((Monster) clickSource.GetOccupant())
+                            .GetControls());
+                    gameForm.GetDescriptionPanel.Visible = true;
+                    gameForm.GetDescriptionPanel.BringToFront();
+                    return;
+                }
+
+            if (gamePhase == GamePhase.Casting && spellcasting.CastSpell(clickSource, e))
+            {
+                CurrentPlayer = Players[0];
+                ResetMonsterMovement();
+                ChangePhase(GamePhase.Moving);
+                await gameboard.HighlightMonstersOfPlayer(CurrentPlayer);
+                return;
+            }
+
             // Checks whether Tile we are clicking is occupied by entity with type other than "Nothing",
             // we set the clicked Tile to be a context for our further operations (eg. decision making
             // on what happens on second mouse click)
-            if (firstClick && clickSource.Occupant.GetType() != typeof(Nothing) &&
-                clickSource.Occupant.Owner == GetCurrentPlayer && gamePhase != GamePhase.Casting)
+
+            if (gamePhase == GamePhase.Moving &&
+                firstClick &&
+                clickSource.GetOccupant().Owner == CurrentPlayer)
             {
-                sourceField = clickSource;
-                selectedMonster = sourceField.Occupant as Monster;
-                gameboard.MovesLeftLabel.Text = string.Format("Moves: {0}/{1}", selectedMonster.MovesRemaining,
-                    selectedMonster.Moves);
+                GetSourceField = clickSource;
+                GetSelectedMonster = GetSourceField.GetOccupant() as Monster;
+                gameboard.MovesLeftLabel.Text =
+                    $"Moves: {GetSelectedMonster.MovesRemaining}/{GetSelectedMonster.Moves}";
                 firstClick = false;
-                SoundEngine.say((Monster) clickSource.Occupant);
+                SoundEngine.Speak(GetSelectedMonster);
             }
             // If we click the same tile twice, raise resetEventDataMethod to clean information
-            else if (sourceField == clickSource)
+            else if (GetSourceField == clickSource)
             {
                 resetEventData();
             }
-
             // Gets the source of second mouse click, then decides what to do based on types of clicked objects
             else if (!firstClick)
             {
-                targetField = clickSource;
-                if (targetField.Occupant.GetType() != typeof(Monster))
+                GetTargetField = clickSource;
+                if (!(GetTargetField.GetOccupant() is Monster))
                 {
-                    if (Move(sourceField, targetField))
+                    if (actions.Move(GetSourceField, GetTargetField))
                     {
-                        sourceField = targetField;
-                        gameboard.MovesLeftLabel.Text = string.Format("Moves: {0}/{1}", selectedMonster.MovesRemaining,
-                            selectedMonster.Moves);
+                        GetSourceField = GetTargetField;
+                        gameboard.MovesLeftLabel.Text =
+                            $@"Moves: {GetSelectedMonster.MovesRemaining}/{GetSelectedMonster.Moves}";
                     }
                 }
 
-                else if (targetField.Occupant.GetType() == typeof(Monster) &&
-                         targetField.Occupant.Owner != sourceField.Occupant.Owner &&
-                         isMoveLegal(sourceField.FieldLocalization, targetField.FieldLocalization))
+                // Check if target tile is an enemy Monster, if so call Attack() on it
+                else if (GetTargetField.GetOccupant() is Monster &&
+                         GetTargetField.GetOccupant().Owner != GetSourceField.GetOccupant().Owner &&
+                         MonsterActions.isActionLegal(GetSourceField.GetCoordinates(),
+                             GetTargetField.GetCoordinates()) &&
+                         GetSelectedMonster.canAttack)
                 {
-                    Attack((Monster) sourceField.Occupant, (Monster) targetField.Occupant);
+                    await actions.Attack((Monster) GetSourceField.GetOccupant(),
+                        (Monster) GetTargetField.GetOccupant());
+                    resetEventData();
                 }
 
                 else
@@ -164,122 +381,25 @@ namespace Chaos.Engine
                     resetEventData();
                 }
             }
-
-            else
-            {
-                resetEventData();
-            }
         }
 
-
-        private void GameOver()
+        /// <summary>
+        ///     If max turns parameter has been specified - check if turns has passed, if so, pick a Player with the most points as
+        ///     a winner
+        /// </summary>
+        public bool IsGameOver()
         {
-            MessageBox.Show(string.Format("Congratulations {0}, you've won!", GetCurrentPlayer));
-        }
-
-        #region Movement and Combat
-
-        private bool Move(Tile source, Tile target)
-        {
-            var ocuppant = (Monster) source.Occupant;
-            var sourceCoords = findCoordinatesInMatrix(source);
-            var targetCoords = findCoordinatesInMatrix(target);
-            if (isMoveLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0)
-            {
-                source.OcuppantLeave();
-                target.OcupantEnter(ocuppant);
-                selectedMonster.MovesRemaining--;
-                SoundEngine.playStepSound();
-                return true;
-            }
+            if (turnsLimit != 0)
+                if (turnsLimit == TurnsPassed)
+                {
+                    foreach (var pl in Players)
+                        //if(!postGamePlayersList.Contains(pl)) 
+                        postGamePlayersList.Add(pl);
+                    var winner = postGamePlayersList.OrderByDescending(p => p.Points).First();
+                    return true;
+                }
 
             return false;
-        }
-
-        private async Task<bool> Attack(Monster attacker, Monster defender)
-        {
-            var prevSprite = targetField.Occupant.Sprite;
-            var damage = attacker.Attack - defender.Defense;
-            defender.Health = defender.Health - damage > 0 ? damage : 0;
-
-            if (defender.Health >= 0)
-            {
-                Die(attacker, defender, prevSprite);
-            }
-
-            else
-            {
-                SoundEngine.playAttackSound();
-                await playCombatAnimation(prevSprite);
-                resetEventData();
-            }
-
-            attacker.MovesRemaining = 0;
-
-            return true;
-        }
-
-        private async void Die(Monster attacker, Monster defender, Bitmap prevBitmap)
-        {
-            SoundEngine.playAttackMoveSound();
-            await playCombatAnimation(prevBitmap);
-
-            targetField.OcuppantLeave();
-            sourceField.OcuppantLeave();
-            targetField.OcupantEnter(attacker);
-
-            if (defender.Name == "Wizard")
-                MessageBox.Show("Game Over!");
-        }
-
-        #endregion
-
-        #region Private Helper Methods
-
-        private Point findCoordinatesInMatrix(Tile searchTarget)
-        {
-            var itemPosition = new Point();
-            var h = gameboard.tiles.GetLength(0);
-            var w = gameboard.tiles.GetLength(1);
-
-            for (var row = 0; row < h; row++)
-            for (var col = 0; col < w; col++)
-                if (gameboard.tiles[row, col].Equals(searchTarget))
-                    return new Point(row, col);
-            return itemPosition;
-        }
-
-        private bool isMoveLegal(Point sourcePoint, Point targetPoint)
-        {
-            if (
-                sourcePoint.X - 1 == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
-                sourcePoint.X == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
-                sourcePoint.X + 1 == targetPoint.X && sourcePoint.Y - 1 == targetPoint.Y ||
-                sourcePoint.X - 1 == targetPoint.X && sourcePoint.Y == targetPoint.Y ||
-                sourcePoint.X + 1 == targetPoint.X && sourcePoint.Y == targetPoint.Y ||
-                sourcePoint.X - 1 == targetPoint.X && sourcePoint.Y + 1 == targetPoint.Y ||
-                sourcePoint.X == targetPoint.X && sourcePoint.Y + 1 == targetPoint.Y ||
-                sourcePoint.X + 1 == targetPoint.X && sourcePoint.Y + 1 == targetPoint.Y
-            )
-                return true;
-
-            return false;
-        }
-
-        private async Task playCombatAnimation(Bitmap previousBitmap)
-        {
-            targetField.Field.Image = Resources.combat;
-            await Task.Delay(550);
-            targetField.Field.Image = previousBitmap;
-        }
-
-        public void resetEventData()
-        {
-            firstClick = true;
-            targetField = null;
-            selectedMonster = null;
-            sourceField = null;
-            gameboard.MovesLeftLabel.Text = "";
         }
 
         #endregion

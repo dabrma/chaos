@@ -1,17 +1,26 @@
-﻿namespace Chaos.Model
+﻿using System.Collections.Generic;
+
+namespace Chaos.Model
 {
     public class Player
     {
-        private int id;
+        public List<Spell> AvailableSpells;
+        public Spell SelectedSpell;
 
-        // TODO: Każdy gracz powinien posiadać listę czarów, które może rzucić.
-
-        public Player(string playerName, int id)
+        public Player(string playerName)
         {
             Name = playerName;
-            this.id = id;
+            Points = 0;
+            AvailableSpells = new List<Spell>();
+            SelectedSpell = null;
         }
 
         public string Name { get; set; }
+        public int Points { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
+using Chaos.Interfaces;
 
 namespace Chaos.Engine
 {
-    public class Tile
+    public class Tile : IOccupiable, ILocalizable
     {
         private const int FIELD_SIZE = 48;
 
@@ -18,17 +19,39 @@ namespace Chaos.Engine
             FieldSetup();
         }
 
+        public Point GetCoordinates()
+        {
+            return FieldLocalization;
+        }
+
+        public GameObject GetOccupant()
+        {
+            return Occupant;
+        }
+
+        public void SetOccupant()
+        {
+            Occupant = new Nothing();
+            UpdateField();
+        }
+
+        public void SetOccupant(GameObject occupant)
+        {
+            Occupant = occupant;
+            UpdateField();
+        }
+
         #region Fields
 
         #endregion
 
         #region Properties
 
-        public GameObject Occupant { get; set; }
+        private GameObject Occupant { get; set; }
 
         public PictureBox Field { get; set; }
 
-        public Point FieldLocalization { get; set; }
+        protected Point FieldLocalization { get; set; }
 
         #endregion
 
@@ -43,19 +66,7 @@ namespace Chaos.Engine
             Field.Image = Occupant.Sprite;
         }
 
-        public void OcupantEnter(GameObject newOcuppant)
-        {
-            Occupant = newOcuppant;
-            UpdateField();
-        }
-
-        public void OcuppantLeave()
-        {
-            Occupant = new Nothing();
-            UpdateField();
-        }
-
-        protected void UpdateField()
+        private void UpdateField()
         {
             Field.Image = Occupant.Sprite;
         }

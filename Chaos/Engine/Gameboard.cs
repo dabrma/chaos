@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Chaos.Interfaces;
 using Chaos.Model;
 
 namespace Chaos.Engine
 {
-    public class Gameboard
+    public class Gameboard : ILookupable<Tile>
     {
         #region Fields and Properties
 
-        public Panel GameboardPanel { get; set; }
-
+        private Panel GameboardPanel { get; }
         public Label FieldName { get; set; }
-
         public Label MovesLeftLabel { get; set; }
 
-        private const int GAMEBOARD_SIZE = 12;
-        public Tile[,] tiles = new Tile[GAMEBOARD_SIZE, GAMEBOARD_SIZE];
+        private readonly int gameboardSize;
+        private readonly Tile[,] tiles;
         public List<Player> players = new List<Player>();
         public Player currentPlayer = null;
 
@@ -31,17 +31,17 @@ namespace Chaos.Engine
         /// <param name="gamePanel">Panel control that will contain Tiles</param>
         /// <param name="fieldName">Label that displays name of field that our mouse hovers over</param>
         /// <param name="movesLeftLabel">Label that displays remaining moves of our monster</param>
-        public Gameboard(Panel gamePanel, Label fieldName, Label movesLeftLabel)
+        public Gameboard(Panel gamePanel, Label fieldName, Label movesLeftLabel, int gameboardSize = 14)
         {
-            //players.Add(new Player("Player 1", 1));
-            //players.Add(new Player("Player 2", 2));
-
+            this.gameboardSize = gameboardSize;
+            tiles = new Tile[gameboardSize, gameboardSize];
             GameboardPanel = gamePanel;
             MovesLeftLabel = movesLeftLabel;
             FieldName = fieldName;
 
             MovesLeftLabel.Text = "";
             FieldName.Text = "";
+
 
             InitializeTiles();
             InitializeGameboard();
@@ -52,13 +52,13 @@ namespace Chaos.Engine
         /// </summary>
         private void InitializeTiles()
         {
-            for (var row = 0; row < GAMEBOARD_SIZE; row++)
-            for (var col = 0; col < GAMEBOARD_SIZE; col++)
+            for (var row = 0; row < gameboardSize; row++)
+            for (var col = 0; col < gameboardSize; col++)
             {
                 var tile = new Tile(new Point(row, col));
                 tile.Field.MouseEnter += (obj, ev) => OnMouseOver(obj, ev, tile);
                 tile.Field.MouseLeave += OnMouseLeave;
-                tile.Occupant = new Nothing();
+                tile.SetOccupant(new Nothing());
                 tiles[row, col] = tile;
             }
         }
@@ -68,8 +68,8 @@ namespace Chaos.Engine
         /// </summary>
         public void InitializeGameboard()
         {
-            for (var row = 0; row < GAMEBOARD_SIZE; row++)
-            for (var col = 0; col < GAMEBOARD_SIZE; col++)
+            for (var row = 0; row < gameboardSize; row++)
+            for (var col = 0; col < gameboardSize; col++)
                 GameboardPanel.Controls.Add(tiles[row, col].Field);
         }
 
@@ -81,14 +81,56 @@ namespace Chaos.Engine
         {
             var tile = sender as PictureBox;
             FieldName.Text = "";
-            tile.BorderStyle = BorderStyle.FixedSingle;
+            //   tile.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void OnMouseOver(object sender, EventArgs e, Tile source)
         {
             var tile = sender as PictureBox;
-            FieldName.Text = source.Occupant.Caption;
-            tile.BorderStyle = BorderStyle.None;
+            FieldName.Text = source.GetOccupant().Caption;
+            //   tile.BorderStyle = BorderStyle.None;
+        }
+
+        public IEnumerable<Tile> GetElementsCollection()
+        {
+            var tilesList = new List<Tile>();
+            foreach (var element in tiles)
+                tilesList.Add(element);
+
+            return tilesList.ToArray();
+        }
+
+        public async Task HighlightMonstersOfPlayer(Player player)
+        {
+            var tilesToHighlight = new List<Tile>();
+            SoundEngine.PlayerName(player);
+            foreach (var tile in tiles)
+                if (tile.GetOccupant() is Monster && tile.GetOccupant().Owner == player)
+                    tilesToHighlight.Add(tile);
+            BorderStyle originalBorder = 0;
+            foreach (var tileToHighlight in tilesToHighlight)
+            {
+                originalBorder = tileToHighlight.Field.BorderStyle;
+                tileToHighlight.Field.BorderStyle = BorderStyle.Fixed3D;
+            }
+
+            await Task.Delay(700);
+
+            foreach (var tileToHighlight in tilesToHighlight)
+                tileToHighlight.Field.BorderStyle = originalBorder;
+        }
+
+        public Tile GetElement(Tile element)
+        {
+            foreach (var e in tiles)
+                if (e.Equals(element))
+                    return e;
+            throw new NullReferenceException();
+        }
+
+        public Tile GetElement(Point cooridnates)
+        {
+            return tiles[cooridnates.X, cooridnates.Y];
         }
 
         #endregion

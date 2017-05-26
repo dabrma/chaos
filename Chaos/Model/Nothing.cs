@@ -2,7 +2,7 @@
 
 namespace Chaos.Engine
 {
-    internal class Nothing : GameObject
+    public class Nothing : GameObject
     {
         public Nothing()
         {
