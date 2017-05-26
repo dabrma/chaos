@@ -23,7 +23,7 @@ namespace Chaos.Engine
             var ocuppant = (Monster) source.GetOccupant();
             var sourceCoords = source.GetCoordinates();
             var targetCoords = target.GetCoordinates();
-            if (isActionLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0)
+            if (isActionLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0 && isNotMonsterAround(sourceCoords)) // added isNotMonsterAround... && isNotMonsterAround(sourceCoords)
             {
                 source.SetOccupant();
                 target.SetOccupant(ocuppant);
@@ -96,6 +96,46 @@ namespace Chaos.Engine
                 return true;
 
             return false;
+        }
+
+        private bool isNotMonsterAround(Point sourcePoint) //if player is near the monster of opponent, player has to kill this monster befor he change location
+        {
+            Monster wizard = getTestedObject(sourcePoint) as Monster;
+            bool iswizard = wizard.Name.Contains("Wizard") ? true : false;
+            
+            if (    (iswizard &&
+                        (
+                        (getTestedObject(sourcePoint, 1, 0) is Monster && getTestedObject(sourcePoint, 1 ,0).Owner != wizard.Owner)||
+                        (getTestedObject(sourcePoint, 1, 1) is Monster && getTestedObject(sourcePoint, 1, 1).Owner != wizard.Owner) ||
+                        (getTestedObject(sourcePoint, 0, 1) is Monster && getTestedObject(sourcePoint, 0, 1).Owner != wizard.Owner) ||
+                        (getTestedObject(sourcePoint, -1, 1) is Monster && getTestedObject(sourcePoint, -1, 1).Owner != wizard.Owner) ||
+                        (getTestedObject(sourcePoint, -1, 0) is Monster && getTestedObject(sourcePoint, -1, 0).Owner != wizard.Owner) ||
+                        (getTestedObject(sourcePoint, -1, -1) is Monster && getTestedObject(sourcePoint, -1, -1).Owner != wizard.Owner) ||
+                        (getTestedObject(sourcePoint, 0, -1) is Monster && getTestedObject(sourcePoint, 0, -1).Owner != wizard.Owner) ||
+                        (getTestedObject(sourcePoint, 1, -1) is Monster && getTestedObject(sourcePoint, 1, -1).Owner != wizard.Owner)
+                        )
+                    )
+                )
+                return false;
+
+            return true;
+        }
+
+        private GameObject getTestedObject(Point Point, int X = 0, int Y = 0)
+        {
+            GameObject occupantOfTarget;
+            try
+            {
+                occupantOfTarget = this.gameboard.GetElement(new Point(Point.X + X, Point.Y + Y)).GetOccupant();
+                Console.WriteLine("trytrytry");
+            }
+            catch (IndexOutOfRangeException)
+            {
+                occupantOfTarget = this.gameboard.GetElement(new Point(Point.X, Point.Y)).GetOccupant();
+                Console.WriteLine("catchcatchcatch");
+            }
+
+            return occupantOfTarget;
         }
 
         private async Task playCombatAnimation(Bitmap previousBitmap)

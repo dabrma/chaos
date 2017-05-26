@@ -211,7 +211,7 @@
             this.tNumberOfSpells.Name = "tNumberOfSpells";
             this.tNumberOfSpells.Size = new System.Drawing.Size(60, 32);
             this.tNumberOfSpells.TabIndex = 8;
-            this.tNumberOfSpells.Text = "0";
+            this.tNumberOfSpells.Text = "99";
             this.tNumberOfSpells.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.tNumberOfSpells.TextChanged += new System.EventHandler(this.tNumberOfSpells_TextChanged);
             // 
