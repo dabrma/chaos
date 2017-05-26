@@ -143,12 +143,10 @@ namespace Chaos.Engine
             try
             {
                 occupantOfTarget = this.gameboard.GetElement(new Point(Point.X + X, Point.Y + Y)).GetOccupant();
-                Console.WriteLine("trytrytry");
             }
             catch (IndexOutOfRangeException)
             {
                 occupantOfTarget = this.gameboard.GetElement(new Point(Point.X, Point.Y)).GetOccupant();
-                Console.WriteLine("catchcatchcatch");
             }
 
             return occupantOfTarget;

@@ -7,8 +7,8 @@ namespace Chaos
     public partial class FormStart : Form
     {
         private int numberOfPlayers = 2;
-        private int numberOfSpells;
-        private int numberOfTurns;
+        private int numberOfSpells = 99;
+        private int numberOfTurns = 0;
 
 
         public FormStart()
