@@ -1,6 +1,7 @@
-﻿using Chaos.Model;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Chaos.Model;
+using Chaos.UI;
 
 namespace Chaos
 {
@@ -8,7 +9,7 @@ namespace Chaos
     {
         private int numberOfPlayers = 2;
         private int numberOfSpells = 99;
-        private int numberOfTurns = 0;
+        private int numberOfTurns;
 
 
         public FormStart()
@@ -29,17 +30,15 @@ namespace Chaos
 
         private void bExitGame_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            Environment.Exit(-1);
         }
 
         private void bLoadGame_Click(object sender, EventArgs e)
         {
-
-            GameLoader gameLoader = new GameLoader();
+            var gameLoader = new GameLoader();
             gameLoader.StartMenu = this;
             gameLoader.LoadGame();
             SettingsPanel.Hide();
-
         }
 
         private void bStart_Click(object sender, EventArgs e)
@@ -47,7 +46,7 @@ namespace Chaos
             var newGame = new GameForm(numberOfPlayers, numberOfTurns, numberOfSpells);
             newGame.engine.startForm = this;
             newGame.Show();
-            this.Visible = false;
+            Visible = false;
             SettingsPanel.Hide();
         }
 
@@ -147,5 +146,11 @@ namespace Chaos
         #endregion
 
         #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            buttonsPanel.Visible = true;
+            SettingsPanel.Visible = false;
+        }
     }
 }

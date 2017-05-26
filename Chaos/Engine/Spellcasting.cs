@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Chaos.Model;
 using Chaos.Properties;
-using System.Windows.Forms;
 
 namespace Chaos.Engine
 {
@@ -22,7 +22,7 @@ namespace Chaos.Engine
 
         private void DamageSpellAction(int spellPower, Monster target)
         {
-            int LeftOverDamage = 0;
+            var LeftOverDamage = 0;
 
             if (target.MagicResistance > 0)
             {
@@ -41,24 +41,22 @@ namespace Chaos.Engine
             }
 
             if (target.Health <= 0)
-            {
                 targetField.SetOccupant();
-            }
         }
 
-        public async Task PlayAnimation (Tile target, Bitmap previousSprite, string animationResource, int msDelay = 500)
+        public async Task PlayAnimation(Tile target, Bitmap previousSprite, string animationResource, int msDelay = 500)
         {
             try
             {
                 var prevSprite = previousSprite;
-                targetField.Field.Image = (Bitmap)Resources.ResourceManager.GetObject(animationResource);
+                targetField.Field.Image = (Bitmap) Resources.ResourceManager.GetObject(animationResource);
                 await Task.Delay(msDelay);
                 targetField.Field.Image = prevSprite;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-            }         
+            }
         }
 
         public async Task ApplySpellEffect(Spell spell, Monster target)
@@ -92,29 +90,34 @@ namespace Chaos.Engine
             }
         }
 
-        public async Task<bool> CastSpell(Tile target, MouseEventArgs e)
+        private async Task summonMonster(Tile targetTile, Monster monsterFromSpell)
+        {
+            SoundEngine.PlaySound("SingleCast");
+            await PlayAnimation(targetField, monsterFromSpell.Sprite, "Casting");
+            targetTile.SetOccupant(monsterFromSpell);
+        }
+
+        public bool CastSpell(Tile target, MouseEventArgs e)
         {
             var currentPlayerIndex = gameEngine.Players.IndexOf(gameEngine.CurrentPlayer);
             var finishedCasting = currentPlayerIndex + 1 == gameEngine.Players.Count;
             var spell = gameEngine.GetCurrentSpell();
 
-          
+
             if (e.Button == MouseButtons.Right)
             {
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 
             else if (spell.CanCastOnNothing && target.GetOccupant() is Nothing &&
-                !this.finishedCasting &&
-                MonsterActions.isActionLegal(gameEngine.GetWizardCoordinates(), target.GetCoordinates()))
+                     !this.finishedCasting &&
+                     MonsterActions.isActionLegal(gameEngine.GetWizardCoordinates(), target.GetCoordinates()))
             {
                 var monsterFromSpell =
                     gameEngine.monsterGenerator.GetMonsterByName(spell.Caption, gameEngine.CurrentPlayer);
                 monsterFromSpell.Owner = gameEngine.CurrentPlayer;
                 targetField = target;
-                SoundEngine.PlaySound("SingleCast");
-                await PlayAnimation(targetField, monsterFromSpell.Sprite, "Casting");
-                target.SetOccupant(monsterFromSpell);
+                summonMonster(targetField, monsterFromSpell);
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 
@@ -123,7 +126,7 @@ namespace Chaos.Engine
             {
                 var spellTarget = target.GetOccupant() as Monster;
                 targetField = target;
-                await ApplySpellEffect(spell, spellTarget);
+                ApplySpellEffect(spell, spellTarget);
                 gameEngine.CurrentPlayer = gameEngine.SwitchPlayer();
             }
 

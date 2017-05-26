@@ -16,7 +16,7 @@ namespace Chaos.Engine
         private readonly List<Player> players;
 
         /// <summary>
-        /// Panel that holds spell Tiles
+        ///     Panel that holds spell Tiles
         /// </summary>
         private readonly Panel spellboardPanel;
 
@@ -31,7 +31,7 @@ namespace Chaos.Engine
             this.spellboardPanel = spellboardPanel;
             this.players = players;
             // this.currentPlayer = players[0];
-            
+
             // Only generate new spellset, when new game is starting. Do not load them if game is loaded
             if (generateSpells)
                 populateSpellsArray();
@@ -74,29 +74,23 @@ namespace Chaos.Engine
         private void InitializeSpellTiles(Player currentPlayer)
         {
             ClearSpellBoard();
-            int spellIndex = 0;
+            var spellIndex = 0;
             for (var col = 0; col < SPELLBOARD_WIDTH; col++)
+            for (var row = 0; row < SPELLBOARD_HEIGHT; row++)
             {
-                for (var row = 0; row < SPELLBOARD_HEIGHT; row++)
-                {
-                    var spellTile = new SpellTile(new Point(col, row));
-                    spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile);
-                    var currentPlayerIndex = players.IndexOf(currentPlayer);
+                var spellTile = new SpellTile(new Point(col, row));
+                spellTile.Field.Click += (obj, ev) => OnSpellClick(obj, ev, spellTile);
+                var currentPlayerIndex = players.IndexOf(currentPlayer);
 
-                    if (currentPlayer.AvailableSpells.Count > spellIndex)
-                    {
-                        spellTile.SetOccupant(players[currentPlayerIndex].AvailableSpells.ElementAt(spellIndex));
-                    }
-                    else
-                    {
-                        spellTile.SetOccupant();
-                    }
+                if (currentPlayer.AvailableSpells.Count > spellIndex)
+                    spellTile.SetOccupant(players[currentPlayerIndex].AvailableSpells.ElementAt(spellIndex));
+                else
+                    spellTile.SetOccupant();
 
-                    spellIndex++;
+                spellIndex++;
 
-                    spellTile.SetOccupant(spellTile.GetOccupant());
-                    spellTiles[col, row] = spellTile;
-                }
+                spellTile.SetOccupant(spellTile.GetOccupant());
+                spellTiles[col, row] = spellTile;
             }
 
             InitializeSpellBoard();

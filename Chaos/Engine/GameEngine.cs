@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Chaos.Model;
 using Chaos.UI;
-using System.Linq;
 
 namespace Chaos.Engine
 {
@@ -18,28 +18,10 @@ namespace Chaos.Engine
 
     public class GameEngine
     {
-        #region Fields and Initializers
-
-        public GameSaver gameSaver;
-        public FormStart startForm;
-        private readonly GameForm gameForm;
-        private readonly MonsterActions actions;
-        private readonly Spellcasting spellcasting;
-        private bool firstClick = true;
-        private int TurnsPassed = 0;
-        private int turnsLimit = 0;
-        private GamePhase gamePhase;
-        public bool DescriptionMode = false;
-        private SoundEngine eng = new SoundEngine();
-        public readonly MonsterGenerator monsterGenerator = new MonsterGenerator();
-        public List<Player> Players = new List<Player>();
-        private DescriptionPanel monsterDescriptionPanel;
-
-        #endregion
-
         #region Constructors
 
-        public GameEngine(int NumberOfPlayers, Gameboard gameboard, GameForm gameForm, int turnsLimit, bool autogenerate = true)
+        public GameEngine(int NumberOfPlayers, Gameboard gameboard, GameForm gameForm, int turnsLimit,
+            bool autogenerate = true)
         {
             this.gameboard = gameboard;
             this.turnsLimit = turnsLimit * NumberOfPlayers;
@@ -58,7 +40,25 @@ namespace Chaos.Engine
 
         #endregion
 
+        #region Fields and Initializers
+
+        public GameSaver gameSaver;
+        public FormStart startForm;
+        private readonly GameForm gameForm;
+        private readonly MonsterActions actions;
+        private readonly Spellcasting spellcasting;
+        private bool firstClick = true;
+        private int TurnsPassed;
+        private readonly int turnsLimit;
+        private GamePhase gamePhase;
+        public bool DescriptionMode = false;
+        private SoundEngine eng = new SoundEngine();
+        public readonly MonsterGenerator monsterGenerator = new MonsterGenerator();
+        public List<Player> Players = new List<Player>();
+        #endregion
+
         #region Properties
+
         public Tile GetSourceField { get; private set; }
         public Monster GetSelectedMonster { get; private set; }
         public Tile GetTargetField { get; private set; }
@@ -67,6 +67,7 @@ namespace Chaos.Engine
         public Player CurrentPlayer { get; set; }
 
         public List<Player> postGamePlayersList = new List<Player>();
+
         #endregion
 
         #region Public Methods
@@ -89,13 +90,15 @@ namespace Chaos.Engine
                 gameboard.currentPlayer = CurrentPlayer;
             }
         }
+
         public void ChangePhase(GamePhase phase)
         {
             gamePhase = phase;
             OnPhaseChange();
         }
+
         /// <summary>
-        /// Adds a monster to a Tile and gives it an owner
+        ///     Adds a monster to a Tile and gives it an owner
         /// </summary>
         /// <param name="monster"></param>
         /// <param name="owner"></param>
@@ -106,11 +109,11 @@ namespace Chaos.Engine
             monster.Owner = owner;
             gameboard.GetElement(new Point(posX, posY)).SetOccupant(monster);
         }
+
         /// <summary>
-        /// Helper method to decide whether sound should be played or not
+        ///     Helper method to decide whether sound should be played or not
         /// </summary>
         /// <returns></returns>
-
         public Player SwitchPlayer()
         {
             var currentPlayerIndex = Players.IndexOf(CurrentPlayer);
@@ -118,7 +121,8 @@ namespace Chaos.Engine
             if (currentPlayerIndex + 1 < Players.Count)
             {
                 CurrentPlayer = Players[currentPlayerIndex + 1];
-                if(gamePhase == GamePhase.Casting && CurrentPlayer.SelectedSpell != null) SoundEngine.SpellAndPlayerName(CurrentPlayer);
+                if (gamePhase == GamePhase.Casting && CurrentPlayer.SelectedSpell != null)
+                    SoundEngine.SpellAndPlayerName(CurrentPlayer);
             }
             else if (currentPlayerIndex + 1 == Players.Count)
             {
@@ -126,13 +130,15 @@ namespace Chaos.Engine
             }
 
             else
+            {
                 CurrentPlayer = Players[0];
+            }
 
             return CurrentPlayer;
         }
+
         public async Task TurnChange()
         {
-
             if (!IsGameOver())
             {
                 TurnsPassed++;
@@ -159,9 +165,12 @@ namespace Chaos.Engine
 
         public void ShowGameOverScreen()
         {
-            GameOver gameOverScreen = new GameOver(postGamePlayersList);
+            var gameOverScreen = new GameOver(postGamePlayersList);
             gameOverScreen.ShowDialog();
-            startForm.Visible = true;
+
+            var startNewGame = new FormStart();
+            startNewGame.Show();
+
             gameForm.Dispose();
         }
 
@@ -169,19 +178,18 @@ namespace Chaos.Engine
         {
             return CurrentPlayer.SelectedSpell;
         }
+
         public void RemovePlayer(Player playerToRemove)
         {
             postGamePlayersList.Add(playerToRemove);
             Players.Remove(playerToRemove);
 
-            foreach (Tile tile in gameboard.GetElementsCollection())
-            {
+            foreach (var tile in gameboard.GetElementsCollection())
                 if (tile.GetOccupant() is Monster && tile.GetOccupant().Owner == playerToRemove)
                 {
                     var monsterToRemove = tile.GetOccupant() as Monster;
                     tile.SetOccupant();
                 }
-            }
         }
 
         // Reset selection data.
@@ -203,9 +211,11 @@ namespace Chaos.Engine
 
             throw new NullReferenceException();
         }
+
         #endregion
 
         #region Methods
+
         private void HighlightCurrentlyCastingPlayer()
         {
             if (gamePhase == GamePhase.Casting)
@@ -214,13 +224,15 @@ namespace Chaos.Engine
                 tile.Field.BorderStyle = BorderStyle.Fixed3D;
             }
         }
+
         private void HideDescriptionPanel(object sender, EventArgs e)
         {
             var panel = sender as Panel;
             panel.Hide();
         }
+
         /// <summary>
-        /// Perform actions while Gamephase changes.
+        ///     Perform actions while Gamephase changes.
         /// </summary>
         private void OnPhaseChange()
         {
@@ -235,7 +247,7 @@ namespace Chaos.Engine
                     break;
                 case GamePhase.Casting:
                     CurrentPlayer = Players[0];
-                    if(CurrentPlayer.SelectedSpell != null) SoundEngine.SpellAndPlayerName(CurrentPlayer);
+                    if (CurrentPlayer.SelectedSpell != null) SoundEngine.SpellAndPlayerName(CurrentPlayer);
                     spellboard.IsSpellboardVisible(false);
                     break;
                 case GamePhase.Moving:
@@ -243,10 +255,12 @@ namespace Chaos.Engine
                     break;
             }
         }
+
         private void UpdateSpellboard()
         {
             spellboard.UpdateSpellboard(CurrentPlayer);
         }
+
         private void ResetMonsterMovement()
         {
             foreach (var tile in gameboard.GetElementsCollection())
@@ -259,6 +273,7 @@ namespace Chaos.Engine
                 }
             }
         }
+
         private void GenerateWizards(int numberOfPlayers)
         {
             for (var i = 0; i < numberOfPlayers; i++)
@@ -282,31 +297,31 @@ namespace Chaos.Engine
                     AddMonster(wizard, player, 13, 0);
             }
         }
+
         private void SetTileEvents()
         {
             foreach (var field in gameboard.GetElementsCollection())
             {
                 var pictureBox = field.Field;
-                pictureBox.MouseClick += async (sender, args) => TileClicked(field, args);
+                pictureBox.MouseClick += (sender, args) => TileClicked(field, args);
             }
         }
+
         private async Task TileClicked(Tile clickSource, MouseEventArgs e)
         {
             if (DescriptionMode)
-            {
                 if (clickSource.GetOccupant() is Monster)
                 {
                     gameForm.GetDescriptionPanel.Controls.Clear();
                     gameForm.GetDescriptionPanel.Controls.AddRange(
-                        new DescriptionPanel((Monster)clickSource.GetOccupant())
+                        new DescriptionPanel((Monster) clickSource.GetOccupant())
                             .GetControls());
                     gameForm.GetDescriptionPanel.Visible = true;
                     gameForm.GetDescriptionPanel.BringToFront();
                     return;
                 }
-            }
 
-            if (gamePhase == GamePhase.Casting && await spellcasting.CastSpell(clickSource, e))
+            if (gamePhase == GamePhase.Casting && spellcasting.CastSpell(clickSource, e))
             {
                 CurrentPlayer = Players[0];
                 ResetMonsterMovement();
@@ -356,8 +371,8 @@ namespace Chaos.Engine
                              GetTargetField.GetCoordinates()) &&
                          GetSelectedMonster.canAttack)
                 {
-                    await actions.Attack((Monster)GetSourceField.GetOccupant(),
-                        (Monster)GetTargetField.GetOccupant());
+                    await actions.Attack((Monster) GetSourceField.GetOccupant(),
+                        (Monster) GetTargetField.GetOccupant());
                     resetEventData();
                 }
 
@@ -367,27 +382,26 @@ namespace Chaos.Engine
                 }
             }
         }
+
         /// <summary>
-        /// If max turns parameter has been specified - check if turns has passed, if so, pick a Player with the most points as a winner
+        ///     If max turns parameter has been specified - check if turns has passed, if so, pick a Player with the most points as
+        ///     a winner
         /// </summary>
         public bool IsGameOver()
         {
             if (turnsLimit != 0)
-            {
                 if (turnsLimit == TurnsPassed)
                 {
-                    foreach (Player pl in Players)
-                    {
+                    foreach (var pl in Players)
                         //if(!postGamePlayersList.Contains(pl)) 
-                            postGamePlayersList.Add(pl);
-                    }
+                        postGamePlayersList.Add(pl);
                     var winner = postGamePlayersList.OrderByDescending(p => p.Points).First();
                     return true;
                 }
-            }
 
             return false;
         }
+
         #endregion
     }
 }

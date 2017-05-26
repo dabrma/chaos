@@ -2,7 +2,6 @@
 using System.Speech.Synthesis;
 using Chaos.Model;
 using Chaos.Properties;
-using System.Threading.Tasks;
 
 namespace Chaos.Engine
 {
@@ -11,7 +10,7 @@ namespace Chaos.Engine
         private static readonly SoundPlayer soundPlayer = new SoundPlayer();
 
         /// <summary>
-        /// Text-to-speech operation on a Monster passed to an argument
+        ///     Text-to-speech operation on a Monster passed to an argument
         /// </summary>
         /// <param name="source">Monster that is the source of sound</param>
         public static void Speak(Monster source)
@@ -39,10 +38,10 @@ namespace Chaos.Engine
         }
 
         /// <summary>
-        /// Gets the audio resource by string passed to a parameter and plays it.
+        ///     Gets the audio resource by string passed to a parameter and plays it.
         /// </summary>
         /// <param name="sound">
-        /// String with name of an audio resource
+        ///     String with name of an audio resource
         /// </param>
         public static void PlaySound(string sound, bool async = true)
         {

@@ -6,17 +6,18 @@ using System.Windows.Forms;
 using Chaos.Engine;
 using Chaos.Interfaces;
 using Chaos.Model.DTOs;
+using Chaos.UI;
 using ExtendedXmlSerialization;
 
 namespace Chaos.Model
 {
     internal class GameLoader : IFile
     {
-        private readonly ExtendedXmlSerializer xml = new ExtendedXmlSerializer();
         private readonly List<Monster> LoadedMonsters = new List<Monster>();
-        public FormStart StartMenu;
 
         private readonly List<Player> LoadedPlayers = new List<Player>();
+        private readonly ExtendedXmlSerializer xml = new ExtendedXmlSerializer();
+        public FormStart StartMenu;
 
         public string GetPath()
         {
@@ -38,7 +39,7 @@ namespace Chaos.Model
 
                 var game = new GameForm();
                 var gameboard = new Gameboard(game.GetGamePanel, game.GetNameField, game.GetMovesLeftLabel);
-                var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game, state.TurnsAmount ,false);
+                var gameEngine = new GameEngine(LoadedPlayers.Count - 1, gameboard, game, state.TurnsAmount, false);
 
                 gameEngine.startForm = StartMenu;
                 gameEngine.Players = LoadedPlayers;
@@ -108,13 +109,11 @@ namespace Chaos.Model
             foreach (var dto in state.monsters)
             {
                 var owner = LoadedPlayers.Find(x => x.Name == dto.Owner);
-                var monsterFromDTO = new Monster();
-                if (dto.Name == "Wizard") { 
-                    dto.Name = "Wizard" + owner.Name.Substring(owner.Name.Length - 1);
-                    }
+                if (dto.Name == "Wizard") dto.Name = "Wizard" + owner.Name.Substring(owner.Name.Length - 1);
 
-                monsterFromDTO = generator.GetMonsterByName(dto.Name, owner);
+                var monsterFromDTO = generator.GetMonsterByName(dto.Name, owner);
                 monsterFromDTO.Moves = dto.Moves;
+                monsterFromDTO.MagicResistance = dto.MagicResistance;
                 monsterFromDTO.MovesRemaining = dto.MovesRemaining;
                 monsterFromDTO.Attack = dto.Attack;
                 monsterFromDTO.Health = dto.Health;

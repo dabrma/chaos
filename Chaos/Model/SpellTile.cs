@@ -4,7 +4,6 @@ namespace Chaos.Engine
 {
     public class SpellTile : Tile
     {
-
         public SpellTile(Point coordinates) : base(coordinates)
         {
             FieldLocalization = coordinates;

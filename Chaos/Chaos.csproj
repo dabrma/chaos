@@ -42,7 +42,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\..\..\Desktop\Chaos\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -74,7 +74,6 @@
     <Compile Include="Interfaces\ILocalizable.cs" />
     <Compile Include="Interfaces\ILookupable.cs" />
     <Compile Include="Interfaces\IOccupiable.cs" />
-    <Compile Include="Misc\CreateCursorFromStream.cs" />
     <Compile Include="Engine\GameLoader.cs" />
     <Compile Include="Engine\GameSaver.cs" />
     <Compile Include="Model\DTOs\GameState.cs" />
@@ -89,13 +88,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UI\DescriptionPanel.cs" />
-    <Compile Include="UI\Form2.cs">
+    <Compile Include="UI\About.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Form2.Designer.cs">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <Compile Include="UI\About.Designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\DescriptionPanel.cs" />
     <Compile Include="UI\FormStart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,11 +107,11 @@
     <Compile Include="Engine\SoundEngine.cs" />
     <Compile Include="Model\Spell.cs" />
     <Compile Include="Model\Tile.cs" />
-    <Compile Include="UI\Form1.cs">
+    <Compile Include="UI\GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="UI\GameForm.Designer.cs">
+      <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Monster.cs" />
     <Compile Include="Model\Player.cs" />
@@ -127,18 +126,11 @@
     <Compile Include="UI\SimpleProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Utility\EventLogger.cs" />
-    <Compile Include="Utility\Logger.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Utility\Logger.Designer.cs">
-      <DependentUpon>Logger.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="UI\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="UI\About.resx">
+      <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\Form2.resx">
-      <DependentUpon>Form2.cs</DependentUpon>
+    <EmbeddedResource Include="UI\GameForm.resx">
+      <DependentUpon>GameForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FormStart.resx">
       <DependentUpon>FormStart.cs</DependentUpon>
@@ -153,9 +145,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\SimpleProgressBar.resx">
       <DependentUpon>SimpleProgressBar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Utility\Logger.resx">
-      <DependentUpon>Logger.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -196,9 +185,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Misc\Monsters.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <None Include="Resources\output_kwoJ4W.gif" />
   </ItemGroup>
   <ItemGroup>
@@ -323,11 +309,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Misc\Crosshair.cur">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Normal.cur" />
   </ItemGroup>
   <ItemGroup>
@@ -365,6 +346,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Damage.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

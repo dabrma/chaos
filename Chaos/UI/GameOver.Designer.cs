@@ -90,8 +90,10 @@
             this.Controls.Add(this.lblPoints);
             this.Controls.Add(this.lblPlayer);
             this.Controls.Add(this.lblGameOver);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "GameOver";
-            this.Text = "GameOver";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Game Over!";
             this.Load += new System.EventHandler(this.GameOver_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

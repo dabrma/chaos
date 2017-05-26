@@ -10,12 +10,13 @@ namespace Chaos.Model
 {
     public class GameSaver : IFile
     {
+        private readonly Player currentPlayer;
         private readonly IEnumerable<Tile> gameboardElements;
         private readonly List<Player> players = new List<Player>();
-        private readonly Player currentPlayer;
         private readonly int TurnsLimit;
 
-        public GameSaver(IEnumerable<Tile> gameboardElements, List<Player> players, Player currentPlayer, int TurnsLimit)
+        public GameSaver(IEnumerable<Tile> gameboardElements, List<Player> players, Player currentPlayer,
+            int TurnsLimit)
         {
             this.gameboardElements = gameboardElements;
             this.players = players;

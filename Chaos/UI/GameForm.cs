@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 using Chaos.Engine;
-using Chaos.Misc;
 using Chaos.Model;
-using Chaos.Properties;
 
-namespace Chaos
+namespace Chaos.UI
 {
     public partial class GameForm : Form
     {
+        private readonly int NumberOfTurns;
         public GameEngine engine;
         public Gameboard gameboard;
         public SpellBoard spellboard;
-        private readonly int NumberOfTurns;
 
         public GameForm(int numberOfPlayers, int numberOfTurns, int numberOfSpells)
         {
@@ -49,16 +46,43 @@ namespace Chaos
             else helpButton.BorderStyle = BorderStyle.None;
         }
 
-        private void btnSaveGame_Click(object sender, EventArgs e)
-        {
-            var gameSaver = new GameSaver(gameboard.GetElementsCollection(), engine.Players, engine.CurrentPlayer, NumberOfTurns);
-            gameSaver.SaveGame();
-
-        }
-
         private void GameForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Environment.Exit(-1);
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var gameSaver = new GameSaver(gameboard.GetElementsCollection(), engine.Players, engine.CurrentPlayer,
+                NumberOfTurns);
+            gameSaver.SaveGame();
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var gameLoader = new GameLoader();
+            try
+            {
+                gameLoader.LoadGame();
+                Dispose();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"An error has occured during game loading {exception.Message}");
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormStart newGameForm = new FormStart();
+            newGameForm.Show();
+            this.Dispose();
+        }
+
+        private void aboutToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var aboutPopup = new About();
+            aboutPopup.ShowDialog();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Chaos.Model.DTOs
     internal class PlayerDTO
     {
         public string Name;
-        public List<string> Spells = new List<string>();
         public int Points;
+        public List<string> Spells = new List<string>();
     }
 }

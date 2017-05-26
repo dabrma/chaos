@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Chaos.Model;
 using Chaos.Properties;
 
@@ -23,7 +22,8 @@ namespace Chaos.Engine
             var ocuppant = (Monster) source.GetOccupant();
             var sourceCoords = source.GetCoordinates();
             var targetCoords = target.GetCoordinates();
-            if (isActionLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0 && isNotMonsterAround(sourceCoords)) // added isNotMonsterAround... && isNotMonsterAround(sourceCoords)
+            if (isActionLegal(sourceCoords, targetCoords) && ocuppant.MovesRemaining > 0
+                && isMonsterAround(sourceCoords))
             {
                 source.SetOccupant();
                 target.SetOccupant(ocuppant);
@@ -76,7 +76,8 @@ namespace Chaos.Engine
             gameEngine.GetSourceField.SetOccupant(); // Set source field occupant as Nothing
             gameEngine.GetTargetField.SetOccupant(attacker); // Put previous source field occupant into target field
 
-            attacker.Owner.Points += CalculatePointsForKilling(defender); // Add points for killing a monster or a wizard.
+            attacker.Owner.Points +=
+                CalculatePointsForKilling(defender); // Add points for killing a monster or a wizard.
 
             if (defender.Name.Contains("Wizard"))
             {
@@ -93,8 +94,7 @@ namespace Chaos.Engine
         public int CalculatePointsForKilling(Monster killedMonster)
         {
             if (killedMonster.Name == "Wizard") return 100;
-            else
-                return ((killedMonster.MaxHealth / 2) + killedMonster.Attack + killedMonster.MagicResistance);
+            return killedMonster.MaxHealth / 2 + killedMonster.Attack + killedMonster.MagicResistance;
         }
 
         public static bool isActionLegal(Point sourcePoint, Point targetPoint)
@@ -114,24 +114,31 @@ namespace Chaos.Engine
             return false;
         }
 
-        private bool isNotMonsterAround(Point sourcePoint) //if player is near the monster of opponent, player has to kill this monster befor he change location
+        private bool
+            isMonsterAround(
+                Point sourcePoint) //if player is near the monster of opponent, player has to kill this monster befor he change location
         {
-            Monster wizard = getTestedObject(sourcePoint) as Monster;
-            bool iswizard = wizard.Name.Contains("Wizard") ? true : false;
-            
-            if (    (iswizard &&
-                        (
-                        (getTestedObject(sourcePoint, 1, 0) is Monster && getTestedObject(sourcePoint, 1 ,0).Owner != wizard.Owner)||
-                        (getTestedObject(sourcePoint, 1, 1) is Monster && getTestedObject(sourcePoint, 1, 1).Owner != wizard.Owner) ||
-                        (getTestedObject(sourcePoint, 0, 1) is Monster && getTestedObject(sourcePoint, 0, 1).Owner != wizard.Owner) ||
-                        (getTestedObject(sourcePoint, -1, 1) is Monster && getTestedObject(sourcePoint, -1, 1).Owner != wizard.Owner) ||
-                        (getTestedObject(sourcePoint, -1, 0) is Monster && getTestedObject(sourcePoint, -1, 0).Owner != wizard.Owner) ||
-                        (getTestedObject(sourcePoint, -1, -1) is Monster && getTestedObject(sourcePoint, -1, -1).Owner != wizard.Owner) ||
-                        (getTestedObject(sourcePoint, 0, -1) is Monster && getTestedObject(sourcePoint, 0, -1).Owner != wizard.Owner) ||
-                        (getTestedObject(sourcePoint, 1, -1) is Monster && getTestedObject(sourcePoint, 1, -1).Owner != wizard.Owner)
-                        )
-                    )
+            var monster = getTestedObject(sourcePoint) as Monster;
+            if (monster != null &&
+                (
+                    getTestedObject(sourcePoint, 1, 0) is Monster &&
+                    getTestedObject(sourcePoint, 1, 0).Owner != monster.Owner ||
+                    getTestedObject(sourcePoint, 1, 1) is Monster &&
+                    getTestedObject(sourcePoint, 1, 1).Owner != monster.Owner ||
+                    getTestedObject(sourcePoint, 0, 1) is Monster &&
+                    getTestedObject(sourcePoint, 0, 1).Owner != monster.Owner ||
+                    getTestedObject(sourcePoint, -1, 1) is Monster &&
+                    getTestedObject(sourcePoint, -1, 1).Owner != monster.Owner ||
+                    getTestedObject(sourcePoint, -1, 0) is Monster &&
+                    getTestedObject(sourcePoint, -1, 0).Owner != monster.Owner ||
+                    getTestedObject(sourcePoint, -1, -1) is Monster &&
+                    getTestedObject(sourcePoint, -1, -1).Owner != monster.Owner ||
+                    getTestedObject(sourcePoint, 0, -1) is Monster &&
+                    getTestedObject(sourcePoint, 0, -1).Owner != monster.Owner ||
+                    getTestedObject(sourcePoint, 1, -1) is Monster &&
+                    getTestedObject(sourcePoint, 1, -1).Owner != monster.Owner
                 )
+            )
                 return false;
 
             return true;
@@ -142,11 +149,11 @@ namespace Chaos.Engine
             GameObject occupantOfTarget;
             try
             {
-                occupantOfTarget = this.gameboard.GetElement(new Point(Point.X + X, Point.Y + Y)).GetOccupant();
+                occupantOfTarget = gameboard.GetElement(new Point(Point.X + X, Point.Y + Y)).GetOccupant();
             }
             catch (IndexOutOfRangeException)
             {
-                occupantOfTarget = this.gameboard.GetElement(new Point(Point.X, Point.Y)).GetOccupant();
+                occupantOfTarget = gameboard.GetElement(new Point(Point.X, Point.Y)).GetOccupant();
             }
 
             return occupantOfTarget;
@@ -158,27 +165,5 @@ namespace Chaos.Engine
             await Task.Delay(550);
             gameEngine.GetTargetField.Field.Image = previousBitmap;
         }
-        
-
-        //TODO: Implement ranged attack mechanics - NOT GOING TO BE IMPLEMENTED IN VERSION 1.0
-        //private async Task rangedAttack(Tile attackerTile, Tile defenderTile)
-        //{
-        //    var attacker = attackerTile.GetOccupant() as Monster;
-        //    var defender = defenderTile.GetOccupant() as Monster;
-
-        //    isDefenderInRange(attackerTile.GetCoordinates(), defenderTile.GetCoordinates(), attacker.Attack);
-        //}
-
-        //public bool isDefenderInRange(Point attackerCoordinates, Point defenderCoordinates, int attackRange)
-        //{
-        //    //double distance = Math.Sqrt(Math.Pow((defenderCoordinates.Y - attackerCoordinates.Y), 2) +
-        //    //    Math.Pow((defenderCoordinates.X - attackerCoordinates.X), 2));
-        //    var distance = Math.Max(Math.Abs(attackerCoordinates.X - defenderCoordinates.X),
-        //        Math.Abs(attackerCoordinates.Y - defenderCoordinates.Y));
-        //    if (distance <= attackRange)
-        //        return true;
-
-        //    return false;
-        //}
     }
 }
